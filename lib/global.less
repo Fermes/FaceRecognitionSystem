@@ -1,0 +1,42 @@
+@back-color: #0a0f0b;
+@font-green: #2fbb3e;
+@border-dark: #1b5c24;
+@distance-top: 6px;
+@distance-lrb: 8px;
+
+body {
+  margin: 0 0 0 0;
+  background-color: @back-color;
+  font-family:"Microsoft YaHei UI","Verdana,Simsun","Segoe UI Web Light","Segoe UI Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol","Helvetica Neue","Arial";
+}
+.frs-nav{
+  border-top: none;
+  border-bottom: 2px solid @font-green;
+  background-color: @back-color;
+  .current{
+    border:1px solid @font-green;
+    border-top: none;
+    border-bottom: none;
+    box-shadow: inset 0px 0px 25px #0ef025;
+  }
+  label{
+    text-align: center;
+    line-height: 30px;
+    font-size: medium;
+    letter-spacing:3px;
+    color: @font-green;
+    display: inline-block;
+    height: 30px;
+    width: 120px;
+    transition: 0.3s;
+    &:hover{
+      border:1px solid @font-green;
+      border-top: none;
+      border-bottom: none;
+      box-shadow: inset 0px 0px 25px #0ef025;
+    }
+    &:first-child{
+      margin-left: 30px;
+    }
+  }
+}

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
+<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="lib/js/vue.js"></script>
+<script type="text/javascript" src="lib/js/axios.min.js"></script>
+<script type="text/javascript" src="lib/js/lodash.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="lib/index.css">
+<script>
+    var wsUrl = "ws://10.141.208.243:1001";
+    var ws = null;
+    layui.config({
+        base:'lib/js/'
+    }).use('index');
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>视频监控-主界面</title>
+</head>
+<body>
+<div id="nav" class="frs-nav">
+    <label class="current">主界面</label>
+    <label>人脸注册</label>
+    <label>统计查询</label>
+    <label>设备管理</label>
+    <label>系统配置</label>
+</div>
+<div>
+    <div class="frs-device" id="deviceList">
+        <div class="search">
+            <p>设备列表</p>
+            <div>
+                <input v-model="value">
+            </div>
+        </div>
+        <div class="device-tree">
+            <ul id="deviceTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="camera-total" id="camera-total">
+                <div v-show="!camera_4x4">
+                <object id="camera0" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                    <param name='mrl' value='' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+                </div>
+
+                <div v-show="camera_4x4">
+                <object id="camera1" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                    <param name='mrl' value='' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+                </div>
+            <div v-show="camera_4x4">
+                <object id="camera2" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                    <param name='mrl' value='' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+            </div>
+            <div v-show="camera_4x4">
+                <object id="camera3" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                    <param name='mrl' value='' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+            </div>
+            <div v-show="camera_4x4">
+                <object id="camera4" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                    <param name='mrl' value='' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+            </div>
+            <button onclick="cameraTotal.camera_4x4 = !cameraTotal.camera_4x4">切换显示方式</button>
+        </div>
+        <div class="nothit-record"  id="nothit-photo">
+            <nothit-img v-for="(photo,index) in eightRecords" v-bind:photo="photo" v-bind:key="index">
+
+            </nothit-img>
+        </div>
+        <div class="hit-record">
+            <table id="record-table" >
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>类别</th>
+                    <th>证件号</th>
+                    <th>识别时间</th>
+                    <th>识别地点</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(record,index) in pageRecords" :key="index">
+                    <template>
+                        <td :style="styleObject(index)">{{record.name}}</td>
+                        <td :style="styleObject(index)">{{record.type}}</td>
+                        <td :style="styleObject(index)">{{record.number}}</td>
+                        <td :style="styleObject(index)">{{record.time}}</td>
+                        <td :style="styleObject(index)">{{record.site}}</td>
+                    </template>
+                </tr>
+                </tbody>
+            </table>
+            <div id="laypager"></div>
+        </div>
+    </div>
+</div>
+
+<div id="app-2">
+    <span :title="message | formatMsg">
+        鼠标悬停查看信息
+    </span>
+</div>
+
+</body>
+<script>
+    var deviceList=new Vue({
+        el:"#deviceList",
+        data:{
+            value:"",
+            setting:{
+                edit:{
+                    enable:true
+                },
+                view:{
+                    showIcon:false,
+                    showLine:false,
+                    fontCss: getFontCss
+                },
+                callback:{
+                    onDrop:dragToPlay
+                }
+            },
+            zNodes:[
+                { name:"喀什",
+                    children: [
+                        { name:"阳光小区 （1861人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        },
+                                        {name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                        { name:"惠民小区 （133人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01"},
+                                        {name:"Camera02"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                    ]},
+                { name:"父节点2 - 折叠",
+                    children: [
+                        { name:"父节点21 - 展开",
+                            children: [
+                                { name:"叶子节点211"},
+                                { name:"叶子节点212"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点214"}
+                            ]},
+                        { name:"父节点22 - 折叠",
+                            children: [
+                                { name:"叶子节点221"},
+                                { name:"叶子节点222"},
+                                { name:"叶子节点223"},
+                                { name:"叶子节点224"}
+                            ]},
+                        { name:"父节点23 - 折叠",
+                            children: [
+                                { name:"叶子节点231"},
+                                { name:"叶子节点232"},
+                                { name:"叶子节点233"},
+                                { name:"叶子节点234"}
+                            ]}
+                    ]},
+                { name:"父节点3 - 没有子节点", isParent:true}
+            ],
+            preNodeList:null
+        },
+        watch:{
+            value: function (newValue) {
+                var zTree = $.fn.zTree.getZTreeObj("deviceTree");
+                zTree.expandAll(false);
+                this.searchNode(newValue);
+            }
+        },
+        methods: {
+            searchNode:_.debounce(
+                function (newValue) {
+                    if (newValue == "") {
+                        return;
+                    }
+                    var zTree = $.fn.zTree.getZTreeObj("deviceTree");
+                    var nodeList = zTree.getNodesByParamFuzzy("name", newValue);
+                    if (nodeList.length > 0) {
+                        if (this.preNodeList === null) {
+                            this.preNodeList = nodeList;
+
+                        } else {
+                            for (var i = 0; i < this.preNodeList.length; i++) {
+                                this.preNodeList[i].highlight = false;
+                                zTree.updateNode(this.preNodeList[i]);
+                            }
+                            this.preNodeList = nodeList;
+                        }
+                        for (var i = 0; i < nodeList.length; i++) {
+                            nodeList[i].highlight = true;
+                            zTree.updateNode(nodeList[i]);
+                            if (!nodeList[i].isParent) {
+                                zTree.expandNode(nodeList[i].getParentNode(), true, false, true);
+                            } else {
+                                zTree.expandNode(nodeList[i], true, false, true);
+                            }
+                        }
+
+                    }
+                }, 300
+            )
+        }
+    })
+
+    function getFontCss(treeId, treeNode) {
+        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+    }
+    function dragToPlay(e, treeId, treeNodes, targetNode, moveType) {
+        if (treeNodes[0].isParent) {
+            return;
+        }
+        switch (e.target.id) {
+            case 'camera0':
+                cameraTotal.camera_address0 = treeNodes[0].ip;
+                break;
+            case 'camera1':
+                cameraTotal.camera_address1 = treeNodes[0].ip;
+                break;
+            case 'camera2':
+                cameraTotal.camera_address2 = treeNodes[0].ip;
+                break;
+            case 'camera3':
+                cameraTotal.camera_address3 = treeNodes[0].ip;
+                break;
+            case 'camera4':
+                cameraTotal.camera_address4 = treeNodes[0].ip;
+                break;
+            default:
+                return;
+        }
+
+    }
+    $(document).ready(function(){
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+    });
+
+    Vue.component('nothit-img',{
+        props:['photo'],
+        template:'<div><img :src="photo.img_path"> <p>{{photo.time}}<br/><br/>{{photo.site}}</p></div>'
+    })
+
+    var nothitPhoto=new Vue({
+        el:"#nothit-photo",
+        data:{
+            newRecord:{
+                img_path:"",
+                time:"",
+                site:""
+            },
+            records:[
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"锡林郭勒-碧桂园-设备01-Camera01"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                },
+                {
+                    img_path:"lib/img/person.jpg",
+                    time:"2017-04-26 08:53",
+                    site:"上海-小区2-camera10"
+                }
+            ]
+        },
+        computed:{
+            eightRecords:function () {
+                while(this.records.length>8){
+                    this.records.pop();
+                }
+                return this.records;
+            }
+        },
+        methods:{
+            addRecord:function (path,time,site) {
+                this.newRecord.img_path=path;
+                this.newRecord.time=time;
+                this.newRecord.site=site;
+
+                this.records.unshift(this.newRecord);
+
+                this.newRecord.img_path="";
+                this.newRecord.time="";
+                this.newRecord.site="";
+            }
+        }
+    })
+
+
+
+    var recordTable=new Vue({
+        el:"#record-table",
+        data:{
+            curPage: 0,
+            newRecord:{
+                id:"\0",
+                name:"",
+                type:"",
+                number:"",
+                time:"",
+                site:""
+            },
+            records:[]
+        },
+        watch:{
+            records:function () {
+                layui.laypage({
+                    cont: 'laypager'
+                    ,pages: Math.ceil(recordTable.records.length/5)
+                    ,first: 1
+                    ,last: Math.ceil(recordTable.records.length/5)
+                    ,prev: '<em><</em>'
+                    ,next: '<em>></em>'
+                    ,skin: '#202d24'
+                    ,groups: 3
+                    ,jump: function(obj) {
+                        recordTable.curPage = obj.curr - 1;
+                    }
+                });
+            }
+        },
+        computed:{
+            pageRecords:function () {
+                var start=this.curPage * 5;
+                var end = (start + 5) > this.records.length ? (this.records.length) : (start + 5);
+                var result = this.records.slice(start, end);
+                while(result.length < 5){
+                    result.push(this.newRecord);
+                }
+                return result;
+            }
+        },
+        methods:{
+            styleObject:function (index) {
+                if(this.pageRecords[index].type==="黑名单"){
+                    return {
+                        color:"red"
+                    };
+                }else if(this.pageRecords[index].name==="\0"){
+                    if(index%2===0){
+                        return {
+                            color: "#0a0f0b"
+                        }
+                    }else{
+                        return{
+                            color:"#141e16"
+                        }
+                    }
+
+                }else{
+                    return "";
+                }
+            },
+            addRecord:function (id,name,type,number,time,site) {
+                this.newRecord.id = id;
+                this.newRecord.name = name;
+                this.newRecord.type = type;
+                this.newRecord.number = number;
+                this.newRecord.time = time;
+                this.newRecord.site = site;
+
+                this.records.unshift(this.newRecord);
+                if(this.records.length > 100){
+                    this.records.pop();
+                }
+                this.newRecord = {
+                    id:"\0",
+                    name:"",
+                    type:"",
+                    number:"",
+                    time:"",
+                    site:""
+                };
+            }
+        }
+    })
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "H+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    var app2=new Vue({
+        el:"#app-2",
+        data:{
+            message:new Date()
+        },
+        filters:{
+            formatMsg: function (message) {
+                return '页面加载于 ' + message.Format('yyyy-MM-dd HH:mm:ss');
+            }
+        }
+    })
+
+    var cameraTotal=new Vue({
+        el: "#camera-total",
+        data: {
+            camera_address0: "",
+            camera_address1: "",
+            camera_address2: "",
+            camera_address3: "",
+            camera_address4: "",
+            camera_4x4: true
+        },
+        computed:{
+
+        },
+        watch: {
+            camera_address0: function (newAddress) {
+                play('camera0', newAddress)
+            },
+            camera_address1: function (newAddress) {
+                play('camera1', newAddress)
+            },
+            camera_address2: function (newAddress) {
+                play('camera2', newAddress)
+            },
+            camera_address3: function (newAddress) {
+                play('camera3', newAddress)
+            },
+            camera_address4: function (newAddress) {
+                play('camera4', newAddress)
+            },
+            camera_4x4:function (newMode) {
+                if(newMode){
+                    stopPlay("camera0");
+                }else{
+                    stopPlay("camera1");
+                    stopPlay("camera2");
+                    stopPlay("camera3");
+                    stopPlay("camera4");
+                }
+            }
+        }
+    })
+
+    function stopPlay(id) {
+        var vlc = document.getElementById(id);
+        vlc.playlist.stop();
+    }
+    function play(id,camera_address){
+        var vlc = document.getElementById(id);
+        vlc.playlist.clear();
+        var itemId = vlc.playlist.add(camera_address);
+        vlc.playlist.playItem(itemId);
+    }
+
+    $(document).ready(function(){
+        axios({
+            method: 'get',
+            url: 'http://10.141.208.243:5000/get_device_list',
+            responseType: 'json',
+            async:false
+        })
+            .then(function (response) {
+                deviceList.zNodes = response.data.children;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+            })
+            .catch(function (error) {
+
+            });
+        axios({
+            method: 'get',
+            url: 'http://10.141.208.243:5000/get_hit_list',
+            params:{
+                n: 100
+            },
+            responseType: 'json',
+            async:false
+        })
+            .then(function (response) {
+                var records = response.data.children;
+                for(var i = 0;i<records.length;i++){
+                    recordTable.addRecord(records[i].id,records[i].user.name,records[i].user.label,records[i].user.passportNumber,records[i].createTime,records[i].place);
+                }
+            })
+            .catch(function (error) {
+
+            });
+    });
+</script>
+</html>

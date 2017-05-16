@@ -1,0 +1,187 @@
+@back-color: #0a0f0b;
+@font-green: #2fbb3e;
+@border-dark: #1b5c24;
+@distance-top: 6px;
+@distance-lrb: 8px;
+@columun-bigheight:1032px;
+body {
+  margin: 0 0 0 0;
+  background-color: @back-color;
+  font-family:"Microsoft YaHei UI","Verdana,Simsun","Segoe UI Web Light","Segoe UI Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol","Helvetica Neue","Arial";
+}
+.frs-nav{
+  border-top: none;
+  border-bottom: 2px solid @font-green;
+  background-color: @back-color;
+  .current{
+    border:1px solid @font-green;
+    border-top: none;
+    border-bottom: none;
+    box-shadow: inset 0px 0px 25px #0ef025;
+  }
+  label{
+    text-align: center;
+    line-height: 30px;
+    font-size: medium;
+    letter-spacing:3px;
+    color: @font-green;
+    display: inline-block;
+    height: 30px;
+    width: 120px;
+    transition: 0.3s;
+    &:hover{
+      border:1px solid @font-green;
+      border-top: none;
+      border-bottom: none;
+      box-shadow: inset 0px 0px 25px #0ef025;
+    }
+    &:first-child{
+      margin-left: 30px;
+    }
+  }
+}
+
+.frs-device{
+  color: @font-green;
+  overflow: hidden;
+  position: absolute;
+  border: 1px solid @border-dark;
+  width: 368px;
+  height: @columun-bigheight;
+  margin: @distance-top 0px 0px @distance-lrb;
+  .search{
+    height: 80px;
+    border-bottom: 1px solid @border-dark;
+    div{
+      position: absolute;
+      border: none;
+      margin:10% 0 0 5%;
+      width: 88%;
+      height: 3.3%;
+      border-radius: 5px;
+      background: @border-dark url("img/search.png") no-repeat 97%;
+      background-size: 20px;
+    }
+    input {
+      background-color: @border-dark;
+      color: white;
+      width: 85%;
+      height: 90%;
+      border-radius: inherit;
+      border: none;
+      outline: none;
+      margin-left: 3%;
+      font-size: medium;
+    }
+    p{
+      position: absolute;
+      font-size: small;
+      color: @font-green;
+      margin:3% 0 0 5%;
+    }
+  }
+  .separate{
+    font-size:small;
+    color: @font-green;
+    border: none;
+    .parallelogram{
+      background-color: @border-dark;
+      width: 300px;
+      height: 20px;
+      line-height: 20px;
+      transform: skew(-25deg,0deg);
+      margin-left: -80px;
+      label{
+        margin-left: 100px;
+      }
+    }
+    label:nth-child(2){
+      position: absolute;
+      margin: -17px 0px 0px 270px;
+    }
+    label:nth-child(3){
+      position: absolute;
+      margin: -17px 0px 0px 310px;
+    }
+  }
+
+  .device-tree{
+    height: 92%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-track-color: @back-color;
+    scrollbar-face-color: @border-dark;
+    scrollbar-arrow-color: @back-color;
+    &::-webkit-scrollbar{
+      width: 10px;
+      background-color: @back-color;
+    }
+    &::-webkit-scrollbar-track
+    {
+      border-radius: 10px;
+      background-color: @back-color;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      border:1px solid @font-green;
+      -webkit-box-shadow: inset 0 0 10px @border-dark;
+      background-color: @font-green;
+    }
+  }
+  .ztree{
+    span {
+      font-size: 130%;
+      padding: 5px 0px 0px 3px;
+    }
+
+    li{
+      span{
+        &.button{
+          &.switch{
+            background-image: url("img/left_menu.png");
+            *background-image: url("img/left_menu.gif");
+            width: 20px;
+            height: 20px;
+            margin-top: 5px;
+          }
+          &.noline_open{
+            background-position: 0px -18px;
+          }
+          &.noline_close {
+            background-position: -18px -18px;
+          }
+          &.edit,&.remove,&.noline_docu{
+            visibility: hidden;
+          }
+          &.chk{
+            position: absolute;
+            margin: 8px 0px 0px 0px;
+            left: 340px;
+            border: none;
+          }
+        }
+      }
+      a{
+        width: 93%;
+        padding: 3px 0px 3px 1px;
+        border-radius: 2px;
+        &:hover{
+          transition: 0.3s;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 2px 2px 15px #12ad02;
+        }
+        &.curSelectedNode{
+          padding-top: 3px;
+          opacity: 1;
+          height: 21px;
+          background-color: inherit;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 2px 2px 15px #12ad02;
+        }
+      }
+    }
+
+  }
+}

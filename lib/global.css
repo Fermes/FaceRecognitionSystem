@@ -1,0 +1,36 @@
+body {
+  margin: 0 0 0 0;
+  background-color: #0a0f0b;
+  font-family: "Microsoft YaHei UI", "Verdana,Simsun", "Segoe UI Web Light", "Segoe UI Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "Helvetica Neue", "Arial";
+}
+.frs-nav {
+  border-top: none;
+  border-bottom: 2px solid #2fbb3e;
+  background-color: #0a0f0b;
+}
+.frs-nav .current {
+  border: 1px solid #2fbb3e;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: inset 0px 0px 25px #0ef025;
+}
+.frs-nav label {
+  text-align: center;
+  line-height: 30px;
+  font-size: medium;
+  letter-spacing: 3px;
+  color: #2fbb3e;
+  display: inline-block;
+  height: 30px;
+  width: 120px;
+  transition: 0.3s;
+}
+.frs-nav label:hover {
+  border: 1px solid #2fbb3e;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: inset 0px 0px 25px #0ef025;
+}
+.frs-nav label:first-child {
+  margin-left: 30px;
+}

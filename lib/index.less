@@ -1,0 +1,284 @@
+@import "global";
+
+.frs-device{
+  position: absolute;
+  border: 1px solid @border-dark;
+  width: 368px;
+  height: 1032px;
+  margin: @distance-top 0px @distance-lrb @distance-lrb;
+  .search{
+    height: 80px;
+    border-bottom: 1px solid @border-dark;
+    div{
+      position: absolute;
+      border: none;
+      margin:10% 0 0 5%;
+      width: 88%;
+      height: 3.3%;
+      border-radius: 5px;
+      background: @border-dark url("img/search.png") no-repeat 97%;
+      background-size: 20px;
+    }
+    input {
+      background-color: @border-dark;
+      color: white;
+      width: 85%;
+      height: 90%;
+      border-radius: inherit;
+      border: none;
+      outline: none;
+      margin-left: 3%;
+      font-size: medium;
+    }
+    p{
+      position: absolute;
+      font-size: small;
+      color: @font-green;
+      margin:3% 0 0 5%;
+    }
+  }
+  .device-tree{
+    height: 92%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-track-color: @back-color;
+    scrollbar-face-color: @border-dark;
+    scrollbar-arrow-color: @back-color;
+    &::-webkit-scrollbar{
+      width: 10px;
+      background-color: @back-color;
+    }
+    &::-webkit-scrollbar-track
+    {
+      border-radius: 10px;
+      background-color: @back-color;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      border:1px solid @font-green;
+      -webkit-box-shadow: inset 0 0 10px @border-dark;
+      background-color: @font-green;
+    }
+  }
+  .ztree{
+    span {
+      font-size: 130%;
+      padding: 5px 0px 0px 3px;
+    }
+
+    li{
+      span{
+        &.button{
+          &.switch{
+            background-image: url("img/left_menu.png");
+            *background-image: url("img/left_menu.gif");
+            width: 20px;
+            height: 20px;
+            margin-top: 5px;
+          }
+          &.noline_open{
+            background-position: 0px -18px;
+          }
+          &.noline_close {
+            background-position: -18px -18px;
+          }
+          &.edit,&.remove,&.noline_docu{
+            visibility: hidden;
+          }
+        }
+      }
+      a{
+        width: 93%;
+        padding: 3px 0px 3px 1px;
+        border-radius: 2px;
+        &:hover{
+          transition: 0.3s;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 2px 2px 15px #12ad02;
+        }
+        &.curSelectedNode{
+          padding-top: 3px;
+          opacity: 1;
+          height: 21px;
+          background-color: inherit;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 2px 2px 15px #12ad02;
+        }
+      }
+    }
+
+  }
+}
+
+.content{
+  position: absolute;
+  border: 1px solid @border-dark;
+  height: 1032px;
+  width: 1530px;
+  margin: @distance-top 0px @distance-lrb @distance-lrb * 2 + 370px;
+  .camera-total{
+    position: absolute;
+    border-bottom: 1px solid @border-dark;
+    width: 65%;
+    height: 64%;
+    div{
+      position: absolute;
+      border: 1px solid @border-dark;
+      width: 480px;
+      height: 270px;
+      object{
+        width: inherit;
+        height: inherit;
+      }
+      &:nth-child(1){
+        width: 960px;
+        height: 540px;
+        border:1px solid @border-dark;
+        margin:5.5% 0 0 1%;
+      }
+      &:nth-child(2){
+        margin: 5% 0 0 0.8%;
+      }
+      &:nth-child(3){
+        margin: 5% 0 0 50%;
+      }
+      &:nth-child(4){
+        margin: 33% 0 0 0.8%;
+      }
+      &:nth-child(5){
+        margin: 33% 0 0 50%;
+      }
+    }
+    button{
+      width: 14%;
+      height: 4%;
+      border-radius: 2px;
+      border: none;
+      color: #f0f0f0;
+      background-color: #386746;
+      margin: 62.5% 0 0 85%;
+    }
+  }
+  .hit-record{
+
+  }
+  .nothit-record{
+    border-bottom: 1px solid @border-dark;
+    height: 64%;
+    width: 35.4%;
+    margin-top: 0px;
+    margin-left: 64.8%;
+    img{
+      width: 120px;
+      height: 157px;
+    }
+    p{
+      width: 120px;
+      font-size: 14px;
+      color: #dddddd;
+      word-break: normal;
+    }
+    div{
+      position: absolute;
+      &:nth-child(1){
+        margin:4% 0 0 0;
+      }
+      &:nth-child(2){
+        margin:4% 0 0 8.8%;
+      }
+      &:nth-child(3){
+        margin:4% 0 0 17.8%;
+      }
+      &:nth-child(4){
+        margin:4% 0 0 26.8%;
+      }
+      &:nth-child(5){
+        margin:22% 0 0 0;
+      }
+      &:nth-child(6){
+        margin:22% 0 0 8.8%;
+      }
+      &:nth-child(7){
+        margin:22% 0 0 17.8%;
+      }
+      &:nth-child(8){
+        margin:22% 0 0 26.8%;
+      }
+    }
+  }
+  table{
+    width: 1530px;
+    table-layout: fixed;
+    font-size: 16px;
+    line-height: 45px;
+    border-collapse: collapse;
+    th{
+      color: #1f8e2b;
+      border: solid @border-dark;
+      border-width: 0px 1px 1px 0px;
+      &:last-child{
+        border-right: none;
+      }
+      &:nth-child(1){
+        width: 200px;
+      }
+      &:nth-child(2){
+        width: 100px;
+      }
+      &:nth-child(3){
+        width: 240px;
+      }
+      &:nth-child(4){
+        width: 200px;
+      }
+    }
+    tr:nth-child(even){
+      background-color: #141e16;
+      border-left: 1px solid @border-dark;
+    }
+    td{
+      padding-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: @font-green;
+      &:hover
+      {
+        text-overflow:inherit;
+        word-wrap: break-word;
+        white-space: normal;
+        overflow: visible;
+      }
+    }
+  }
+  #laypager{
+    margin:10px 0px 0px 1100px;
+  }
+  .pager(){
+    background-color: @back-color;
+    color: #259c3d;
+    border: none;
+    font-size: 15px;
+  }
+  .layui-laypage{
+    a,span{
+      .pager();
+    }
+    a{
+      .layui-laypage-prev,.layui-laypage-next{
+        background-color: #0b2c11;
+        border: 1px solid #259c3d;
+      }
+      &:hover{
+        color: white;
+      }
+      [data-page="1"]{
+        border-left:1px solid #259c3d;
+      }
+    }
+  }
+}
+
+
