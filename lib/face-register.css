@@ -41,7 +41,7 @@ body {
   border: 1px solid #1b5c24;
   width: 368px;
   height: 1032px;
-  margin: 6px 0px 0px 8px;
+  margin: 6px 0 0 8px;
 }
 .frs-device .search {
   height: 80px;
@@ -96,11 +96,11 @@ body {
 }
 .frs-device .separate label:nth-child(2) {
   position: absolute;
-  margin: -17px 0px 0px 270px;
+  margin: -17px 0 0 270px;
 }
 .frs-device .separate label:nth-child(3) {
   position: absolute;
-  margin: -17px 0px 0px 310px;
+  margin: -17px 0 0 310px;
 }
 .frs-device .separate label:hover {
   color: #2fbb3e;
@@ -129,7 +129,7 @@ body {
 }
 .frs-device .ztree span {
   font-size: 130%;
-  padding: 5px 0px 0px 3px;
+  padding: 5px 0 0 3px;
 }
 .frs-device .ztree li span.button.switch {
   background-image: url("img/left_menu.png");
@@ -151,14 +151,14 @@ body {
 }
 .frs-device .ztree li span.button.chk {
   position: absolute;
-  margin: 8px 0px 0px 0px;
+  margin: 8px 0 0 0;
   left: 330px;
   border: none;
 }
 .frs-device .ztree li a {
   width: 93%;
-  padding: 3px 0px 3px 1px;
-  border-radius: 2px;
+  padding: 3px 0 3px 1px;
+  border-radius: 4px;
 }
 .frs-device .ztree li a:hover {
   transition: 0.3s;
@@ -177,7 +177,7 @@ body {
 }
 .hit-record {
   position: absolute;
-  margin: 6px 0px 0px 386px;
+  margin: 6px 0 0 386px;
   width: 1020px;
   height: 1032px;
   border: 1px solid #1b5c24;
@@ -191,9 +191,11 @@ body {
   border-collapse: collapse;
 }
 .hit-record table th {
+  text-align: left;
+  padding-left: 10px;
   color: #1f8e2b;
   border: solid #1b5c24;
-  border-width: 0px 1px 1px 0px;
+  border-width: 0 1px 1px 0;
 }
 .hit-record table th:last-child {
   border-right: none;
@@ -226,9 +228,12 @@ body {
   white-space: normal;
   overflow: visible;
 }
+.hit-record table td a {
+  color: red;
+}
 .hit-record #laypager {
   position: absolute;
-  margin: 980px 0 0px 615px;
+  margin: 980px 0 0 615px;
 }
 .hit-record .layui-laypage a,
 .hit-record .layui-laypage span {
@@ -250,7 +255,7 @@ body {
 }
 .face-reg {
   border: 1px solid #1b5c24;
-  margin: 6px 0px 0px 1416px;
+  margin: 6px 0 0 1416px;
   width: 500px;
   height: 1032px;
   position: relative;
@@ -270,17 +275,17 @@ body {
   border: 1px solid #1b5c24;
   background-color: #0a0f0b;
   color: inherit;
-  border-radius: 2px;
-  margin: 8% 0% 0% 5%;
+  border-radius: 4px;
+  margin: 8% 0 0 5%;
   width: 45%;
   height: 30px;
-  padding: 5px 0px 5px 10px;
+  padding: 5px 0 5px 10px;
   font-size: 15px;
 }
 .face-reg div.multi-reg button {
   position: absolute;
   background-color: #1b5c24;
-  border-radius: 2px;
+  border-radius: 4px;
   height: 28px;
 }
 .face-reg div.multi-reg button:nth-child(3) {
@@ -300,10 +305,10 @@ body {
 }
 .face-reg div.single-reg label.single-title {
   position: absolute;
-  margin: -5% 0px 0px 5%;
+  margin: -5% 0 0 5%;
 }
 .face-reg div.single-reg .single-image {
-  margin: 6% 0 0% 20%;
+  margin: 6% 0 0 20%;
   height: 414px;
   width: 302px;
   border: 2px solid #1b5c24;
@@ -328,7 +333,7 @@ body {
   margin-left: 5%;
 }
 .face-reg div.single-reg .single-info div input {
-  margin: 8px 0px 8px 0px;
+  margin: 8px 0 8px 0;
   background-color: #0a0f0b;
   color: #2fbb3e;
   border: none;
@@ -337,9 +342,9 @@ body {
   height: 30px;
 }
 .face-reg div.single-reg .single-info div button {
-  margin: 4% 0% 0% 80%;
+  margin: 4% 0 0 80%;
   width: 15%;
-  border-radius: 2px;
+  border-radius: 4px;
   color: #2fbb3e;
   background-color: #1b5c24;
   border: 2px solid #2fbb3e;

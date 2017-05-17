@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
 <link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
 <link rel="stylesheet" href="lib/layui/css/layui.css">
 <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
@@ -46,7 +45,7 @@
     <div class="content">
         <div class="camera-total" id="camera-total">
                 <div v-show="!camera_4x4">
-                <object id="camera0" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                <object id="camera0" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin'>
                     <param name='mrl' value='' />
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
@@ -55,7 +54,7 @@
                 </div>
 
                 <div v-show="camera_4x4">
-                <object id="camera1" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                <object id="camera1" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin'>
                     <param name='mrl' value='' />
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
@@ -63,7 +62,7 @@
                 </object>
                 </div>
             <div v-show="camera_4x4">
-                <object id="camera2" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                <object id="camera2" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin'>
                     <param name='mrl' value='' />
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
@@ -71,7 +70,7 @@
                 </object>
             </div>
             <div v-show="camera_4x4">
-                <object id="camera3" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                <object id="camera3" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin'>
                     <param name='mrl' value='' />
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
@@ -79,7 +78,7 @@
                 </object>
             </div>
             <div v-show="camera_4x4">
-                <object id="camera4" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin' events='True' windowless='True'>
+                <object id="camera4" classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase='http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab'  type='application/x-vlc-plugin'>
                     <param name='mrl' value='' />
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
@@ -207,7 +206,7 @@
                                     ]
                                 }
                             ]
-                        },
+                        }
                     ]},
                 { name:"父节点2 - 折叠",
                     children: [
@@ -263,7 +262,7 @@
         methods: {
             searchNode:_.debounce(
                 function (newValue) {
-                    if (newValue == "") {
+                    if (newValue === "") {
                         return;
                     }
                     var zTree = $.fn.zTree.getZTreeObj("deviceTree");
@@ -293,7 +292,7 @@
                 }, 300
             )
         }
-    })
+    });
 
     function getFontCss(treeId, treeNode) {
         return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
@@ -330,7 +329,7 @@
     Vue.component('nothit-img',{
         props:['photo'],
         template:'<div><img :src="photo.img_path"> <p>{{photo.time}}<br/><br/>{{photo.site}}</p></div>'
-    })
+    });
 
     var nothitPhoto=new Vue({
         el:"#nothit-photo",
@@ -404,7 +403,7 @@
                 this.newRecord.site="";
             }
         }
-    })
+    });
 
 
 
@@ -493,7 +492,7 @@
                 };
             }
         }
-    })
+    });
 
     Date.prototype.Format = function (fmt) { //author: meizz
         var o = {
@@ -507,9 +506,9 @@
         };
         if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
         for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
-    }
+    };
 
     var app2=new Vue({
         el:"#app-2",
@@ -521,7 +520,7 @@
                 return '页面加载于 ' + message.Format('yyyy-MM-dd HH:mm:ss');
             }
         }
-    })
+    });
 
     var cameraTotal=new Vue({
         el: "#camera-total",
@@ -563,7 +562,7 @@
                 }
             }
         }
-    })
+    });
 
     function stopPlay(id) {
         var vlc = document.getElementById(id);

@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
+<link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
+<link rel="stylesheet" href="lib/layui/css/layui.css">
 <script type="text/javascript" src="lib/layui/layui.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
-<link rel="stylesheet" href="lib/face-register.css">
+<link rel="stylesheet" href="lib/statistics-query.css">
 <script>
     var ws = null;
     layui.config({
         base:'lib/js/'
-    }).use('face-register');
+    }).use('statistics-query');
 </script>
 <head>
-    <link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
-    <link rel="stylesheet" href="lib/layui/css/layui.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>视频监控-人脸注册</title>
+    <title>视频监控-统计查询</title>
 </head>
 <body>
 <div id="nav" class="frs-nav">
     <label>主界面</label>
-    <label class="current">人脸注册</label>
-    <label>统计查询</label>
+    <label>人脸注册</label>
+    <label class="current">统计查询</label>
     <label>设备管理</label>
     <label>系统配置</label>
 </div>
@@ -33,7 +33,7 @@
     <div class="search">
         <p>设备列表</p>
         <div>
-            <input v-model="value" title="device-query">
+            <input v-model="value">
         </div>
     </div>
     <div class="separate">
@@ -47,85 +47,83 @@
         <ul id="deviceTree" class="ztree"></ul>
     </div>
 </div>
-<div class="hit-record">
-    <table id="record-table" >
-        <thead>
-        <tr>
-            <th>姓名</th>
-            <th>类别</th>
-            <th>证件号</th>
-            <th>注册时间</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(record,index) in pageRecords" :key="index">
-            <template>
-                <td :style="styleObject(index)">{{record.name}}</td>
-                <td :style="styleObject(index)">{{record.type}}</td>
-                <td :style="styleObject(index)">{{record.number}}</td>
-                <td :style="styleObject(index)">{{record.time}}</td>
-            </template>
-        </tr>
-        </tbody>
-    </table>
-    <div id="laypager"></div>
-</div>
-
-
-<div class="face-reg" id="face-reg">
-    <div class="multi-reg">
-        <label>批量注册</label>
-        <select v-model="multiType" title="multi-type">
-            <option>白名单</option>
-            <option>黑名单</option>
-        </select>
-        <button v-on:click="multiImages">选择多张图片</button>
-        <input type="file" id="multi-upload" multiple="multiple" style="display: none"/>
-        <button v-on:click="multiSubmit">注册</button>
-        <label>{{multiType}}</label>
-    </div>
-    <div class="single-reg" >
-        <input type="file" style="display: none" id="single-upload" v-on:change="imgPreview"/>
-        <label class="single-title">单张注册</label>
-        <div class="single-image">
-            <div>
-                <img src="lib/img/ironman.jpg" v-on:click="singleImage" id="single-image">
-            </div>
-            <label>点击图片修改或添加</label>
+<div class="frs-query">
+    <div class="query-condition" id="query-condition">
+        <div>
+            <label>类别</label>
+            <select v-model="type">
+                <option>白名单</option>
+                <option>黑名单</option>
+            </select>
+            <label>识别结果</label>
+            <select v-model="result">
+                <option>已识别</option>
+                <option>未识别</option>
+            </select>
+            <label>姓名</label>
+            <input v-model="name"/>
+            <button>提交搜索</button>
         </div>
-        <div class="single-info">
-            <div>
-                <label>姓名</label> <br>
-                <input type="text" v-model="name">
+        <div>
+            <label>起始时间</label>
+            <div class="time-start">
+                <input v-model="startTime.year"/>
+                <span>-</span>
+                <input v-model="startTime.month"/>
+                <span>-</span>
+                <input v-model="startTime.day"/>
+
+                <input v-model="startTime.hour"/>
+                <span>:</span>
+                <input v-model="startTime.minute"/>
+            </div>
+            <label>结束时间</label>
+            <div class="time-end">
+                <input v-model="endTime.year"/>
+                <span>-</span>
+                <input v-model="endTime.month"/>
+                <span>-</span>
+                <input v-model="endTime.day"/>
+
+                <input v-model="endTime.hour"/>
+                <span>:</span>
+                <input v-model="endTime.minute"/>
             </div>
             <div>
-                <label>性别</label> <br>
-                <input type="text" v-model="gender">
-            </div>
-            <div>
-                <label>类别</label> <br>
-                <input type="text" v-model="type">
-            </div>
-            <div>
-                <label>证件号</label> <br>
-                <input type="text" v-model="number">
-            </div>
-            <div>
-                <label>地址</label> <br>
-                <input type="text" v-model="address">
-            </div>
-            <div>
-                <label>备注</label> <br>
-                <input type="text" v-model="remark">
-            </div>
-            <div>
-                <button v-on:click="singleSubmit">注册</button>
+                <label>证件号</label>
+                <input v-model="passportNumber"/>
+                <button>重置搜索</button>
             </div>
         </div>
     </div>
+    <div class="query-table">
+        <table id="record-table" >
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>类别</th>
+                <th>证件号</th>
+                <th>注册时间</th>
+                <th>地址</th>
+                <th><button>清空</button></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(record,index) in pageRecords" :key="index">
+                <template>
+                    <td :style="styleObject(index)">{{record.name}}</td>
+                    <td :style="styleObject(index)">{{record.type}}</td>
+                    <td :style="styleObject(index)">{{record.number}}</td>
+                    <td :style="styleObject(index)">{{record.time}}</td>
+                    <td :style="styleObject(index)">{{record.address}}</td>
+                    <td><a v-if="!(record.name == '\0')">删除</a></td>
+                </template>
+            </tr>
+            </tbody>
+        </table>
+        <div id="laypager"></div>
+    </div>
 </div>
-
-
 </body>
 <script>
     var deviceList=new Vue({
@@ -320,6 +318,30 @@
         $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
     });
 
+    var queryCondition = new Vue({
+        el:"#query-condition",
+        data:{
+            type:"白名单",
+            result:"已识别",
+            name:"",
+            startTime:{
+                year:"",
+                month:"",
+                day:"",
+                hour:"",
+                minute:""
+            },
+            endTime:{
+                year:"",
+                month:"",
+                day:"",
+                hour:"",
+                minute:""
+            },
+            passportNumber:""
+        }
+    });
+
     var recordTable=new Vue({
         el:"#record-table",
         data:{
@@ -510,10 +532,10 @@
         },
         computed:{
             pageRecords:function () {
-                var start=this.curPage * 25;
-                var end = (start + 25) > this.records.length ? (this.records.length) : (start + 25);
+                var start=this.curPage * 20;
+                var end = (start + 20) > this.records.length ? (this.records.length) : (start + 20);
                 var result = this.records.slice(start, end);
-                while(result.length < 25){
+                while(result.length < 20){
                     result.push(this.newRecord);
                 }
                 return result;
@@ -556,148 +578,6 @@
                     time: "",
                     address: ""
                 };
-            }
-        }
-    });
-
-    var faceReg = new Vue({
-        el:"#face-reg",
-        data:{
-            multiType:"白名单",
-            name:"",
-            gender:"",
-            type:"",
-            number:"",
-            address:"",
-            remark:""
-        },
-        methods:{
-            multiImages:function () {
-                document.getElementById("multi-upload").click();
-            },
-            singleImage:function (){
-                document.getElementById("single-upload").click();
-            },
-            imgPreview:function (e) {
-                var img = document.getElementById("single-upload").files[0];
-                var imageType = /image.*/;
-                if(!img.type.match(imageType)){
-                    layer.msg("请选择图片！");
-                    document.getElementById("single-upload").value='';
-                    return;
-                }
-                var reader = new FileReader();
-                reader.onload = (function (file) {
-                    return function (e) {
-                        document.getElementById("single-image").src = reader.result;
-                    };
-                })(img);
-                reader.readAsDataURL(img);
-            },
-            multiSubmit:function () {
-                var images = document.getElementById("multi-upload").files;
-                if(images === undefined || images === null){
-                    layer.alert('请选择人脸图片！',{
-                        icon: 2,
-                        title:'上传失败'
-                    });
-                    return;
-                }
-
-                if(images.length === 0){
-                    layer.alert('请选择人脸图片！',{
-                        icon: 2,
-                        title:'上传失败'
-                    });
-                    document.getElementById("multi-upload").value = '';
-                    return;
-                }
-                var formData = new FormData();
-                var success = 0;
-                var imageType = /image.*/;
-                for(var i = 0;i < images.length;i++){
-                    if(images[i].type.match(imageType)){
-                        formData.append('image' + success,images[i]);
-                        success++;
-                    }
-                }
-                formData.append('number',success);
-                formData.append('type',this.multiType);
-
-                document.getElementById("multi-upload").value = '';
-                axios({
-                    method: 'post',
-                    url: '/user/12345',
-                    responseType:'json',
-                    data: formData,
-                    headers: {
-                        'X-File-Name': 'multi-images',
-                        'Content-Type': 'multipart/form-data'
-                       // 'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                    .then(function (response) {
-                        layer.msg('成功上传图片 '+success+' 张, 失败 ' + (images.length - success) + " 张");
-                    })
-                    .catch(function (error) {
-
-                    });
-            },
-            singleSubmit:function (event) {
-                var img = document.getElementById("single-upload").files[0];
-                var imageType = /image.*/;
-                if(typeof(img) === "undefined" || typeof(img) ==="null"){
-                    layer.alert('请选择人脸图片！',{
-                        icon: 2,
-                        title:'上传失败'
-                    });
-                    return;
-                }
-                if(!img.type.match(imageType)){
-                    layer.alert('请选择人脸图片！',{
-                        icon: 2,
-                        title:'上传失败'
-                    });
-                    return;
-                }
-                if(faceReg.type !== "白名单" || faceReg.type !== "黑名单"){
-                    layer.msg('类别填写错误，请重新填写！');
-                    faceReg.type = "";
-                    return;
-                }
-                var formData = new FormData();
-                formData.append("image",img);
-                formData.append("name",faceReg.name);
-                formData.append("gender",faceReg.gender);
-                formData.append("type",faceReg.type);
-                formData.append("passportNumber",faceReg.number);
-                formData.append("address",faceReg.address);
-                formData.append("remark",faceReg.remark);
-                axios({
-                    method: 'post',
-                    url: '/user/12345',
-                    responseType:'json',
-                    data: formData,
-                    headers: {
-                        'X-File-Name': 'single-image',
-                        'Content-Type': 'multipart/form-data'
-                        // 'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                    .then(function (response) {
-                        layer.msg('注册成功！');
-                        faceReg.name = "";
-                        faceReg.gender = "";
-                        faceReg.type = "";
-                        faceReg.number = "";
-                        faceReg.address = "";
-                        faceReg.remark = "";
-                        document.getElementById("single-image").src = "lib/img/ironman.jpg";
-                        document.getElementById("single-upload").value = '';
-                    })
-                    .catch(function (error) {
-
-                    });
             }
         }
     })

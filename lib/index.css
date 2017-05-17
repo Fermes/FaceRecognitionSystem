@@ -39,7 +39,7 @@ body {
   border: 1px solid #1b5c24;
   width: 368px;
   height: 1032px;
-  margin: 6px 0px 8px 8px;
+  margin: 6px 0 8px 8px;
 }
 .frs-device .search {
   height: 80px;
@@ -96,7 +96,7 @@ body {
 }
 .frs-device .ztree span {
   font-size: 130%;
-  padding: 5px 0px 0px 3px;
+  padding: 5px 0 0 3px;
 }
 .frs-device .ztree li span.button.switch {
   background-image: url("img/left_menu.png");
@@ -118,8 +118,8 @@ body {
 }
 .frs-device .ztree li a {
   width: 93%;
-  padding: 3px 0px 3px 1px;
-  border-radius: 2px;
+  padding: 3px 0 3px 1px;
+  border-radius: 4px;
 }
 .frs-device .ztree li a:hover {
   transition: 0.3s;
@@ -141,7 +141,7 @@ body {
   border: 1px solid #1b5c24;
   height: 1032px;
   width: 1530px;
-  margin: 6px 0px 8px 386px;
+  margin: 6px 0 8px 386px;
 }
 .content .camera-total {
   position: absolute;
@@ -180,7 +180,7 @@ body {
 .content .camera-total button {
   width: 14%;
   height: 4%;
-  border-radius: 2px;
+  border-radius: 4px;
   border: none;
   color: #f0f0f0;
   background-color: #386746;
@@ -190,7 +190,7 @@ body {
   border-bottom: 1px solid #1b5c24;
   height: 64%;
   width: 35.4%;
-  margin-top: 0px;
+  margin-top: 0;
   margin-left: 64.8%;
 }
 .content .nothit-record img {
@@ -240,7 +240,7 @@ body {
 .content table th {
   color: #1f8e2b;
   border: solid #1b5c24;
-  border-width: 0px 1px 1px 0px;
+  border-width: 0 1px 1px 0;
 }
 .content table th:last-child {
   border-right: none;
@@ -275,7 +275,7 @@ body {
   overflow: visible;
 }
 .content #laypager {
-  margin: 10px 0px 0px 1100px;
+  margin: 10px 0 0 1100px;
 }
 .content .layui-laypage a,
 .content .layui-laypage span {

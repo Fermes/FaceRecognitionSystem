@@ -9,7 +9,7 @@
   border: 1px solid @border-dark;
   width: 368px;
   height: @columun-bigheight;
-  margin: @distance-top 0px 0px @distance-lrb;
+  margin: @distance-top 0 0 @distance-lrb;
   .search{
     height: 80px;
     border-bottom: 1px solid @border-dark;
@@ -61,12 +61,12 @@
       color:@border-dark;
       &:nth-child(2) {
         position: absolute;
-        margin: -17px 0px 0px 270px;
+        margin: -17px 0 0 270px;
 
       }
       &:nth-child(3) {
         position: absolute;
-        margin: -17px 0px 0px 310px;
+        margin: -17px 0 0 310px;
       }
       &:hover{
         color:@font-green;
@@ -102,7 +102,7 @@
   .ztree{
     span {
       font-size: 130%;
-      padding: 5px 0px 0px 3px;
+      padding: 5px 0 0 3px;
     }
 
     li{
@@ -126,7 +126,7 @@
           }
           &.chk{
             position: absolute;
-            margin: 8px 0px 0px 0px;
+            margin: 8px 0 0 0;
             left: 330px;
             border: none;
           }
@@ -134,8 +134,8 @@
       }
       a{
         width: 93%;
-        padding: 3px 0px 3px 1px;
-        border-radius: 2px;
+        padding: 3px 0 3px 1px;
+        border-radius: 4px;
         &:hover{
           transition: 0.3s;
           border:1px solid @border-dark;
@@ -159,7 +159,7 @@
 
 .hit-record{
   position: absolute;
-  margin:@distance-top 0px  0px @distance-lrb * 2 + 370px;
+  margin:@distance-top 0  0 @distance-lrb * 2 + 370px;
   width: 1020px;
   height: @columun-bigheight;
   border: 1px solid @border-dark;
@@ -171,9 +171,11 @@
     line-height: 37px;
     border-collapse: collapse;
     th{
+      text-align: left;
+      padding-left: 10px;
       color: #1f8e2b;
       border: solid #1b5c24;
-      border-width: 0px 1px 1px 0px;
+      border-width: 0 1px 1px 0;
       &:last-child{
         border-right: none;
       }
@@ -208,11 +210,14 @@
         white-space: normal;
         overflow: visible;
       }
+      a{
+        color: red;
+      }
     }
   }
   #laypager{
     position: absolute;
-    margin: 980px 0 0px 615px;
+    margin: 980px 0 0 615px;
   }
   .layui-laypage{
     a,span{
@@ -238,7 +243,7 @@
 
 .face-reg{
   border: 1px solid @border-dark;
-  margin: @distance-top 0px 0px @distance-lrb + 1408px;
+  margin: @distance-top 0 0 @distance-lrb + 1408px;
   width: 500px;
   height: @columun-bigheight;
   position: relative;
@@ -257,17 +262,17 @@
       border: 1px solid @border-dark;
       background-color: @back-color;
       color: inherit;
-      border-radius: 2px;
-      margin: 8% 0% 0% 5%;
+      border-radius: 4px;
+      margin: 8% 0 0 5%;
       width: 45%;
       height: 30px;
-      padding:5px 0px 5px 10px;
+      padding:5px 0 5px 10px;
       font-size: 15px;
     }
     button{
       position: absolute;
       background-color: @border-dark;
-      border-radius: 2px;
+      border-radius: 4px;
       height: 28px;
       &:nth-child(3){
         margin: 8% 0 0 4%;
@@ -287,10 +292,10 @@
     position: relative;
     label.single-title{
       position: absolute;
-      margin: -5% 0px 0px 5%;
+      margin: -5% 0 0 5%;
     }
     .single-image{
-      margin: 6% 0 0% 20%;
+      margin: 6% 0 0 20%;
       height: 414px;
       width: 302px;
       border: 2px solid @border-dark;
@@ -313,7 +318,7 @@
       div{
         margin-left: 5%;
         input{
-          margin: 8px 0px 8px 0px;
+          margin: 8px 0 8px 0;
           background-color: @back-color;
           color: @font-green;
           border: none;
@@ -322,9 +327,9 @@
           height: 30px;
         }
         button{
-          margin: 4% 0% 0% 80%;
+          margin: 4% 0 0 80%;
           width: 15%;
-          border-radius: 2px;
+          border-radius: 4px;
           color: @font-green;
           background-color: @border-dark;
           border: 2px solid @font-green;
