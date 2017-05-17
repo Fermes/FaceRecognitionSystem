@@ -163,12 +163,27 @@
   width: 1020px;
   height: @columun-bigheight;
   border: 1px solid @border-dark;
+  .span-search{
+    z-index: 9999;
+    position: absolute;
+    margin: 0 0 0 60.5rem;
+    border-left: 1px solid @border-dark;
+    text-align: center;
+    height: 2.32rem;
+    width: 3rem;
+    line-height: 2.32rem;
+    cursor: pointer;
+    img{
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
   table{
     position: absolute;
     width: 1020px;
     table-layout: fixed;
-    font-size: 16px;
-    line-height: 37px;
+    font-size: 1rem;
+    line-height: 2.33rem;
     border-collapse: collapse;
     th{
       text-align: left;
@@ -217,7 +232,7 @@
   }
   #laypager{
     position: absolute;
-    margin: 980px 0 0 615px;
+    margin: 61.6rem 0 0 38.5rem;
   }
   .layui-laypage{
     a,span{
@@ -265,8 +280,8 @@
       border-radius: 4px;
       margin: 8% 0 0 5%;
       width: 45%;
-      height: 30px;
-      padding:5px 0 5px 10px;
+      height: 1.8rem;
+      padding:0.1rem 0 0.3rem 0.6rem;
       font-size: 15px;
     }
     button{
@@ -335,7 +350,6 @@
           border: 2px solid @font-green;
         }
       }
-
     }
   }
 }

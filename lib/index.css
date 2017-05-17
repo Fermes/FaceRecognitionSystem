@@ -1,3 +1,13 @@
+@import "zTree_v3/css/metroStyle/metroStyle.css";
+@import "layui/css/layui.css";
+html {
+  font-size: 16px;
+}
+button {
+  cursor: pointer;
+  background-color: #1b5c24;
+  color: #2fbb3e;
+}
 body {
   margin: 0 0 0 0;
   background-color: #0a0f0b;
@@ -186,6 +196,57 @@ body {
   background-color: #386746;
   margin: 62.5% 0 0 85%;
 }
+.content .hit-record {
+  position: relative;
+}
+.content .hit-record #laypager {
+  position: absolute;
+  margin: 19.5rem 0 0 68rem;
+}
+.content .hit-record table {
+  position: absolute;
+  width: 1530px;
+  table-layout: fixed;
+  font-size: 1rem;
+  line-height: 2.8rem;
+  border-collapse: collapse;
+}
+.content .hit-record table th {
+  color: #1f8e2b;
+  border: solid #1b5c24;
+  border-width: 0 1px 1px 0;
+}
+.content .hit-record table th:last-child {
+  border-right: none;
+}
+.content .hit-record table th:nth-child(1) {
+  width: 200px;
+}
+.content .hit-record table th:nth-child(2) {
+  width: 100px;
+}
+.content .hit-record table th:nth-child(3) {
+  width: 240px;
+}
+.content .hit-record table th:nth-child(4) {
+  width: 200px;
+}
+.content .hit-record table tr:nth-child(even) {
+  background-color: #141e16;
+}
+.content .hit-record table td {
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2fbb3e;
+}
+.content .hit-record table td:hover {
+  text-overflow: inherit;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: visible;
+}
 .content .nothit-record {
   border-bottom: 1px solid #1b5c24;
   height: 64%;
@@ -230,53 +291,6 @@ body {
 .content .nothit-record div:nth-child(8) {
   margin: 22% 0 0 26.8%;
 }
-.content table {
-  width: 1530px;
-  table-layout: fixed;
-  font-size: 16px;
-  line-height: 45px;
-  border-collapse: collapse;
-}
-.content table th {
-  color: #1f8e2b;
-  border: solid #1b5c24;
-  border-width: 0 1px 1px 0;
-}
-.content table th:last-child {
-  border-right: none;
-}
-.content table th:nth-child(1) {
-  width: 200px;
-}
-.content table th:nth-child(2) {
-  width: 100px;
-}
-.content table th:nth-child(3) {
-  width: 240px;
-}
-.content table th:nth-child(4) {
-  width: 200px;
-}
-.content table tr:nth-child(even) {
-  background-color: #141e16;
-  border-left: 1px solid #1b5c24;
-}
-.content table td {
-  padding-left: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #2fbb3e;
-}
-.content table td:hover {
-  text-overflow: inherit;
-  word-wrap: break-word;
-  white-space: normal;
-  overflow: visible;
-}
-.content #laypager {
-  margin: 10px 0 0 1100px;
-}
 .content .layui-laypage a,
 .content .layui-laypage span {
   background-color: #0a0f0b;
@@ -284,14 +298,14 @@ body {
   border: none;
   font-size: 15px;
 }
-.content .layui-laypage a .layui-laypage-prev,
-.content .layui-laypage a .layui-laypage-next {
-  background-color: #0b2c11;
-  border: 1px solid #259c3d;
-}
 .content .layui-laypage a:hover {
   color: white;
 }
-.content .layui-laypage a [data-page="1"] {
+.content .layui-laypage a.layui-laypage-prev,
+.content .layui-laypage a.layui-laypage-next {
+  background-color: #0b2c11;
+  border: 1px solid #259c3d;
+}
+.content .layui-laypage a[data-page="1"] {
   border-left: 1px solid #259c3d;
 }

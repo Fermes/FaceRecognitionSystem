@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
+<script type="text/javascript" src="lib/layui/layui.js"></script>
+<script type="text/javascript" src="lib/js/vue.js"></script>
+<script type="text/javascript" src="lib/js/axios.min.js"></script>
+<script type="text/javascript" src="lib/js/lodash.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="lib/device-manage.css">
+<script>
+    var ws = null;
+    layui.config({
+        base:'lib/js/'
+    }).use('device-manage');
+</script>
+<head>
+    <title>视频监控-设备管理</title>
+</head>
+<body>
+<div id="nav" class="frs-nav">
+    <label>主界面</label>
+    <label>人脸注册</label>
+    <label class="current">统计查询</label>
+    <label>设备管理</label>
+    <label>系统配置</label>
+</div>
+<div class="frs-device" id="deviceList">
+    <div class="search">
+        <p>设备列表</p>
+        <div>
+            <input v-model="value">
+        </div>
+    </div>
+    <div class="device-tree">
+        <ul id="deviceTree" class="ztree"></ul>
+    </div>
+</div>
+<div class="frs-device-manage" id="device-manage">
+    <div class="device-nav">
+        <label v-show="showNav(0)">Home</label>
+        <label v-show="showNav(1)">{{city}}</label>
+        <label v-show="showNav(2)">{{court}}</label>
+        <template v-if="showButton(0)">
+            <button v-on:click="this.deviceShowMode === 2 ? this.editShowMode = 2 : this.editShowMode = 1"><span><img src="lib/img/cogwheel.png"></span>管理设备</button>
+        </template>
+        <template v-else-if="showButton(1)">
+            <button v-on:click="deviceManage.editShowMode = 0">应用</button>
+        </template>
+        <template v-else>
+            <button v-on:click="">添加</button>
+            <button v-on:click="deviceManage.editShowMode = 0">应用</button>
+        </template>
+    </div>
+    <div class="device-city" v-if="showMode(0)">
+
+    </div>
+    <div class="device-court" v-if="showMode(1)">
+
+    </div>
+    <div class="device-camera" v-if="showMode(2)">
+
+    </div>
+</div>
+</body>
+<script>
+    var deviceList=new Vue({
+        el:"#deviceList",
+        data:{
+            value:"",
+            setting:{
+                edit:{
+                    enable:true
+                },
+                view:{
+                    showIcon:false,
+                    showLine:false,
+                    fontCss: getFontCss
+                },
+                callback:{
+
+                }
+            },
+            deviceNodes:[
+                { name:"喀什",
+                    children: [
+                        { name:"阳光小区 （1861人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        },
+                                        {name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                        { name:"惠民小区 （133人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01"},
+                                        {name:"Camera02"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        }
+                    ]},
+                { name:"父节点2 - 折叠",
+                    children: [
+                        { name:"父节点21 - 展开",
+                            children: [
+                                { name:"叶子节点211"},
+                                { name:"叶子节点212"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点214"}
+                            ]},
+                        { name:"父节点22 - 折叠",
+                            children: [
+                                { name:"叶子节点221"},
+                                { name:"叶子节点222"},
+                                { name:"叶子节点223"},
+                                { name:"叶子节点224"}
+                            ]},
+                        { name:"父节点23 - 折叠",
+                            children: [
+                                { name:"叶子节点231"},
+                                { name:"叶子节点232"},
+                                { name:"叶子节点233"},
+                                { name:"叶子节点234"}
+                            ]}
+                    ]},
+                { name:"父节点3 - 没有子节点", isParent:true}
+            ],
+            preNodeList:null
+        },
+        watch:{
+            value: function (newValue) {
+                var zTree = $.fn.zTree.getZTreeObj("deviceTree");
+                zTree.expandAll(false);
+                this.searchNode(newValue);
+            }
+        },
+        methods: {
+            searchNode:_.debounce(
+                function (newValue) {
+                    if (newValue === "") {
+                        return;
+                    }
+                    var zTree = $.fn.zTree.getZTreeObj("deviceTree");
+                    var nodeList = zTree.getNodesByParamFuzzy("name", newValue);
+                    if (nodeList.length > 0) {
+                        if (this.preNodeList === null) {
+                            this.preNodeList = nodeList;
+
+                        } else {
+                            for (var i = 0; i < this.preNodeList.length; i++) {
+                                this.preNodeList[i].highlight = false;
+                                zTree.updateNode(this.preNodeList[i]);
+                            }
+                            this.preNodeList = nodeList;
+                        }
+                        for (var i = 0; i < nodeList.length; i++) {
+                            nodeList[i].highlight = true;
+                            zTree.updateNode(nodeList[i]);
+                            if (!nodeList[i].isParent) {
+                                zTree.expandNode(nodeList[i].getParentNode(), true, false, true);
+                            } else {
+                                zTree.expandNode(nodeList[i], true, false, true);
+                            }
+                        }
+
+                    }
+                }, 300
+            )
+        }
+    });
+
+    Vue.component('nav-item',{
+
+    })
+    function getFontCss(treeId, treeNode) {
+        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+    }
+
+    $(document).ready(function(){
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+    });
+
+    var deviceManage = new Vue({
+        el:"#device-manage",
+        data:{
+            city:"",
+            court:"",
+            device:"",
+            deviceNodes:[
+                { name:"喀什",
+                    children: [
+                        { name:"阳光小区 （1861人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        },
+                                        {name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                        { name:"惠民小区 （133人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01"},
+                                        {name:"Camera02"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        }
+                    ]},
+                { name:"父节点2 - 折叠",
+                    children: [
+                        { name:"父节点21 - 展开",
+                            children: [
+                                { name:"叶子节点211"},
+                                { name:"叶子节点212"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点213"},
+                                { name:"叶子节点214"}
+                            ]},
+                        { name:"父节点22 - 折叠",
+                            children: [
+                                { name:"叶子节点221"},
+                                { name:"叶子节点222"},
+                                { name:"叶子节点223"},
+                                { name:"叶子节点224"}
+                            ]},
+                        { name:"父节点23 - 折叠",
+                            children: [
+                                { name:"叶子节点231"},
+                                { name:"叶子节点232"},
+                                { name:"叶子节点233"},
+                                { name:"叶子节点234"}
+                            ]}
+                    ]},
+                { name:"父节点3 - 没有子节点", isParent:true}
+            ],
+            showNodes:[],
+            deviceShowMode:0,
+            btnShowMode:0
+        },
+        computed:{
+
+        },
+        methods:{
+            btnClick:function () {
+
+            },
+            showButton:function (curMode) {
+                if(curMode === this.btnShowMode){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            showNav:function (curMode) {
+                if(curMode <= this.deviceShowMode){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            showMode:function (curMode) {
+                if(curMode === this.deviceShowMode){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+    });
+</script>
+</html>

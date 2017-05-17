@@ -1,3 +1,13 @@
+@import "zTree_v3/css/metroStyle/metroStyle.css";
+@import "layui/css/layui.css";
+html {
+  font-size: 16px;
+}
+button {
+  cursor: pointer;
+  background-color: #1b5c24;
+  color: #2fbb3e;
+}
 body {
   margin: 0 0 0 0;
   background-color: #0a0f0b;

@@ -2,13 +2,11 @@
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
-<link rel="stylesheet" href="lib/layui/css/layui.css">
 <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.js"></script>
-<script type="text/javascript" src="lib/zTree_v3/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <link rel="stylesheet" href="lib/index.css">
 <script>
@@ -110,7 +108,7 @@
                         <td :style="styleObject(index)">{{record.type}}</td>
                         <td :style="styleObject(index)">{{record.number}}</td>
                         <td :style="styleObject(index)">{{record.time}}</td>
-                        <td :style="styleObject(index)">{{record.site}}</td>
+                        <td :style="styleObject(index)">{{record.address}}</td>
                     </template>
                 </tr>
                 </tbody>
@@ -145,7 +143,7 @@
                     onDrop:dragToPlay
                 }
             },
-            zNodes:[
+            deviceNodes:[
                 { name:"喀什",
                     children: [
                         { name:"阳光小区 （1861人）",
@@ -323,12 +321,12 @@
 
     }
     $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
     });
 
     Vue.component('nothit-img',{
         props:['photo'],
-        template:'<div><img :src="photo.img_path"> <p>{{photo.time}}<br/><br/>{{photo.site}}</p></div>'
+        template:'<div><img :src="photo.img_path"> <p>{{photo.time}}<br/><br/>{{photo.address}}</p></div>'
     });
 
     var nothitPhoto=new Vue({
@@ -337,48 +335,48 @@
             newRecord:{
                 img_path:"",
                 time:"",
-                site:""
+                address:""
             },
             records:[
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"锡林郭勒-碧桂园-设备01-Camera01"
+                    address:"锡林郭勒-碧桂园-设备01-Camera01"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 },
                 {
                     img_path:"lib/img/person.jpg",
                     time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
+                    address:"上海-小区2-camera10"
                 }
             ]
         },
@@ -391,16 +389,16 @@
             }
         },
         methods:{
-            addRecord:function (path,time,site) {
+            addRecord:function (path,time,address) {
                 this.newRecord.img_path=path;
                 this.newRecord.time=time;
-                this.newRecord.site=site;
+                this.newRecord.address=address;
 
                 this.records.unshift(this.newRecord);
 
                 this.newRecord.img_path="";
                 this.newRecord.time="";
-                this.newRecord.site="";
+                this.newRecord.address="";
             }
         }
     });
@@ -412,14 +410,189 @@
         data:{
             curPage: 0,
             newRecord:{
-                id:"\0",
-                name:"",
+                id:"",
+                name:"\0",
                 type:"",
                 number:"",
                 time:"",
-                site:""
+                address:""
             },
-            records:[]
+            records:[
+                {
+                    name:"爱立托木买买提题雨哦木老爱丽木么么哒",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"李亚民",
+                    type:"白名单",
+                    number:"210120198211073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-惠民小区-设备1-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托木买买提",
+                    type:"黑名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },{
+                    name:"爱立托买买提",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                },
+                {
+                    name:"爱立托木",
+                    type:"白名单",
+                    number:"210120196302073592",
+                    time:"2017-01-20 13:23",
+                    address:"乌鲁木齐-阳光小区-设备12-Camera01"
+                }
+
+
+            ]
         },
         watch:{
             records:function () {
@@ -470,25 +643,25 @@
                     return "";
                 }
             },
-            addRecord:function (id,name,type,number,time,site) {
+            addRecord:function (id,name,type,number,time,address) {
                 this.newRecord.id = id;
                 this.newRecord.name = name;
                 this.newRecord.type = type;
                 this.newRecord.number = number;
                 this.newRecord.time = time;
-                this.newRecord.site = site;
+                this.newRecord.address = address;
 
                 this.records.unshift(this.newRecord);
                 if(this.records.length > 100){
                     this.records.pop();
                 }
                 this.newRecord = {
-                    id:"\0",
-                    name:"",
+                    id:"",
+                    name:"\0",
                     type:"",
                     number:"",
                     time:"",
-                    site:""
+                    address:""
                 };
             }
         }
@@ -575,7 +748,7 @@
         vlc.playlist.playItem(itemId);
     }
 
-    $(document).ready(function(){
+   /* $(document).ready(function(){
         axios({
             method: 'get',
             url: 'http://10.141.208.243:5000/get_device_list',
@@ -583,8 +756,8 @@
             async:false
         })
             .then(function (response) {
-                deviceList.zNodes = response.data.children;
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+                deviceList.deviceNodes = response.data.children;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
             })
             .catch(function (error) {
 
@@ -607,6 +780,6 @@
             .catch(function (error) {
 
             });
-    });
+    });  */
 </script>
 </html>

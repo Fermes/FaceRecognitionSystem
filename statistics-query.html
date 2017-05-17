@@ -2,13 +2,11 @@
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
-<link href="lib/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
-<link rel="stylesheet" href="lib/layui/css/layui.css">
 <script type="text/javascript" src="lib/layui/layui.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.js"></script>
-<script type="text/javascript" src="lib/zTree_v3/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <link rel="stylesheet" href="lib/statistics-query.css">
 <script>
@@ -62,7 +60,7 @@
             </select>
             <label>姓名</label>
             <input v-model="name"/>
-            <button>提交搜索</button>
+            <button v-on:click="querySubmit">提交搜索</button>
         </div>
         <div>
             <label>起始时间</label>
@@ -92,7 +90,7 @@
             <div>
                 <label>证件号</label>
                 <input v-model="passportNumber"/>
-                <button>重置搜索</button>
+                <button v-on:click="queryReset">重置搜索</button>
             </div>
         </div>
     </div>
@@ -126,7 +124,8 @@
 </div>
 </body>
 <script>
-    var deviceList=new Vue({
+
+    var deviceList = new Vue({
         el:"#deviceList",
         data:{
             value:"",
@@ -148,36 +147,41 @@
                     //onDrop:dragToPlay
                 }
             },
-            zNodes:[
+            deviceNodes:[
                 { name:"喀什",
                     children: [
                         { name:"阳光小区 （1861人）",
                             children: [
                                 { name:"设备1",
                                     children:[
-                                        {name:"Camera01",
-                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        {
+                                            name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4",
+                                            nocheck:true
                                         },
-                                        {name:"Camera02",
-                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                        {
+                                            name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4",
+                                            nocheck:true
+                                        }
                                     ]
                                 },
                                 { name:"设备2",
                                     children:[
-                                        {name:"Camera03"},
-                                        {name:"Camera04"}
+                                        {name:"Camera03",nocheck:true},
+                                        {name:"Camera04",nocheck:true}
                                     ]
                                 },
                                 { name:"设备3",
                                     children:[
-                                        {name:"Camera05"},
-                                        {name:"Camera06"}
+                                        {name:"Camera05",nocheck:true},
+                                        {name:"Camera06",nocheck:true}
                                     ]
                                 },
                                 { name:"设备4",
                                     children:[
-                                        {name:"Camera07"},
-                                        {name:"Camera08"}
+                                        {name:"Camera07",nocheck:true},
+                                        {name:"Camera08",nocheck:true}
                                     ]
                                 }
                             ]
@@ -186,26 +190,26 @@
                             children: [
                                 { name:"设备1",
                                     children:[
-                                        {name:"Camera01"},
-                                        {name:"Camera02"}
+                                        {name:"Camera01",nocheck:true},
+                                        {name:"Camera02",nocheck:true}
                                     ]
                                 },
                                 { name:"设备2",
                                     children:[
-                                        {name:"Camera03"},
-                                        {name:"Camera04"}
+                                        {name:"Camera03",nocheck:true},
+                                        {name:"Camera04",nocheck:true}
                                     ]
                                 },
                                 { name:"设备3",
                                     children:[
-                                        {name:"Camera05"},
-                                        {name:"Camera06"}
+                                        {name:"Camera05",nocheck:true},
+                                        {name:"Camera06",nocheck:true}
                                     ]
                                 },
                                 { name:"设备4",
                                     children:[
-                                        {name:"Camera07"},
-                                        {name:"Camera08"}
+                                        {name:"Camera07",nocheck:true},
+                                        {name:"Camera08",nocheck:true}
                                     ]
                                 }
                             ]
@@ -315,7 +319,7 @@
     }
 
     $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
     });
 
     var queryCondition = new Vue({
@@ -325,20 +329,94 @@
             result:"已识别",
             name:"",
             startTime:{
-                year:"",
-                month:"",
-                day:"",
-                hour:"",
-                minute:""
+                year:"2017",
+                month:"01",
+                day:"01",
+                hour:"12",
+                minute:"00"
             },
             endTime:{
-                year:"",
-                month:"",
-                day:"",
-                hour:"",
-                minute:""
+                year:"2017",
+                month:"05",
+                day:"17",
+                hour:"13",
+                minute:"03"
             },
             passportNumber:""
+        },
+        watch:{
+
+        },
+        methods:{
+            querySubmit:function () {
+                try{
+                    var startYear = Number(this.startTime.year);
+                    var startMonth = Number(this.startTime.month) - 1;
+                    var startDay = Number(this.startTime.day);
+                    var startHour = Number(this.startTime.hour);
+                    var startMinute = Number(this.startTime.minute);
+                    var startDate = new Date(startYear,startMonth,startDay,startHour,startMinute,30);
+
+                    var endYear = Number(this.endTime.year);
+                    var endMonth = Number(this.endTime.month) - 1;
+                    var endDay = Number(this.endTime.day);
+                    var endHour = Number(this.endTime.hour);
+                    var endMinute = Number(this.endTime.minute);
+                    var endDate = new Date(endYear,endMonth,endDay,endHour,endMinute,30);
+                    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                        throw "时间格式错误！";
+                    }
+                    if(endDate < startDate){
+                        throw "结束时间应大于开始时间！";
+                    }
+                }catch (err){
+                    this.queryReset();
+                    layer.msg(err,{
+                        time:2000
+                    });
+                    return;
+                }
+
+                axios({
+                    method:"post",
+                    url:"",
+                    data:{
+                        type:this.type,
+                        result:this.result,
+                        name:this.name,
+                        startTime:this.startTime,
+                        endTime:this.endTime,
+                        passportNumber:this.passportNumber
+                    }
+                })
+                    .then(function (response) {
+
+                    })
+                    .catch(function (err) {
+
+                    });
+            },
+            queryReset:function () {
+                this.type="白名单";
+                this.result="已识别";
+                this.name="";
+                this.startTime.year = "2017";
+                this.startTime.month = "01";
+                this.startTime.day = "01";
+                this.startTime.hour = "12";
+                this.startTime.minute = "00";
+                var now = new Date();
+                this.endTime.year = now.getFullYear().toString();
+                var month = now.getMonth()+1;
+                this.endTime.month = (month < 10) ? "0"+month : month.toString() ;
+                var day = now.getDate();
+                this.endTime.day = (day < 10) ? "0" + day : day.toString();
+                var hour = now.getHours();
+                this.endTime.hour = (hour < 10) ? "0" + hour : hour.toString();
+                var minute = now.getMinutes();
+                this.endTime.minute = (minute < 10) ? "0" + minute : minute.toString();
+                this.passportNumber = "";
+            }
         }
     });
 

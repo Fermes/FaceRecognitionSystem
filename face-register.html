@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
 
 <script type="text/javascript" src="lib/layui/layui.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.js"></script>
-<script type="text/javascript" src="lib/zTree_v3/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <link rel="stylesheet" href="lib/face-register.css">
 <script>
@@ -49,6 +49,7 @@
 </div>
 <div class="hit-record">
     <table id="record-table" >
+        <span class="span-search"><img src="lib/img/search.png"></span>
         <thead>
         <tr>
             <th>姓名</th>
@@ -150,7 +151,7 @@
                     //onDrop:dragToPlay
                 }
             },
-            zNodes:[
+            deviceNodes:[
                 { name:"喀什",
                     children: [
                         { name:"阳光小区 （1861人）",
@@ -317,7 +318,7 @@
     }
 
     $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.zNodes);
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
     });
 
     var recordTable=new Vue({
