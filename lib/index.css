@@ -22,7 +22,7 @@ body {
   border: 1px solid #2fbb3e;
   border-top: none;
   border-bottom: none;
-  box-shadow: inset 0px 0px 25px #0ef025;
+  box-shadow: inset 0 0 25px #0ef025;
 }
 .frs-nav label {
   text-align: center;
@@ -39,10 +39,10 @@ body {
   border: 1px solid #2fbb3e;
   border-top: none;
   border-bottom: none;
-  box-shadow: inset 0px 0px 25px #0ef025;
+  box-shadow: inset 0 0 25px #0ef025;
 }
 .frs-nav label:first-child {
-  margin-left: 30px;
+  margin-left: 2rem;
 }
 .frs-device {
   position: absolute;
