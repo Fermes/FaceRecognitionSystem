@@ -7,16 +7,18 @@ button {
   cursor: pointer;
   background-color: #1b5c24;
   color: #2fbb3e;
+  border: 2px solid #2fbb3e;
+  border-radius: 4px;
 }
 body {
   margin: 0 0 0 0;
-  background-color: #0a0f0b;
-  font-family: "Microsoft YaHei UI", "Verdana,Simsun", "Segoe UI Web Light", "Segoe UI Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "Helvetica Neue", "Arial";
+  background-color: #0b1013;
+  font-family: "Microsoft YaHei UI", "Verdana,Simsun", "Segoe UI Web Light", "Segoe UI Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "Helvetica Neue", Arial, sans-serif;
 }
 .frs-nav {
   border-top: none;
   border-bottom: 2px solid #2fbb3e;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
 }
 .frs-nav .current {
   border: 1px solid #2fbb3e;

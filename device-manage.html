@@ -15,6 +15,7 @@
         base:'lib/js/'
     }).use('device-manage');
 </script>
+
 <head>
     <title>视频监控-设备管理</title>
 </head>
@@ -22,8 +23,8 @@
 <div id="nav" class="frs-nav">
     <label>主界面</label>
     <label>人脸注册</label>
-    <label class="current">统计查询</label>
-    <label>设备管理</label>
+    <label>统计查询</label>
+    <label class="current">设备管理</label>
     <label>系统配置</label>
 </div>
 <div class="frs-device" id="deviceList">
@@ -39,13 +40,13 @@
 </div>
 <div class="frs-device-manage" id="device-manage">
     <div class="device-nav">
-        <div class="nav-item">
-            <div v-if="showNav(0)"><label>Home</label></div>
-            <div v-if="showNav(1)"><label>{{city}}</label></div>
-            <div v-if="showNav(2)"><label>{{court}}</label></div>
-        </div>
+        <span v-if="showNav(0)" v-on:click="navClick(-1)"><p>Home</p></span>
+        <span v-if="showNav(1)" v-on:click="navClick(cityIndex)"><p>{{deviceNodes[cityIndex].name}}</p></span>
+        <span v-if="showNav(2)"><p>{{deviceNodes[cityIndex].children[courtIndex].name}}</p></span>
+
+        <div class="device-nav-btn">
         <template v-if="showButton(0)">
-            <button v-on:click="btnClick"><span><img src="lib/img/cogwheel.png"></span>管理设备</button>
+            <button v-on:click="btnClick"><img src="lib/img/cogwheel.png">管理设备</button>
         </template>
         <template v-else-if="showButton(1)">
             <button v-on:click="btnClick">应用</button>
@@ -54,19 +55,14 @@
             <button v-on:click="">添加</button>
             <button v-on:click="btnClick">应用</button>
         </template>
-    </div>
-    <div class="device-site" v-if="showMode(0)">
-        <ul>
-            <li>
-                <span class="site-item" style="background: url('lib/img/city.png') no-repeat;background-size: 8rem 6rem;background-position: 0.2rem 1rem;">
-                    <label>乌鲁木齐</label>
-                    <label>2017-05-18</label>
-                    <label>2错误</label>
-                    <label>2离线</label>
-                </span>
-            </li>
-        </ul>
+        </div>
 
+    </div>
+    <div class="device-site" v-if="showMode(0)" >
+        <device-item :item="node" :mode="btnShowMode" v-for="(node,index) in showNodes" :key="index" v-on:change-interface="deviceClick(index)"></device-item>
+        <span class="site-item site-item-add">
+
+        </span>
     </div>
     <div class="device-camera" v-if="showMode(2)">
 
@@ -240,9 +236,7 @@
         }
     });
 
-    var deviceItem = {
-        template:''
-    };
+
     function getFontCss(treeId, treeNode) {
         return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
     }
@@ -251,12 +245,53 @@
         $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
     });
 
+    const deviceItem = {
+        template:'<span class="site-item" v-on:click="changeInterface">\
+        <span class="site-item-icon" v-show="showButton"></span>\
+                <p>{{item.site}}</p>\
+                <p>{{item.date}}</p>\
+                <p>{{item.errorNumber}}错误&nbsp;&nbsp;{{item.offlineNumber}}离线</p>\
+    </span>',
+        props:['item','mode'],
+        computed:{
+            showButton:function () {
+                if(this.mode === 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        },
+        methods:{
+            changeInterface:function () {
+                this.$emit('change-interface');
+            }
+        }
+    };
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "H+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    };
+
     var deviceManage = new Vue({
         el:"#device-manage",
         data:{
-            city:"乌鲁木齐",
-            court:"惠民小区",
-            device:"",
+            deviceShowMode:0,
+            btnShowMode:0,
+            cityIndex:0,
+            courtIndex:0,
             deviceNodes:[
                 { name:"喀什",
                     children: [
@@ -320,75 +355,183 @@
                             ]
                         }
                     ]},
-                { name:"父节点2 - 折叠",
+                { name:"乌鲁木齐",
                     children: [
-                        { name:"父节点21 - 展开",
+                        { name:"乌鲁木齐小区 （1861人）",
                             children: [
-                                { name:"叶子节点211"},
-                                { name:"叶子节点212"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点213"},
-                                { name:"叶子节点214"}
-                            ]},
-                        { name:"父节点22 - 折叠",
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        },
+                                        {name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                        { name:"惠民小区 （133人）",
                             children: [
-                                { name:"叶子节点221"},
-                                { name:"叶子节点222"},
-                                { name:"叶子节点223"},
-                                { name:"叶子节点224"}
-                            ]},
-                        { name:"父节点23 - 折叠",
-                            children: [
-                                { name:"叶子节点231"},
-                                { name:"叶子节点232"},
-                                { name:"叶子节点233"},
-                                { name:"叶子节点234"}
-                            ]}
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01"},
+                                        {name:"Camera02"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        }
                     ]},
-                { name:"父节点3 - 没有子节点", isParent:true}
+                { name:"莎车",
+                    children: [
+                        { name:"莎车小区 （1861人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01",
+                                            ip:"rtsp://admin:admin12345@10.141.5.141:554/mpeg4"
+                                        },
+                                        {name:"Camera02",
+                                            ip:"rtsp://admin:admin12345@10.141.5.142:554/mpeg4"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        },
+                        { name:"惠民小区 （133人）",
+                            children: [
+                                { name:"设备1",
+                                    children:[
+                                        {name:"Camera01"},
+                                        {name:"Camera02"}
+                                    ]
+                                },
+                                { name:"设备2",
+                                    children:[
+                                        {name:"Camera03"},
+                                        {name:"Camera04"}
+                                    ]
+                                },
+                                { name:"设备3",
+                                    children:[
+                                        {name:"Camera05"},
+                                        {name:"Camera06"}
+                                    ]
+                                },
+                                { name:"设备4",
+                                    children:[
+                                        {name:"Camera07"},
+                                        {name:"Camera08"}
+                                    ]
+                                }
+                            ]
+                        }
+                    ]}
             ],
             showNodes:[
                 {
-                    name:"乌鲁木齐",
-                    time:"2017-05-18",
+                    site:"乌鲁木齐",
+                    date:"2017-05-18",
                     errorNumber:2,
-                    offLineNumber:2
+                    offlineNumber:2
                 },
                 {
-                    name:"喀什",
-                    time:"2017-05-18",
+                    site:"喀什",
+                    date:"2017-05-18",
                     errorNumber:0,
-                    offLineNumber:0
+                    offlineNumber:0
                 },
                 {
-                    name:"莎车",
-                    time:"2017-05-18",
+                    site:"莎车",
+                    date:"2017-05-18",
                     errorNumber:1,
-                    offLineNumber:0
+                    offlineNumber:0
                 }
-            ],
-            deviceShowMode:0,
-            btnShowMode:0
+            ]
         },
         computed:{
 
         },
         methods:{
+            navClick:function (num) {
+                var date = new Date().Format('yyyy-MM-dd');
+                this.showNodes.splice(0,this.showNodes.length);
+                if(num === -1){
+                    this.deviceShowMode = 0;
+                    for(var i = 0;i<this.deviceNodes.length;i++){
+                        var tmpNode = {
+                            site:this.deviceNodes[i].name,
+                            date:date,
+                            errorNumber:2,
+                            offlineNumber:1
+                        };
+                        this.showNodes.push(tmpNode);
+                    }
+                }else{
+                    this.deviceShowMode = 1;
+                    for(var i = 0;i<this.deviceNodes[num].children.length;i++){
+                        var tmpNode = {
+                            site:this.deviceNodes[num].children[i].name.split(' ')[0],
+                            date:date,
+                            errorNumber:2,
+                            offlineNumber:1
+                        };
+                        this.showNodes.push(tmpNode);
+                    }
+                }
+            },
             btnClick:function () {
                 if(this.btnShowMode === 0){
                     if(this.deviceShowMode === 2){
@@ -398,6 +541,16 @@
                     }
                 }else{
                     this.btnShowMode = 0;
+                }
+            },
+            deviceClick:function (num) {
+                if(this.deviceShowMode === 0){
+                    this.deviceShowMode = 1;
+                    this.cityIndex = num;
+                    this.navClick(num);
+                }else{
+                    this.deviceShowMode = 2;
+                    this.courtIndex = num;
                 }
             },
             showButton:function (curMode) {
@@ -421,7 +574,43 @@
                     return false;
                 }
             }
+        },
+        components:{
+            'device-item':deviceItem
         }
     });
 </script>
+<style>
+    span.site-item {
+        background: url('lib/img/city-dark.png') no-repeat;
+        background-size: 7rem 5.1rem;
+        background-position: 0 0.5rem;
+    }
+    span.site-item:hover{
+        cursor: pointer;
+        background: url('lib/img/city-light.png') no-repeat;
+        background-size: 7rem 5.1rem;
+        background-position: 0 0.5rem;
+    }
+    span.site-item-icon {
+        background: url("lib/img/close-dark.png") no-repeat;
+        background-size:cover;
+    }
+    span.site-item-icon:hover {
+        background: url("lib/img/close-light.png") no-repeat;
+        background-size: cover;
+    }
+    span.site-item-add{
+
+        margin-left: 2rem;
+        background: url("lib/img/add-dark.png") no-repeat center;
+        background-size: 5rem 5rem;
+    }
+
+    span.site-item-add:hover{
+        cursor: pointer;
+        background: url("lib/img/add-light.png") no-repeat center;
+        background-size: 5rem 5rem;
+    }
+</style>
 </html>

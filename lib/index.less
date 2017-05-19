@@ -60,56 +60,7 @@
       background-color: @font-green;
     }
   }
-  .ztree{
-    span {
-      font-size: 130%;
-      padding: 5px 0 0 3px;
-    }
-
-    li{
-      span{
-        &.button{
-          &.switch{
-            background-image: url("img/left_menu.png");
-            *background-image: url("img/left_menu.gif");
-            width: 20px;
-            height: 20px;
-            margin-top: 5px;
-          }
-          &.noline_open{
-            background-position: 0px -18px;
-          }
-          &.noline_close {
-            background-position: -18px -18px;
-          }
-          &.edit,&.remove,&.noline_docu{
-            visibility: hidden;
-          }
-        }
-      }
-      a{
-        width: 93%;
-        padding: 3px 0 3px 1px;
-        border-radius: 4px;
-        &:hover{
-          transition: 0.3s;
-          border:1px solid @border-dark;
-          border-left: 4px solid #12ad02;
-          box-shadow: inset 2px 2px 15px #12ad02;
-        }
-        &.curSelectedNode{
-          padding-top: 3px;
-          opacity: 1;
-          height: 21px;
-          background-color: inherit;
-          border:1px solid @border-dark;
-          border-left: 4px solid #12ad02;
-          box-shadow: inset 2px 2px 15px #12ad02;
-        }
-      }
-    }
-
-  }
+  .tree();
 }
 
 .content{

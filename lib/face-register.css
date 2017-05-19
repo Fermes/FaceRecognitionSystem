@@ -7,16 +7,18 @@ button {
   cursor: pointer;
   background-color: #1b5c24;
   color: #2fbb3e;
+  border: 2px solid #2fbb3e;
+  border-radius: 4px;
 }
 body {
   margin: 0 0 0 0;
-  background-color: #0a0f0b;
-  font-family: "Microsoft YaHei UI", "Verdana,Simsun", "Segoe UI Web Light", "Segoe UI Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "Helvetica Neue", "Arial";
+  background-color: #0b1013;
+  font-family: "Microsoft YaHei UI", "Verdana,Simsun", "Segoe UI Web Light", "Segoe UI Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "Helvetica Neue", Arial, sans-serif;
 }
 .frs-nav {
   border-top: none;
   border-bottom: 2px solid #2fbb3e;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
 }
 .frs-nav .current {
   border: 1px solid #2fbb3e;
@@ -119,17 +121,17 @@ body {
   height: 90%;
   overflow-x: hidden;
   overflow-y: scroll;
-  scrollbar-track-color: #0a0f0b;
+  scrollbar-track-color: #0b1013;
   scrollbar-face-color: #1b5c24;
-  scrollbar-arrow-color: #0a0f0b;
+  scrollbar-arrow-color: #0b1013;
 }
 .frs-device .device-tree::-webkit-scrollbar {
   width: 10px;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
 }
 .frs-device .device-tree::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
 }
 .frs-device .device-tree::-webkit-scrollbar-thumb {
   border-radius: 10px;
@@ -298,7 +300,7 @@ body {
 }
 .face-reg div.multi-reg select {
   border: 1px solid #1b5c24;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
   color: inherit;
   border-radius: 4px;
   margin: 8% 0 0 5%;
@@ -359,7 +361,7 @@ body {
 }
 .face-reg div.single-reg .single-info div input {
   margin: 8px 0 8px 0;
-  background-color: #0a0f0b;
+  background-color: #0b1013;
   color: #2fbb3e;
   border: none;
   border-bottom: 2px solid #1b5c24;
