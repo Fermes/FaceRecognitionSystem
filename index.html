@@ -83,7 +83,7 @@
                     <param name='fullscreen' value='true' />
                 </object>
             </div>
-            <button onclick="cameraTotal.camera_4x4 = !cameraTotal.camera_4x4">切换显示方式</button>
+            <button @click="switchPlayMode">切换显示方式</button>
         </div>
         <div class="nothit-record"  id="nothit-photo">
             <nothit-img v-for="(photo,index) in eightRecords" v-bind:photo="photo" v-bind:key="index">
@@ -116,12 +116,6 @@
             <div id="laypager"></div>
         </div>
     </div>
-</div>
-
-<div id="app-2">
-    <span :title="message | formatMsg">
-        鼠标悬停查看信息
-    </span>
 </div>
 
 </body>

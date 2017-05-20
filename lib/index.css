@@ -87,7 +87,7 @@ body {
 .frs-device .device-tree {
   height: 92%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   scrollbar-track-color: #0b1013;
   scrollbar-face-color: #1b5c24;
   scrollbar-arrow-color: #0b1013;
