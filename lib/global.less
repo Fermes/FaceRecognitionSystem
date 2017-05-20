@@ -1,32 +1,11 @@
 @import "zTree_v3/css/metroStyle/metroStyle.css";
 @import "layui/css/layui.css";
 
-@back-color: rgb(11,16,19);
+@back-color: #0b1013;
 @font-green: #2fbb3e;
 @border-dark: #1b5c24;
 @distance-top: 6px;
 @distance-lrb: 8px;
-
-.frs-scroll-bar(){
-  scrollbar-track-color: @back-color;
-  scrollbar-face-color: @border-dark;
-  scrollbar-arrow-color: @back-color;
-  &::-webkit-scrollbar{
-    width: 10px;
-    background-color: @back-color;
-  }
-  &::-webkit-scrollbar-track
-  {
-    border-radius: 10px;
-    background-color: @back-color;
-  }
-  &::-webkit-scrollbar-thumb{
-    border-radius: 10px;
-    border:1px solid @font-green;
-    -webkit-box-shadow: inset 0 0 10px @border-dark;
-    background-color: @font-green;
-  }
-}
 
 html{
   font-size: 16px;
@@ -74,8 +53,27 @@ body {
     }
   }
 }
-
-.tree(){
+.frs-scroll-bar(){
+  scrollbar-track-color: @back-color;
+  scrollbar-face-color: @border-dark;
+  scrollbar-arrow-color: @back-color;
+  &::-webkit-scrollbar{
+    width: 10px;
+    background-color: @back-color;
+  }
+  &::-webkit-scrollbar-track
+  {
+    border-radius: 10px;
+    background-color: @back-color;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    border:1px solid @font-green;
+    -webkit-box-shadow: inset 0 0 10px @border-dark;
+    background-color: @font-green;
+  }
+}
+.tree-normal(){
   .ztree{
     span {
       font-size: 130%;
@@ -108,7 +106,63 @@ body {
         padding: 3px 0 3px 1px;
         border-radius: 4px;
         &:hover{
-          transition: 0.3s;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 0 0 1rem #12ad02;
+        }
+        &.curSelectedNode{
+          padding-top: 3px;
+          opacity: 1;
+          height: 21px;
+          background-color: inherit;
+          border:1px solid @border-dark;
+          border-left: 4px solid #12ad02;
+          box-shadow: inset 0 0 1rem #12ad02;
+        }
+      }
+    }
+
+  }
+}
+.tree-check(){
+  .ztree{
+    span {
+      font-size: 130%;
+      padding: 5px 0 0 3px;
+    }
+
+    li{
+      span{
+        &.button{
+          &.switch{
+            background-image: url("img/left_menu.png");
+            *background-image: url("img/left_menu.gif");
+            width: 20px;
+            height: 20px;
+            margin-top: 5px;
+          }
+          &.noline_open{
+            background-position: 0 -18px;
+          }
+          &.noline_close {
+            background-position: -18px -18px;
+          }
+          &.edit,&.remove,&.noline_docu{
+            visibility: hidden;
+          }
+          &.chk{
+            position: absolute;
+            margin: 8px 0 0 0;
+            left: 330px;
+            border: none;
+          }
+        }
+      }
+      a{
+        width: 93%;
+        padding: 3px 0 3px 1px;
+        border-radius: 2px;
+        &:hover{
           border:1px solid @border-dark;
           border-left: 4px solid #12ad02;
           box-shadow: inset 0 0 1rem #12ad02;

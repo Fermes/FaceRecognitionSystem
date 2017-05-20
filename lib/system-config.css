@@ -52,8 +52,8 @@ body {
   position: absolute;
   border: 1px solid #1b5c24;
   width: 368px;
-  height: 1032px;
-  margin: 6px 0px 0px 8px;
+  height: 64.5rem;
+  margin: 6px 0 0 8px;
 }
 .frs-device .search {
   height: 80px;
@@ -104,16 +104,16 @@ body {
 }
 .frs-device .separate label:nth-child(2) {
   position: absolute;
-  margin: -17px 0px 0px 270px;
+  margin: -17px 0 0 270px;
 }
 .frs-device .separate label:nth-child(3) {
   position: absolute;
-  margin: -17px 0px 0px 310px;
+  margin: -17px 0 0 310px;
 }
 .frs-device .device-tree {
   height: 92%;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-track-color: #0b1013;
   scrollbar-face-color: #1b5c24;
   scrollbar-arrow-color: #0b1013;
@@ -160,7 +160,6 @@ body {
   border-radius: 4px;
 }
 .frs-device .ztree li a:hover {
-  transition: 0.3s;
   border: 1px solid #1b5c24;
   border-left: 4px solid #12ad02;
   box-shadow: inset 0 0 1rem #12ad02;

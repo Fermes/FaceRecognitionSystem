@@ -1,5 +1,4 @@
 @import url('global');
-@columun-bigheight:1032px;
 
 .frs-device{
   color: @font-green;
@@ -7,8 +6,8 @@
   position: absolute;
   border: 1px solid @border-dark;
   width: 368px;
-  height: @columun-bigheight;
-  margin: @distance-top 0px 0px @distance-lrb;
+  height: 64.5rem;
+  margin: @distance-top 0 0 @distance-lrb;
   .search{
     height: 80px;
     border-bottom: 1px solid @border-dark;
@@ -57,36 +56,19 @@
     }
     label:nth-child(2){
       position: absolute;
-      margin: -17px 0px 0px 270px;
+      margin: -17px 0 0 270px;
     }
     label:nth-child(3){
       position: absolute;
-      margin: -17px 0px 0px 310px;
+      margin: -17px 0 0 310px;
     }
   }
 
   .device-tree{
     height: 92%;
     overflow-x: hidden;
-    overflow-y: scroll;
-    scrollbar-track-color: @back-color;
-    scrollbar-face-color: @border-dark;
-    scrollbar-arrow-color: @back-color;
-    &::-webkit-scrollbar{
-      width: 10px;
-      background-color: @back-color;
-    }
-    &::-webkit-scrollbar-track
-    {
-      border-radius: 10px;
-      background-color: @back-color;
-    }
-    &::-webkit-scrollbar-thumb{
-      border-radius: 10px;
-      border:1px solid @font-green;
-      -webkit-box-shadow: inset 0 0 10px @border-dark;
-      background-color: @font-green;
-    }
+    overflow-y: auto;
+    .frs-scroll-bar();
   }
-  .tree();
+  .tree-normal();
 }
