@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
+<script type="text/javascript" src="../lib/layui/layui.js"></script>
+<script type="text/javascript" src="../lib/js/vue.js"></script>
+<script type="text/javascript" src="../lib/js/axios.min.js"></script>
+<script type="text/javascript" src="../lib/js/lodash.js"></script>
+<script type="text/javascript" src="../lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="../lib/device-manage.css">
+<script>
+    let ws = null;
+    layui.config({
+        base:'lib/js/'
+    }).use('device-manage');
+</script>
+
+<head>
+    <title>视频监控-设备管理</title>
+</head>
+<body>
+<div id="nav" class="frs-nav">
+    <label onclick="window.location.href='index.html';">主界面</label>
+    <label onclick="window.location.href='face-register.html';">人脸注册</label>
+    <label onclick="window.location.href='statistics-query.html';">统计查询</label>
+    <label class="current" onclick="window.location.href='device-manage.html';">设备管理</label>
+    <label onclick="window.location.href='system-config.html';">系统配置</label>
+</div>
+<div class="frs-device" id="deviceList">
+    <div class="search">
+        <p>设备列表</p>
+        <div>
+            <input v-model="value">
+        </div>
+    </div>
+    <div class="device-tree">
+        <ul id="deviceTree" class="ztree"></ul>
+    </div>
+</div>
+<div class="frs-device-manage" id="device-manage">
+    <div class="device-nav">
+        <span v-if="showNav(0)" v-on:click="navClick(-1)"><p>Home</p></span>
+        <span v-if="showNav(1)" v-on:click="navClick(cityIndex)"><p>{{deviceNodes[cityIndex].name}}</p></span>
+        <span v-if="showNav(2)"><p>{{deviceNodes[cityIndex].children[courtIndex].name}}</p></span>
+
+        <div class="device-nav-btn">
+        <template v-if="showButton(0)">
+            <button v-on:click="btnClick"><img src="../lib/img/cogwheel.png">管理设备</button>
+        </template>
+        <template v-else-if="showButton(1)">
+            <button v-on:click="btnClick">应用</button>
+        </template>
+        <template v-else>
+            <button v-on:click="">添加</button>
+            <button v-on:click="btnClick">应用</button>
+        </template>
+        </div>
+
+    </div>
+    <div class="device-site" v-if="showMode(0)" >
+        <site-item :item="node" :mode="btnShowMode" v-for="(node,index) in siteNodes" :key="index" v-on:change-interface="siteClick(index)" @delete-item="deleteItem(index)"></site-item>
+        <span class="site-item site-item-add">
+
+        </span>
+    </div>
+    <div class="device-camera" v-if="showMode(2)">
+        <div class="camera-title">
+            <p>设备名称</p>
+            <p>ID</p>
+            <p>摄像机品牌</p>
+            <p>IP地址</p>
+            <p>端口号</p>
+            <p>用户名</p>
+            <p>密码</p>
+            <p>实时流</p>
+            <p>网络延时</p>
+            <p>工作状态</p>
+        </div>
+        <div class="camera-info">
+            <device-item v-for="(deviceNode,index) in deviceNodes[cityIndex].children[courtIndex].children" :device-node = "deviceNode" :key="index"  :parent-index="index" :btn-show-mode="btnShowMode" @delete-device="deleteItem(index)" @delete-camera="deleteCamera"></device-item>
+        </div>
+    </div>
+</div>
+</body>
+</html>

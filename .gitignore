@@ -1,5 +1,5 @@
 .idea
-lib/layer
-lib/zTree_v3/demo
-lib/zTree_v3/api
+public/lib/layer
+public/lib/zTree_v3/demo
+public/lib/zTree_v3/api
 node_modules

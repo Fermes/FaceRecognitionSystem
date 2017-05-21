@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script type="text/javascript" src="../lib/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="../lib/js/vue.js"></script>
+<script type="text/javascript" src="../lib/js/axios.min.js"></script>
+<script type="text/javascript" src="../lib/js/lodash.js"></script>
+<script type="text/javascript" src="../lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="../lib/index.css">
+<script>
+    let wsUrl = "ws://10.141.208.243:1001";
+    let ws = null;
+    layui.config({
+        base:'lib/js/'
+    }).use('index');
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>视频监控-主界面</title>
+</head>
+<body>
+<div id="nav" class="frs-nav">
+    <label class="current" onclick="window.location.href='index.html';">主界面</label>
+    <label onclick="window.location.href='face-register.html';">人脸注册</label>
+    <label onclick="window.location.href='statistics-query.html';">统计查询</label>
+    <label onclick="window.location.href='device-manage.html';">设备管理</label>
+    <label onclick="window.location.href='system-config.html';">系统配置</label>
+</div>
+<div>
+    <div class="frs-device" id="deviceList">
+        <div class="search">
+            <p>设备列表</p>
+            <div>
+                <input v-model="value">
+            </div>
+        </div>
+        <div class="device-tree">
+            <ul id="deviceTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="camera-total" id="camera-total">
+                <span v-show="!camera_4x4">
+                <object id="camera0" type='application/x-fb-vlc'>
+                    <param name="windowless" value="true">
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='true' />
+                </object>
+                </span>
+
+                <span v-show="camera_4x4">
+                <object id="camera1" type='application/x-fb-vlc'>
+                    <param name="windowless" value="false">
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreenenabled' value='true' />
+                </object>
+                </span>
+            <span v-show="camera_4x4">
+                <object id="camera2" type='application/x-fb-vlc'>
+                    <param name="windowless" value="true">
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreenenabled' value='true' />
+                </object>
+            </span>
+            <span v-show="camera_4x4">
+                <object id="camera3" type='application/x-fb-vlc'>
+                    <param name="windowless" value="true">
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreenenabled' value='true' />
+                </object>
+            </span>
+            <span v-show="camera_4x4">
+                <object id="camera4" type='application/x-fb-vlc'>
+                    <param name="windowless" value="true">
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreenenabled' value='true' />
+                </object>
+            </span>
+            <button @click="switchPlayMode">切换显示方式</button>
+        </div>
+        <div class="nothit-record"  id="nothit-photo">
+            <nothit-img v-for="(photo,index) in eightRecords" v-bind:photo="photo" v-bind:key="index">
+
+            </nothit-img>
+        </div>
+        <div class="hit-record">
+            <table id="record-table" >
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>类别</th>
+                    <th>证件号</th>
+                    <th>识别时间</th>
+                    <th>识别地点</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(record,index) in pageRecords" :key="index" @dblclick="popWin(index)">
+                    <template>
+                        <td :style="styleObject(index)">{{record.name}}</td>
+                        <td :style="styleObject(index)">{{record.type}}</td>
+                        <td :style="styleObject(index)">{{record.number}}</td>
+                        <td :style="styleObject(index)">{{record.time}}</td>
+                        <td :style="styleObject(index)">{{record.site}}</td>
+                    </template>
+                </tr>
+                </tbody>
+            </table>
+            <div id="laypager"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

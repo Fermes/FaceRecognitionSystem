@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../lib/system-config.css">
+<head>
+    <meta charset="UTF-8">
+    <title>视频监控-系统配置</title>
+</head>
+<body>
+<div id="nav" class="frs-nav">
+    <label onclick="window.location.href='index.html';">主界面</label>
+    <label onclick="window.location.href='face-register.html';">人脸注册</label>
+    <label onclick="window.location.href='statistics-query.html';">统计查询</label>
+    <label onclick="window.location.href='device-manage.html';">设备管理</label>
+    <label class="current"  onclick="window.location.href='system-config.html';">系统配置</label>
+</div>
+<div class="frs-device" id="deviceList">
+    <div class="search">
+        <p>设备列表</p>
+        <div>
+            <input v-model="value">
+        </div>
+    </div>
+    <div class="separate">
+        <div class="parallelogram">
+            <label>勾选后请在右侧列表进行注册</label>
+        </div>
+        <label>反选</label>
+        <label>全选</label>
+    </div>
+    <div class="device-tree">
+        <ul id="deviceTree" class="ztree"></ul>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+</html>
