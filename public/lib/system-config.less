@@ -1,0 +1,74 @@
+@import url('global');
+
+.frs-device{
+  color: @font-green;
+  overflow: hidden;
+  position: absolute;
+  border: 1px solid @border-dark;
+  width: 368px;
+  height: 64.5rem;
+  margin: @distance-top 0 0 @distance-lrb;
+  .search{
+    height: 80px;
+    border-bottom: 1px solid @border-dark;
+    div{
+      position: absolute;
+      border: none;
+      margin:10% 0 0 5%;
+      width: 88%;
+      height: 3.3%;
+      border-radius: 5px;
+      background: @border-dark url("img/search.png") no-repeat 97%;
+      background-size: 20px;
+    }
+    input {
+      background-color: @border-dark;
+      color: white;
+      width: 85%;
+      height: 90%;
+      border-radius: inherit;
+      border: none;
+      outline: none;
+      margin-left: 3%;
+      font-size: medium;
+    }
+    p{
+      position: absolute;
+      font-size: small;
+      color: @font-green;
+      margin:3% 0 0 5%;
+    }
+  }
+  .separate{
+    font-size:small;
+    color: @font-green;
+    border: none;
+    .parallelogram{
+      background-color: @border-dark;
+      width: 300px;
+      height: 20px;
+      line-height: 20px;
+      transform: skew(-25deg,0deg);
+      margin-left: -80px;
+      label{
+        margin-left: 100px;
+      }
+    }
+    label:nth-child(2){
+      position: absolute;
+      margin: -17px 0 0 270px;
+    }
+    label:nth-child(3){
+      position: absolute;
+      margin: -17px 0 0 310px;
+    }
+  }
+
+  .device-tree{
+    height: 92%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .frs-scroll-bar();
+  }
+  .tree-normal();
+}
