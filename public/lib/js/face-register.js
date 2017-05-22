@@ -181,6 +181,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         el:"#face-reg",
         data:{
             multiType:"白名单",
+            selectTypes:{
+                isShow:false,
+                data:['白名单','黑名单','灰名单','其他','特殊']
+            },
             name:"",
             gender:"",
             type:"",
@@ -349,6 +353,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     .catch(function (error) {
 
                     });
+            },
+            selectType:function (type) {
+                this.multiType = type;
+                this.selectTypes.isShow = !this.selectTypes.isShow;
+            },
+            selectNodeShow:function (node) {
+                this[node].isShow = !this[node].isShow;
             }
         }
     });

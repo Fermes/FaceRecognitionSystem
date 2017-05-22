@@ -69,14 +69,19 @@
     <div id="laypager"></div>
 </div>
 
-
 <div class="face-reg" id="face-reg">
     <div class="multi-reg">
         <label>批量注册</label>
-        <select v-model="multiType" title="multi-type">
+        <span class="select-item">
+            <label @click="selectNodeShow('selectTypes')">{{multiType}}</label>
+            <span class="select-node" v-show="selectTypes.isShow">
+                <label v-for="(type,index) in selectTypes.data" :key="index" @click="selectType(type)">{{type}}</label>
+            </span>
+        </span>
+      <!--  <select v-model="multiType" title="multi-type">
             <option>白名单</option>
             <option>黑名单</option>
-        </select>
+        </select>-->
         <button v-on:click="multiImages">选择多张图片</button>
         <input type="file" id="multi-upload" multiple="multiple" style="display: none"/>
         <button v-on:click="multiSubmit">注册</button>

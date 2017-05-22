@@ -88,7 +88,7 @@
   height: 64.5rem;
   border: 1px solid @border-dark;
   .span-search{
-    z-index: 9999;
+    z-index: 1;
     position: absolute;
     margin: 0 0 0 60.5rem;
     border-left: 1px solid @border-dark;
@@ -190,6 +190,7 @@
   color:@font-green;
 
   div.multi-reg{
+    z-index: 10;
     position: relative;
     width: inherit;
     height: 5rem;
@@ -244,6 +245,13 @@
           margin-left: 0.37rem;
         }
       }
+    }
+    span.select-item{
+      label:first-child{
+        background: url("img/left_menu.png") no-repeat;
+        background-position: 12.5rem -1rem;
+      }
+      .frs-select(14rem);
     }
   }
   div.single-reg{

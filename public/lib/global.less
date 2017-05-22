@@ -74,6 +74,42 @@ body {
     background-color: @font-green;
   }
 }
+.frs-select(@width:11rem,@back-img:'lib/img/'){
+  position: relative;
+  display: inline-block;
+  border: 1px solid @border-dark;
+  background-color: @back-color;
+  color: inherit;
+  border-radius: 4px;
+  margin: 2.5rem 0 0 1.5rem;
+  width: @width;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+  label {
+    padding: 0.2rem 0 0.2rem 1rem;
+    margin: 0 0 0 0;
+    position: relative;
+    display: inline-block;
+    width: 13rem;
+    height: 1.2rem;
+    background-color: @back-color;
+    &:hover {
+      background-color: @font-green - #555;
+    }
+  }
+  span.select-node {
+    label {
+      display: block;
+      position: relative;
+      border: none;
+      &:first-child {
+        border-top: 1px solid @border-dark;
+      }
+    }
+
+  }
+}
 .tree-normal(){
   .ztree{
     span {

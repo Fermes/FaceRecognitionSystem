@@ -20,6 +20,23 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             records:[]
         },
+        watch:{
+          records:function () {
+              laypage({
+                  cont: 'laypager'
+                  ,pages: Math.ceil(recordTable.records.length/20)
+                  ,first: 1
+                  ,last: Math.ceil(recordTable.records.length/20)
+                  ,prev: '<em><</em>'
+                  ,next: '<em>></em>'
+                  ,skin: '#202d24'
+                  ,groups: 3
+                  ,jump: function(obj) {
+                      recordTable.curPage = obj.curr - 1;
+                  }
+              });
+          }
+        },
         computed:{
             pageRecords:function () {
                 let start=this.curPage * 20;

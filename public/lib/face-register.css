@@ -195,7 +195,7 @@ body {
   border: 1px solid #1b5c24;
 }
 .hit-record .span-search {
-  z-index: 9999;
+  z-index: 1;
   position: absolute;
   margin: 0 0 0 60.5rem;
   border-left: 1px solid #1b5c24;
@@ -290,6 +290,7 @@ body {
   color: #2fbb3e;
 }
 .face-reg div.multi-reg {
+  z-index: 10;
   position: relative;
   width: inherit;
   height: 5rem;
@@ -345,6 +346,43 @@ body {
 }
 .face-reg div.multi-reg span.multi-progress span:first-child {
   margin-left: 0.37rem;
+}
+.face-reg div.multi-reg span.select-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: inherit;
+  border-radius: 4px;
+  margin: 2.5rem 0 0 1.5rem;
+  width: 14rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+.face-reg div.multi-reg span.select-item label:first-child {
+  background: url("img/left_menu.png") no-repeat;
+  background-position: 12.5rem -1rem;
+}
+.face-reg div.multi-reg span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 13rem;
+  height: 1.2rem;
+  background-color: #0b1013;
+}
+.face-reg div.multi-reg span.select-item label:hover {
+  background-color: #006600;
+}
+.face-reg div.multi-reg span.select-item span.select-node label {
+  display: block;
+  position: relative;
+  border: none;
+}
+.face-reg div.multi-reg span.select-item span.select-node label:first-child {
+  border-top: 1px solid #1b5c24;
 }
 .face-reg div.single-reg {
   position: relative;
