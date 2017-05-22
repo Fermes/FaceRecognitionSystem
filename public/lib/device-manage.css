@@ -89,8 +89,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-track-color: #0b1013;
-  scrollbar-face-color: #1b5c24;
+  scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
+  scrollbar-shadow-color: #1b5c24;
 }
 .frs-device .device-tree::-webkit-scrollbar {
   width: 10px;
@@ -214,8 +215,9 @@ body {
   overflow-y: auto;
   margin-left: 3.5rem;
   scrollbar-track-color: #0b1013;
-  scrollbar-face-color: #1b5c24;
+  scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
+  scrollbar-shadow-color: #1b5c24;
 }
 .frs-device-manage .device-site::-webkit-scrollbar {
   width: 10px;
@@ -368,8 +370,9 @@ body {
   overflow-y: auto;
   height: 59.2rem;
   scrollbar-track-color: #0b1013;
-  scrollbar-face-color: #1b5c24;
+  scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
+  scrollbar-shadow-color: #1b5c24;
   color: #2fbb3e;
 }
 .frs-device-manage .device-camera div.camera-info::-webkit-scrollbar {

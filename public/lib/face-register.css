@@ -51,8 +51,8 @@ body {
   overflow: hidden;
   position: absolute;
   border: 1px solid #1b5c24;
-  width: 368px;
-  height: 1032px;
+  width: 23rem;
+  height: 64.5rem;
   margin: 6px 0 0 8px;
 }
 .frs-device .search {
@@ -122,8 +122,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-track-color: #0b1013;
-  scrollbar-face-color: #1b5c24;
+  scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
+  scrollbar-shadow-color: #1b5c24;
 }
 .frs-device .device-tree::-webkit-scrollbar {
   width: 10px;
@@ -189,8 +190,8 @@ body {
 .hit-record {
   position: absolute;
   margin: 6px 0 0 386px;
-  width: 1020px;
-  height: 1032px;
+  width: 63.75rem;
+  height: 64.5rem;
   border: 1px solid #1b5c24;
 }
 .hit-record .span-search {
@@ -210,15 +211,15 @@ body {
 }
 .hit-record table {
   position: absolute;
-  width: 1020px;
+  width: 63.75rem;
   table-layout: fixed;
-  font-size: 1rem;
+  font-size: 0.94rem;
   line-height: 2.33rem;
   border-collapse: collapse;
 }
 .hit-record table th {
   text-align: left;
-  padding-left: 10px;
+  padding-left: 0.6rem;
   color: #1f8e2b;
   border: solid #1b5c24;
   border-width: 0 1px 1px 0;
@@ -227,22 +228,22 @@ body {
   border-right: none;
 }
 .hit-record table th:nth-child(1) {
-  width: 150px;
+  width: 9.5rem;
 }
 .hit-record table th:nth-child(2) {
-  width: 80px;
+  width: 5rem;
 }
 .hit-record table th:nth-child(3) {
-  width: 200px;
+  width: 12em;
 }
 .hit-record table th:nth-child(4) {
-  width: 170px;
+  width: 10.2rem;
 }
 .hit-record table tr:nth-child(even) {
   background-color: #141e16;
 }
 .hit-record table td {
-  padding-left: 10px;
+  padding-left: 0.6rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -266,7 +267,7 @@ body {
   background-color: #0a0f0b;
   color: #259c3d;
   border: none;
-  font-size: 15px;
+  font-size: 1rem;
 }
 .hit-record .layui-laypage a:hover {
   color: white;
@@ -282,31 +283,32 @@ body {
 .face-reg {
   border: 1px solid #1b5c24;
   margin: 6px 0 0 1416px;
-  width: 500px;
-  height: 1032px;
+  width: 31.25rem;
+  height: 64.5rem;
   position: relative;
-  font-size: 15px;
+  font-size: 1rem;
   color: #2fbb3e;
 }
 .face-reg div.multi-reg {
+  position: relative;
   width: inherit;
-  height: 80px;
+  height: 5rem;
   border-bottom: 1px solid #1b5c24;
 }
 .face-reg div.multi-reg label {
   position: absolute;
-  margin: 1% 0 0 5%;
+  margin: 0.5rem 0 0 1.5rem;
 }
 .face-reg div.multi-reg select {
   border: 1px solid #1b5c24;
   background-color: #0b1013;
   color: inherit;
   border-radius: 4px;
-  margin: 8% 0 0 5%;
-  width: 45%;
+  margin: 2.5rem 0 0 1.5rem;
+  width: 14rem;
   height: 1.8rem;
   padding: 0.1rem 0 0.3rem 0.6rem;
-  font-size: 15px;
+  font-size: 1rem;
 }
 .face-reg div.multi-reg button {
   position: absolute;
@@ -325,6 +327,24 @@ body {
   width: 15%;
   border: 2px solid #2fbb3e;
   color: #2fbb3e;
+}
+.face-reg div.multi-reg span.multi-progress {
+  position: absolute;
+  margin: 0.3rem 0 0 -6rem;
+  display: inline-block;
+  border: 1px solid #2fbb3e;
+  width: 20.5rem;
+  height: 1.3rem;
+  line-height: 1.3rem;
+}
+.face-reg div.multi-reg span.multi-progress span {
+  margin-left: 0.2rem;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.3rem;
+}
+.face-reg div.multi-reg span.multi-progress span:first-child {
+  margin-left: 0.37rem;
 }
 .face-reg div.single-reg {
   position: relative;

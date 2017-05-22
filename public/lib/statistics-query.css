@@ -51,8 +51,8 @@ body {
   overflow: hidden;
   position: absolute;
   border: 1px solid #1b5c24;
-  width: 368px;
-  height: 1032px;
+  width: 23rem;
+  height: 64.5rem;
   margin: 6px 0 0 8px;
 }
 .frs-device .search {
@@ -122,8 +122,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-track-color: #0b1013;
-  scrollbar-face-color: #1b5c24;
+  scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
+  scrollbar-shadow-color: #1b5c24;
 }
 .frs-device .device-tree::-webkit-scrollbar {
   width: 10px;
@@ -343,11 +344,13 @@ body {
 }
 .frs-query .query-table table th button {
   border-radius: 4px;
-  width: 65px;
-  height: 25px;
-  font-size: x-small;
+  width: 4rem;
+  height: 1.7rem;
+  font-size: small;
   color: red;
   border: 2px solid red;
+  line-height: 1.5rem;
+  padding: 0 0 0 0;
   background-color: #640000;
 }
 .frs-query .query-table table tr:nth-child(even) {

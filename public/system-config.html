@@ -1,8 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="../lib/system-config.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="lib/js/vue.min.js"></script>
+<script type="text/javascript" src="lib/js/axios.min.js"></script>
+<script type="text/javascript" src="lib/js/lodash.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="lib/system-config.css">
+<script>
+    layui.config({
+        base:'lib/js/'
+    }).use('system-config');
+</script>
 <head>
-    <meta charset="UTF-8">
     <title>视频监控-系统配置</title>
 </head>
 <body>
@@ -11,25 +24,103 @@
     <label onclick="window.location.href='face-register.html';">人脸注册</label>
     <label onclick="window.location.href='statistics-query.html';">统计查询</label>
     <label onclick="window.location.href='device-manage.html';">设备管理</label>
-    <label class="current"  onclick="window.location.href='system-config.html';">系统配置</label>
+    <label class="current" onclick="window.location.href='system-config.html';">系统配置</label>
 </div>
 <div class="frs-device" id="deviceList">
     <div class="search">
         <p>设备列表</p>
         <div>
-            <input v-model="value">
+            <input v-model="value" title="device-query">
         </div>
     </div>
     <div class="separate">
         <div class="parallelogram">
             <label>勾选后请在右侧列表进行注册</label>
         </div>
-        <label>反选</label>
-        <label>全选</label>
+        <label @click="revertCheck">反选</label>
+        <label @click="allCheck">全选</label>
     </div>
     <div class="device-tree">
         <ul id="deviceTree" class="ztree"></ul>
     </div>
+</div>
+<div class="frs-inform" id="frs-set">
+    <div class="sim-text" id="sim-thr">
+        <label>相似度阈值</label>
+    </div>
+    <div class="sim-gra">
+        <input id="sim-value" type="range" v-model="similarity">
+    </div>
+    <div>
+        <label class="text-area">{{similarity + '%'}}</label>
+    </div>
+
+    <div class="face-text">
+        <label>人脸质量阈值</label>
+    </div>
+    <div class="face-gra">
+        <input id="qua-value" type="range" v-model="faceQuality">
+    </div>
+    <div>
+        <label class="text-area">{{faceQuality + '%'}}</label>
+    </div>
+
+    <div class="rec-face">
+        <label>识别人脸库容量</label>
+    </div>
+    <div>
+        <input class="text-underline1" v-model="recCapacity">
+    </div>
+    <div class="number1">个</div>
+
+    <div class="un-rec">
+        <label>未识别人脸库容量</label>
+    </div>
+    <div>
+        <input class="text-underline2" v-model="noRecCapacity">
+    </div>
+    <div class="number2">个</div>
+    <div>
+        <div class="alert-set">
+            <label>告警信息设置</label>
+        </div>
+        <div class="large">
+            大于(>)相似度阈值：播报人脸用户类别语音内容
+        </div>
+        <div>
+        <div class="small">
+            小于(<)相似度阈值：
+        </div>
+            <div class="text3"> <input class="text-underline3" v-model="warnInfo"> </div>
+        </div>
+    </div>
+    <div>
+        <div class="alert-output">
+            <label>告警输出</label>
+        </div>
+        <div>
+            <input type="checkbox" class="sound-box" id="check1" v-model="voice">
+            <label class="volume-output" for="check1">语音输出</label>
+        </div>
+    </div>
+    <div>
+        <input type="checkbox" class="switch" v-model="switchOutput">
+        <label class="label-switch">开关量输出</label>
+    </div>
+    <div>
+        <label class="switch-time">开关量输出时间</label>
+    <div>
+    </div>
+        <input class="text-underline4" v-model="switchOutputTime">
+    </div>
+    <div class="tag-time">
+        <label>比中人脸时间间隔</label>
+    </div>
+    <div>
+        <input class="text-underline5" v-model="intervalSecond">
+    </div>
+    <div class="second">秒</div>
+    <button class="button" type="button">应用</button>
 </div>
 </body>
 <script>

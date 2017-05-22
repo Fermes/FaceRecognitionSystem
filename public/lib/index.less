@@ -3,44 +3,45 @@
 .frs-device{
   position: absolute;
   border: 1px solid @border-dark;
-  width: 368px;
-  height: 1032px;
+  width: 23rem;
+  height: 64.5rem;
   margin: @distance-top 0 @distance-lrb @distance-lrb;
   .search{
-    height: 80px;
+    height: 5rem;
     border-bottom: 1px solid @border-dark;
     div{
       position: absolute;
       border: none;
-      margin:10% 0 0 5%;
-      width: 88%;
-      height: 3.3%;
+      margin:2.2rem 0 0 1rem;
+      width: 21rem;
+      height: 2rem;
       border-radius: 5px;
       background: @border-dark url("img/search.png") no-repeat 97%;
-      background-size: 20px;
+      background-size: 1.2rem;
     }
     input {
       background-color: @border-dark;
       color: white;
-      width: 85%;
-      height: 90%;
+      width: 18rem;
+      height: 1.8rem;
       border-radius: inherit;
       border: none;
       outline: none;
-      margin-left: 3%;
+      margin-top: 0.1rem;
+      margin-left: 0.7rem;
       font-size: medium;
     }
     p{
       position: absolute;
       font-size: small;
       color: @font-green;
-      margin:3% 0 0 5%;
+      margin:0.7rem 0 0 1rem;
     }
   }
   .device-tree{
-    height: 92%;
+    height: 59.34rem;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     .frs-scroll-bar();
   }
   .tree-normal();
@@ -49,8 +50,8 @@
 .content{
   position: absolute;
   border: 1px solid @border-dark;
-  height: 1032px;
-  width: 1530px;
+  height: 64.5rem;
+  width: 95.6rem;
   margin: @distance-top 0 @distance-lrb @distance-lrb * 2 + 370px;
   .camera-total{
     position: absolute;
@@ -105,7 +106,7 @@
     }
     table{
       position: absolute;
-      width: 1530px;
+      width: 95.6rem;
       table-layout: fixed;
       font-size: 1rem;
       line-height: 2.8rem;
@@ -118,23 +119,23 @@
           border-right: none;
         }
         &:nth-child(1){
-          width: 200px;
+          width: 12.8rem;
         }
         &:nth-child(2){
-          width: 100px;
+          width: 6rem;
         }
         &:nth-child(3){
-          width: 240px;
+          width: 15rem;
         }
         &:nth-child(4){
-          width: 200px;
+          width: 12.8rem;
         }
       }
       tr:nth-child(even){
         background-color: #141e16;
       }
       td{
-        padding-left: 10px;
+        padding-left: 0.8rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -156,40 +157,40 @@
     margin-top: 0;
     margin-left: 64.8%;
     img{
-      width: 120px;
-      height: 157px;
+      width: 7.7rem;
+      height: 10rem;
     }
     p{
-      width: 120px;
-      font-size: 14px;
+      width: 7.7rem;
+      font-size: 0.9rem;
       color: #dddddd;
       word-break: normal;
     }
     div{
       position: absolute;
       &:nth-child(1){
-        margin:4% 0 0 0;
+        margin:3rem 0 0 0;
       }
       &:nth-child(2){
-        margin:4% 0 0 8.8%;
+        margin:3rem 0 0 8.5rem;
       }
       &:nth-child(3){
-        margin:4% 0 0 17.8%;
+        margin:3rem 0 0 17rem;
       }
       &:nth-child(4){
-        margin:4% 0 0 26.8%;
+        margin:3rem 0 0 25.5rem;
       }
       &:nth-child(5){
-        margin:22% 0 0 0;
+        margin:21rem 0 0 0;
       }
       &:nth-child(6){
-        margin:22% 0 0 8.8%;
+        margin:21rem 0 0 8.5rem;
       }
       &:nth-child(7){
-        margin:22% 0 0 17.8%;
+        margin:21rem 0 0 17rem;
       }
       &:nth-child(8){
-        margin:22% 0 0 26.8%;
+        margin:21rem 0 0 25.5rem;
       }
     }
   }
@@ -199,7 +200,7 @@
       background-color: #0a0f0b;
       color: #259c3d;
       border: none;
-      font-size: 15px;
+      font-size: 1rem;
     }
     a{
       &:hover{
@@ -216,7 +217,7 @@
   }
 }
 
-@font-red: rgb(240, 0, 0);
+@font-red: #f00000;
 .pop-main{
   background-color: #1C1C1C;
   width: 64rem;

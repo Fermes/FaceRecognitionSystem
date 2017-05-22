@@ -1,8 +1,11 @@
 //Created by Viking on 2017/5/21.
 doctype html
-html(lang=en xmlns:v-on="http://www.w3.org/1999/xhtml")
-div#frs-nav(class="frs-nav" v-on:click.native="alert('啊速度吧')") meme
-p #{name} 's Pug Source Code!
+html(lang='en')
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1')
+    script(type='text/javascript' src='lib/js/es6-promise.auto.min.js')
+        body
+        p #{name} 's Pug Source Code!
 script
     :babel
         console.log("Hello World !!!");

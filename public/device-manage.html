@@ -2,13 +2,14 @@
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
-<script type="text/javascript" src="../lib/layui/layui.js"></script>
-<script type="text/javascript" src="../lib/js/vue.js"></script>
-<script type="text/javascript" src="../lib/js/axios.min.js"></script>
-<script type="text/javascript" src="../lib/js/lodash.js"></script>
-<script type="text/javascript" src="../lib/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
-<link rel="stylesheet" href="../lib/device-manage.css">
+<script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="lib/js/vue.min.js"></script>
+<script type="text/javascript" src="lib/js/axios.min.js"></script>
+<script type="text/javascript" src="lib/js/lodash.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="lib/device-manage.css">
 <script>
     let ws = null;
     layui.config({
@@ -46,7 +47,7 @@
 
         <div class="device-nav-btn">
         <template v-if="showButton(0)">
-            <button v-on:click="btnClick"><img src="../lib/img/cogwheel.png">管理设备</button>
+            <button v-on:click="btnClick"><img src="lib/img/cogwheel.png">管理设备</button>
         </template>
         <template v-else-if="showButton(1)">
             <button v-on:click="btnClick">应用</button>

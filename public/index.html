@@ -2,13 +2,14 @@
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<script type="text/javascript" src="../lib/layui/lay/dest/layui.all.js"></script>
-<script type="text/javascript" src="../lib/js/vue.js"></script>
-<script type="text/javascript" src="../lib/js/axios.min.js"></script>
-<script type="text/javascript" src="../lib/js/lodash.js"></script>
-<script type="text/javascript" src="../lib/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
-<link rel="stylesheet" href="../lib/index.css">
+<script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="lib/js/vue.min.js"></script>
+<script type="text/javascript" src="lib/js/axios.min.js"></script>
+<script type="text/javascript" src="lib/js/lodash.min.js"></script>
+<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<link rel="stylesheet" href="lib/index.css">
 <script>
     let wsUrl = "ws://10.141.208.243:1001";
     let ws = null;
@@ -53,7 +54,7 @@
 
                 <span v-show="camera_4x4">
                 <object id="camera1" type='application/x-fb-vlc'>
-                    <param name="windowless" value="false">
+                    <param name="windowless" value="true">
                     <param name='autoplay' value='true' />
                     <param name='loop' value='false' />
                     <param name='fullscreenenabled' value='true' />
