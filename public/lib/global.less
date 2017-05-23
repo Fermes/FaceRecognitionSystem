@@ -74,41 +74,54 @@ body {
     background-color: @font-green;
   }
 }
-.frs-select(@width:11rem,@back-img:'lib/img/'){
-  position: relative;
-  display: inline-block;
-  border: 1px solid @border-dark;
-  background-color: @back-color;
-  color: inherit;
-  border-radius: 4px;
-  margin: 2.5rem 0 0 1.5rem;
-  width: @width;
-  height: auto;
-  font-size: 1rem;
-  padding: 0 0 0 0;
-  label {
-    padding: 0.2rem 0 0.2rem 1rem;
-    margin: 0 0 0 0;
+.frs-select(@width:14rem){
+  span.select-item{
     position: relative;
     display: inline-block;
-    width: 13rem;
-    height: 1.2rem;
+    border: 1px solid @border-dark;
     background-color: @back-color;
-    &:hover {
-      background-color: @font-green - #555;
-    }
-  }
-  span.select-node {
+    color: @font-green;
+    border-radius: 4px;
+    width: @width;
+    height: auto;
+    font-size: 1rem;
+    padding: 0 0 0 0;
     label {
-      display: block;
+      padding: 0.2rem 0 0.2rem 1rem;
+      margin: 0 0 0 0;
       position: relative;
-      border: none;
-      &:first-child {
-        border-top: 1px solid @border-dark;
+      display: inline-block;
+      width: @width - 1rem;
+      height: 1.2rem;
+      background-color: @back-color;
+      &:first-child{
+        background: url("img/left_menu.png") no-repeat @width - 1.5rem -0.95rem;
+      }
+      &:hover {
+        background-color: @border-dark;
       }
     }
-
+    span.select-node {
+      z-index: 2;
+      position: absolute;
+      display: block;
+      margin-left: -1px;
+      border: 1px solid @border-dark;
+      border-top:none;
+      label {
+        display: block;
+        &:first-child {
+          background: none;
+          background-color: @back-color;
+          border-top: 1px solid @border-dark;
+          &:hover {
+            background-color: @border-dark;
+          }
+        }
+      }
+    }
   }
+
 }
 .tree-normal(){
   .ztree{

@@ -128,10 +128,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             <p>{{deviceNode.stream}}</p>\
             <p>{{deviceNode.timeout}}</p>\
             <p>{{deviceNode.state}}</p>\
-            <p v-if="btnShowMode === 2" @click="deleteItem">删除</p>\
+            <p><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></p>\
+            <div class="device-menu" v-show="showDeviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
         </span>\
-        <ul v-show="showChildren">\
-            <li v-for="(camera,index) in deviceNode.children" :key="index">\
+        <ul v-if="showChildren">\
+            <li v-for="(camera,num) in deviceNode.children" :key="index">\
                 <p>{{camera.name}}</p>\
                 <p>{{camera.id}}</p>\
                 <p>{{camera.brand}}</p>\
@@ -142,16 +143,19 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 <p>{{camera.stream}}</p>\
                 <p>{{camera.timeout}}</p>\
                 <p>{{camera.state}}</p>\
-                <p v-if="btnShowMode === 2" @click="deleteCamera(index)">删除</p>\
+                <p><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @click="toShowMenu(index)"></p>\
+                <div class="device-menu" v-show="showCameraMenu(index)"><button @click="deleteCamera(index)">删除</button></div>\
             </li>\
         </ul>\
         </div>',
+        props:['deviceNode','parentIndex'],
         data:function () {
             return {
-                showChildren:false
+                showChildren:false,
+                showDeviceMenu:false,
+                cameraMenu:[true,true,true]
             }
         },
-        props:['deviceNode','btnShowMode','parentIndex'],
         computed:{
             switchStyle:function () {
                 if(this.showChildren){
@@ -169,13 +173,43 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         },
         methods:{
             toShowChildren:function () {
+                while (this.cameraMenu.length < this.deviceNode.children.length){
+                    this.cameraMenu.push(false);
+                }
                 this.showChildren = !this.showChildren;
+            },
+            showCameraMenu:function (index) {
+                if(this.cameraMenu[index] === undefined){
+                    this.cameraMenu[index] = false;
+                    return true;
+                }
+                return this.cameraMenu[index];
+            },
+            toShowMenu:function (num) {
+                if(num === -1){
+                    this.showDeviceMenu = !this.showDeviceMenu;
+                    return;
+                }
+                this.cameraMenu[num] = !this.cameraMenu[num];
+
+            },
+            changeDevice:function () {
+              this.$emit('change-device');
+            },
+            changeCamera:function (cameraIndex) {
+                this.$emit('change-camera',this.parentIndex,cameraIndex);
             },
             deleteItem:function () {
                 this.$emit('delete-device');
+                this.showDeviceMenu = false;
             },
             deleteCamera:function (cameraIndex) {
                 this.$emit('delete-camera',this.parentIndex,cameraIndex);
+                this.showCameraMenu[cameraIndex] = false;
+            },
+            addCamera:function () {
+                this.$emit('add-camera');
+                this.showDeviceMenu = false;
             }
         }
     };
@@ -184,11 +218,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     let deviceManage = new Vue({
         el:"#device-manage",
         data:{
-            deviceShowMode:0,
-            btnShowMode:0,
+            deviceShowMode:2,
+            btnShowMode:2,
             cityIndex:0,
             courtIndex:0,
-            deviceNodes:null
+            deviceNodes:[]
         },
         computed:{
             siteNodes:function () {
@@ -212,17 +246,15 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             btnClick:function () {
                 if(this.btnShowMode === 0){
-                    if(this.deviceShowMode === 2){
-                        this.btnShowMode = 2;
-                    }else{
-                        this.btnShowMode = 1;
-                    }
-                }else{
+                    this.btnShowMode = 1;
+                }else if(this.btnShowMode === 1){
                     this.btnShowMode = 0;
+                }else{
+
                 }
             },
             siteClick:function (num) {
-                if(this.btnShowMode !== 0){
+                if(this.btnShowMode === 1){
                     return ;
                 }
                 if(this.deviceShowMode === 0){
@@ -231,6 +263,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     this.deviceShowMode = 1;
                 }else{
                     this.deviceShowMode = 2;
+                    this.btnShowMode = 2;
                     this.courtIndex = num;
                 }
             },
@@ -264,6 +297,15 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 }else{
                     this.deleteConfirm(this.deviceNodes[this.cityIndex].children[this.courtIndex].children,deviceIndex);
                 }
+            },
+            changeDevice:function (deviceIndex) {
+                layer.msg('修改设备'+deviceIndex);
+            },
+            changeCamera:function (deviceIndex,cameraIndex) {
+                layer.msg(deviceIndex+'修改'+cameraIndex);
+            },
+            addCamera:function (deviceIndex) {
+                layer.msg('增加摄像头'+deviceIndex);
             },
             deleteCamera:function (deviceIndex,cameraIndex) {
                 this.deleteConfirm(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children,cameraIndex);

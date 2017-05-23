@@ -223,27 +223,63 @@ body {
   margin: 2rem 0 0 3rem;
 }
 .frs-query .query-condition div:nth-child(1) label {
-  margin: 0 1rem 0 5rem;
+  margin: 0 0.8rem 0 5.05rem;
 }
 .frs-query .query-condition div:nth-child(1) label:nth-child(1) {
-  margin-right: 3rem;
+  margin-right: 2.9rem;
 }
-.frs-query .query-condition div:nth-child(1) select {
-  font-size: small;
-  background-color: #0b1013;
+.frs-query .query-condition div:nth-child(1) span.select-item {
+  position: relative;
+  display: inline-block;
   border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: #2fbb3e;
   border-radius: 4px;
   width: 16rem;
-  height: 1.8rem;
-  color: #2fbb3e;
-  padding-left: 0.8rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 15rem;
+  height: 1.2rem;
+  background-color: #0b1013;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item label:first-child {
+  background: url("img/left_menu.png") no-repeat 14.5rem -0.95rem;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item label:hover {
+  background-color: #1b5c24;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item span.select-node label {
+  display: block;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
+  border-top: 1px solid #1b5c24;
+}
+.frs-query .query-condition div:nth-child(1) span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
 }
 .frs-query .query-condition div:nth-child(1) input {
   outline: none;
   width: 16rem;
   border: none;
   border-bottom: 2px solid #1b5c24;
-  margin-left: 1rem;
+  margin-left: 0.9rem;
 }
 .frs-query .query-condition div:nth-child(2) {
   width: 86rem;
@@ -269,14 +305,13 @@ body {
   font-size: small;
   border: none;
   width: 1.7rem;
-  margin-left: 3%;
+  margin-left: 0.5rem;
 }
 .frs-query .query-condition div:nth-child(2) div input:nth-child(1) {
-  margin-left: 3%;
   width: 2.5rem;
 }
 .frs-query .query-condition div:nth-child(2) div input:nth-child(6) {
-  margin-left: 6%;
+  margin-left: 1rem;
 }
 .frs-query .query-condition div:nth-child(2) .time-start {
   position: absolute;
@@ -299,7 +334,7 @@ body {
 .frs-query .query-condition div:nth-child(2) .time-end + div input {
   width: 16rem;
   height: 1.8rem;
-  margin: 0 0 0 1.1rem;
+  margin: 0 0 0 1rem;
   border-bottom: 2px solid #1b5c24;
 }
 .frs-query .query-condition div:nth-child(2) .time-end + div button {

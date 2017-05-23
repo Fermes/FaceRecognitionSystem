@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
-<script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
-<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
-<script type="text/javascript" src="lib/js/vue.min.js"></script>
-<script type="text/javascript" src="lib/js/axios.min.js"></script>
-<script type="text/javascript" src="lib/js/lodash.min.js"></script>
-<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
-<link rel="stylesheet" href="lib/face-register.css">
-<script>
-    layui.config({
-        base:'lib/js/'
-    }).use('face-register');
-</script>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
     <title>视频监控-人脸注册</title>
+    <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
+    <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
+    <script type="text/javascript" src="lib/js/vue.min.js"></script>
+    <script type="text/javascript" src="lib/js/axios.min.js"></script>
+    <script type="text/javascript" src="lib/js/lodash.min.js"></script>
+    <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
+    <link rel="stylesheet" href="lib/face-register.css">
+    <script>
+        layui.config({
+            base:'lib/js/'
+        }).use('face-register');
+    </script>
 </head>
 <body>
 <div id="nav" class="frs-nav">
@@ -73,15 +73,11 @@
     <div class="multi-reg">
         <label>批量注册</label>
         <span class="select-item">
-            <label @click="selectNodeShow('selectTypes')">{{multiType}}</label>
+            <label @click="selectNodeShow('selectTypes')">{{selectTypes.type}}</label>
             <span class="select-node" v-show="selectTypes.isShow">
-                <label v-for="(type,index) in selectTypes.data" :key="index" @click="selectType(type)">{{type}}</label>
+                <label v-for="(type,index) in selectTypes.data" :key="index" @click="selectItem('selectTypes',type)">{{type}}</label>
             </span>
         </span>
-      <!--  <select v-model="multiType" title="multi-type">
-            <option>白名单</option>
-            <option>黑名单</option>
-        </select>-->
         <button v-on:click="multiImages">选择多张图片</button>
         <input type="file" id="multi-upload" multiple="multiple" style="display: none"/>
         <button v-on:click="multiSubmit">注册</button>

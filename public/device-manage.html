@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
 <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
-<script type="text/javascript" src="lib/js/vue.min.js"></script>
+<script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.min.js"></script>
 <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
@@ -53,8 +53,7 @@
             <button v-on:click="btnClick">应用</button>
         </template>
         <template v-else>
-            <button v-on:click="">添加</button>
-            <button v-on:click="btnClick">应用</button>
+            <button v-on:click="btnClick"><img src="lib/img/plus.png">添加设备</button>
         </template>
         </div>
 
@@ -79,7 +78,7 @@
             <p>工作状态</p>
         </div>
         <div class="camera-info">
-            <device-item v-for="(deviceNode,index) in deviceNodes[cityIndex].children[courtIndex].children" :device-node = "deviceNode" :key="index"  :parent-index="index" :btn-show-mode="btnShowMode" @delete-device="deleteItem(index)" @delete-camera="deleteCamera"></device-item>
+            <device-item v-for="(deviceNode,index) in deviceNodes[cityIndex].children[courtIndex].children" :device-node = "deviceNode" :key="index"  :parent-index="index" @delete-device="deleteItem(index)" @change-device="changeDevice(index)" @add-camera="addCamera(index)" @change-camera="changeCamera" @delete-camera="deleteCamera" ></device-item>
         </div>
     </div>
 </div>

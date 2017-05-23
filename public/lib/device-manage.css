@@ -189,26 +189,18 @@ body {
   position: absolute;
   border: none;
   box-shadow: none;
-  margin: -1.8rem 0 0 82rem;
+  margin: -1.7rem 0 0 82rem;
 }
 .frs-device-manage .device-nav .device-nav-btn button {
   height: 1.6rem;
-}
-.frs-device-manage .device-nav .device-nav-btn button:nth-of-type(1) {
-  width: 4.5rem;
-}
-.frs-device-manage .device-nav .device-nav-btn button:nth-of-type(2) {
-  width: 4.5rem;
-  margin-left: 0.8rem;
-}
-.frs-device-manage .device-nav .device-nav-btn button:only-of-type {
   width: 7rem;
+  line-height: 1.2rem;
   margin-left: 1rem;
 }
 .frs-device-manage .device-nav .device-nav-btn button img {
   width: 1rem;
   height: 1rem;
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.5rem 0.1rem 0;
 }
 .frs-device-manage .device-site {
   height: 59rem;
@@ -306,6 +298,7 @@ body {
   line-height: 2rem;
 }
 .frs-device-manage .device-camera p {
+  position: relative;
   height: 2rem;
   white-space: nowrap;
   overflow: hidden;
@@ -341,14 +334,16 @@ body {
   width: 7rem;
 }
 .frs-device-manage .device-camera p:nth-of-type(10) {
-  width: 9rem;
+  width: 8rem;
 }
-.frs-device-manage .device-camera p:nth-of-type(11) {
-  color: #640000;
+.frs-device-manage .device-camera p:nth-of-type(11) label {
   cursor: pointer;
 }
-.frs-device-manage .device-camera p:nth-of-type(11):hover {
-  color: red;
+.frs-device-manage .device-camera p:nth-of-type(11) img {
+  margin-left: 0.7rem;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
 }
 .frs-device-manage .device-camera p:hover {
   text-overflow: inherit;
@@ -405,7 +400,29 @@ body {
   width: 1rem;
   height: 1rem;
 }
+.frs-device-manage .device-camera div.camera-info .device-item span.device-info span.device-menu {
+  display: inline-block;
+  width: 2rem;
+}
 .frs-device-manage .device-camera div.camera-info .device-item li {
   height: 2.3rem;
   line-height: 2.3rem;
+}
+.frs-device-manage .device-camera div.camera-info .device-item div.device-menu {
+  margin: -0.5rem 0 0 87rem;
+  position: absolute;
+  z-index: 3;
+  background-color: #0b1013;
+  border: 1px solid #1b5c24;
+  width: 6rem;
+  line-height: 1.4rem;
+}
+.frs-device-manage .device-camera div.camera-info .device-item div.device-menu button {
+  width: inherit;
+  font-size: 1rem;
+  border: none;
+  background-color: #0b1013;
+}
+.frs-device-manage .device-camera div.camera-info .device-item div.device-menu button:hover {
+  background-color: #1b5c24;
 }

@@ -1,12 +1,28 @@
+const http = require('http');
 let express = require('express');
 let pug = require('pug');
 let babel = require('jade-babel');
 let bodyParser = require('body-parser');
-
 let form = require('formidable');
-
 let app = express();
 let router = express.Router();
+
+function getIPAdress(){
+    let interfaces = require('os').networkInterfaces();
+    for(let devName in interfaces){
+        let iface = interfaces[devName];
+        for(let i=0;i<iface.length;i++){
+            let alias = iface[i];
+            if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){
+                return alias.address;
+            }
+        }
+    }
+}
+
+let hostname = getIPAdress();
+let port = '3000';
+
 app.set('view engine', 'pug')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -1166,7 +1182,10 @@ const hitRecords = [
         place:'乌鲁木齐-阳光小区-设备12-Camera01'
     }
 ];
-
+/*app.set('trust proxy', function (ip) {
+    if (ip === '127.0.0.1' || ip === app.ip()) return true;// trusted IPs
+    else return false;
+})*/
 pug.filters.babel= babel({});
 //const index = pug.compileFile('index.pug');
 
@@ -1182,4 +1201,7 @@ app.get('/get_hit_list', function (req,res) {
     let n = req.params.n;
     res.json(hitRecords);
 });
-app.listen(3000);
+
+http.createServer(app).listen(port,hostname,() => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});

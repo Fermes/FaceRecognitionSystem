@@ -48,15 +48,19 @@
     <div class="query-condition" id="query-condition">
         <div>
             <label>类别</label>
-            <select v-model="type">
-                <option>白名单</option>
-                <option>黑名单</option>
-            </select>
+            <span class="select-item">
+                <label @click="selectNodeShow('selectTypes')">{{selectTypes.type}}</label>
+                <span class="select-node" v-show="selectTypes.isShow">
+                    <label v-for="(type,index) in selectTypes.data" :key="index" @click="selectItem('selectTypes',type)">{{type}}</label>
+                </span>
+            </span>
             <label>识别结果</label>
-            <select v-model="result">
-                <option>已识别</option>
-                <option>未识别</option>
-            </select>
+            <span class="select-item">
+                <label @click="selectNodeShow('selectResults')">{{selectResults.type}}</label>
+                <span class="select-node" v-show="selectResults.isShow">
+                    <label v-for="(type,index) in selectResults.data" :key="index" @click="selectItem('selectResults',type)">{{type}}</label>
+                </span>
+            </span>
             <label>姓名</label>
             <input v-model="name"/>
             <button v-on:click="querySubmit">提交搜索</button>
@@ -113,7 +117,7 @@
                     <td :style="styleObject(index)">{{record.number}}</td>
                     <td :style="styleObject(index)">{{record.time}}</td>
                     <td :style="styleObject(index)">{{record.site}}</td>
-                    <td><a v-if="!(record.name == '\0')">删除</a></td>
+                    <td><a v-if="record.name !== '\0'">删除</a><span></span></td>
                 </template>
             </tr>
             </tbody>

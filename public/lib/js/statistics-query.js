@@ -94,8 +94,16 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     let queryCondition = new Vue({
         el:"#query-condition",
         data:{
-            type:"白名单",
-            result:"已识别",
+            selectTypes:{
+                type:'白名单',
+                isShow:false,
+                data:['白名单','黑名单']
+            },
+            selectResults:{
+                type:'已识别',
+                isShow:false,
+                data:['已识别','未识别']
+            },
             name:"",
             startTime:{
                 year:"2017",
@@ -157,8 +165,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     method:"post",
                     url:"",
                     data:{
-                        type:this.type,
-                        result:this.result,
+                        type:this.selectTypes.type,
+                        result:this.selectResults.type,
                         name:this.name,
                         startTime:this.startTime,
                         endTime:this.endTime,
@@ -173,8 +181,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     });
             },
             queryReset:function () {
-                this.type="白名单";
-                this.result="已识别";
+                this.selectTypes.type="白名单";
+                this.selectResults.type="已识别";
                 this.name="";
                 this.startTime.year = "2017";
                 this.startTime.month = "01";
@@ -192,6 +200,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 let minute = now.getMinutes();
                 this.endTime.minute = (minute < 10) ? "0" + minute : minute.toString();
                 this.passportNumber = "";
+            },
+            selectItem:function (item,type) {
+                this[item].type = type;
+                this[item].isShow = !this[item].isShow;
+            },
+            selectNodeShow:function (item) {
+                this[item].isShow = !this[item].isShow;
             }
         }
     });

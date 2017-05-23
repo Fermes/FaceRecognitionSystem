@@ -180,10 +180,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     let faceReg = new Vue({
         el:"#face-reg",
         data:{
-            multiType:"白名单",
             selectTypes:{
+                type:'白名单',
                 isShow:false,
-                data:['白名单','黑名单','灰名单','其他','特殊']
+                data:['白名单','黑名单']
             },
             name:"",
             gender:"",
@@ -272,7 +272,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     }
                 }
                 formData.append('number',success);
-                formData.append('type',this.multiType);
+                formData.append('type',this.selectTypes.type);
 
                 document.getElementById("multi-upload").value = '';
                 axios({
@@ -354,12 +354,12 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
                     });
             },
-            selectType:function (type) {
-                this.multiType = type;
-                this.selectTypes.isShow = !this.selectTypes.isShow;
+            selectItem:function (item,type) {
+                this[item].type = type;
+                this[item].isShow = !this[item].isShow;
             },
-            selectNodeShow:function (node) {
-                this[node].isShow = !this[node].isShow;
+            selectNodeShow:function (item) {
+                this[item].isShow = !this[item].isShow;
             }
         }
     });

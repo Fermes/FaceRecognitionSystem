@@ -352,17 +352,12 @@ body {
   display: inline-block;
   border: 1px solid #1b5c24;
   background-color: #0b1013;
-  color: inherit;
+  color: #2fbb3e;
   border-radius: 4px;
-  margin: 2.5rem 0 0 1.5rem;
   width: 14rem;
   height: auto;
   font-size: 1rem;
   padding: 0 0 0 0;
-}
-.face-reg div.multi-reg span.select-item label:first-child {
-  background: url("img/left_menu.png") no-repeat;
-  background-position: 12.5rem -1rem;
 }
 .face-reg div.multi-reg span.select-item label {
   padding: 0.2rem 0 0.2rem 1rem;
@@ -373,16 +368,33 @@ body {
   height: 1.2rem;
   background-color: #0b1013;
 }
+.face-reg div.multi-reg span.select-item label:first-child {
+  background: url("img/left_menu.png") no-repeat 12.5rem -0.95rem;
+}
 .face-reg div.multi-reg span.select-item label:hover {
-  background-color: #006600;
+  background-color: #1b5c24;
+}
+.face-reg div.multi-reg span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
 }
 .face-reg div.multi-reg span.select-item span.select-node label {
   display: block;
-  position: relative;
-  border: none;
 }
 .face-reg div.multi-reg span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
   border-top: 1px solid #1b5c24;
+}
+.face-reg div.multi-reg span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
+}
+.face-reg div.multi-reg span.select-item {
+  margin: 2.5rem 0 0 1.5rem;
 }
 .face-reg div.single-reg {
   position: relative;
