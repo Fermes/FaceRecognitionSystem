@@ -66,18 +66,18 @@
     </div>
     <div class="device-camera" v-if="showMode(2)">
         <div class="camera-title">
-            <p>设备名称</p>
-            <p>ID</p>
-            <p>摄像机品牌</p>
-            <p>IP地址</p>
-            <p>端口号</p>
-            <p>用户名</p>
-            <p>密码</p>
-            <p>实时流</p>
-            <p>网络延时</p>
-            <p>工作状态</p>
+            <span>设备名称</span>
+            <span>ID</span>
+            <span>摄像机品牌</span>
+            <span>IP地址</span>
+            <span>端口号</span>
+            <span>用户名</span>
+            <span>密码</span>
+            <span>实时流</span>
+            <span>网络延时</span>
+            <span>工作状态</span>
         </div>
-        <div class="camera-info">
+        <div class="camera-list">
             <device-item v-for="(deviceNode,index) in deviceNodes[cityIndex].children[courtIndex].children" :device-node = "deviceNode" :key="index"  :parent-index="index" @delete-device="deleteItem(index)" @change-device="changeDevice(index)" @add-camera="addCamera(index)" @change-camera="changeCamera" @delete-camera="deleteCamera" ></device-item>
         </div>
     </div>

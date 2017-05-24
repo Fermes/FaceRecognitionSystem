@@ -51,7 +51,6 @@
   height: 64.5rem;
   width: 95.37rem;
   margin: @distance-top 0 0 @distance-lrb * 2 + 370px;
-  overflow: hidden;
   .device-nav{
     position: relative;
     height: 3rem;
@@ -85,7 +84,7 @@
       position: absolute;
       border: none;
       box-shadow: none;
-      margin:-1.7rem 0 0 82rem;
+      margin:-1.7rem 0 0 85rem;
       button{
         height: 1.6rem;
         width: 7rem;
@@ -174,34 +173,36 @@
   .device-camera{
     font-size: 1rem;
     width: 95.3rem;
-    padding: 0 0 0 0;
+    overflow: hidden;
     height: 61rem;
-    line-height: 2rem;
-    p{
-      position: relative;
-      height: 2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: inline-block;
+    color: @font-green;
+    span{
       text-align: center;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      &:hover{
+        word-wrap: break-word;
+        white-space: normal;
+      }
       &:nth-of-type(1){
         width: 10rem;
       }
       &:nth-of-type(2){
-        width: 3rem;
+        width: 4rem;
       }
       &:nth-of-type(3){
-        width: 8rem;
+        width: 6rem;
       }
       &:nth-of-type(4){
-        width: 8rem;
+        width: 10rem;
       }
       &:nth-of-type(5){
         width: 5rem;
       }
       &:nth-of-type(6){
-        width: 8rem;
+        width: 10rem;
       }
       &:nth-of-type(7){
         width: 10rem;
@@ -210,85 +211,67 @@
         width: 20rem;
       }
       &:nth-of-type(9){
-        width: 7rem;
+        width: 5rem;
       }
       &:nth-of-type(10){
-        width: 8rem;
+        width: 6rem;
       }
       &:nth-of-type(11){
-        label{
+        label,img{
           cursor: pointer;
         }
-        img{
-          margin-left: 0.7rem;
-          width: 1rem;
-          height: 1rem;
-          cursor: pointer;
-
-        }
-      }
-      &:hover {
-        text-overflow:inherit;
-        word-wrap: break-word;
-        white-space: normal;
-        //overflow: visible;
       }
     }
-
     div.camera-title{
-      color: #1f8e2b;
-      height: 2rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
       border-bottom: 1px solid @border-dark;
-      p{
+      span{
         border-right: 1px solid @border-dark;
         &:last-of-type{
-          border:none;
+          border: none;
         }
       }
     }
-    div.camera-info {
-      overflow-y: auto;
+    div.camera-list {
+      overflow-y: scroll;
       height: 59.2rem;
       .frs-scroll-bar();
-      color: @font-green;
-      .device-item {
-        width: 95.2rem;
-        span.device-info {
-          width: inherit;
-          display: inline-block;
-          line-height: 2.5rem;
+      img{
+        width: 1rem;
+        height: 1rem;
+        margin: 0 0 0.2rem 0.7rem;
+      }
+      div.device-item {
+        li{
+          line-height: 2.1rem;
+        }
+        div.device-info {
           height: 2.5rem;
+          line-height: 2.5rem;
           background-color: #141e16;
-          span.device-switch-icon {
-            display: inline-block;
-            margin: 0 -2.5rem 0.2rem 1rem;
+          div.switch-icon{
+            margin: 0.8rem 0 0 0.3rem;
+            position: absolute;
             width: 1rem;
             height: 1rem;
           }
-          span.device-menu {
-            display: inline-block;
-            width: 2rem;
-          }
         }
-        li {
-          height: 2.3rem;
-          line-height: 2.3rem;
-        }
-        div.device-menu {
-          margin: -0.5rem 0 0 87rem;
-          position: absolute;
-          z-index: 3;
-          background-color: @back-color;
+        div.device-menu{
           border: 1px solid @border-dark;
+          position: absolute;
+          background-color: @back-color;
           width: 6rem;
-          line-height: 1.4rem;
-          button {
-            width: inherit;
-            font-size: 1rem;
+          line-height: 1.8rem;
+          margin: -1rem 0 0 86.2rem;
+          button{
+            height: 1.8rem;
+            width: 6rem;
             border: none;
             background-color: @back-color;
-            &:hover {
+            &:hover{
               background-color: @border-dark;
+              border-radius: 0;
             }
           }
         }

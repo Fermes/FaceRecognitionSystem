@@ -893,7 +893,7 @@ const hitRecords = [
     {
         id:2,
         user:{
-            name:'爱立托木买买',
+            name:'爱立托木买买asdsadfewfasdfsdavfvda',
             label:'白名单',
             passportNumber:'210120196302073592',
         },
@@ -903,7 +903,7 @@ const hitRecords = [
     {
         id:3,
         user:{
-            name:'ai12',
+            name:'ai12dasfadsgasd',
             label:'黑名单',
             passportNumber:'210120196302073592',
         },
@@ -1095,15 +1095,6 @@ const hitRecords = [
     },
     {
         id:23,
-        user:{
-            name:'艾立托木买买提',
-            label:'白名单',
-            passportNumber:'210120196302073592',
-        },
-        createTime:'2017-01-20 13:23',
-        place:'乌鲁木齐-阳光小区-设备12-Camera01'
-    },{
-        id:24,
         user:{
             name:'艾立托木买买提',
             label:'白名单',

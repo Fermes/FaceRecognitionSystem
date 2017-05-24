@@ -116,82 +116,79 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     };
     const deviceItem = {
         template: ' <div class="device-item">\
-        <span class="device-info"v-on:dblclick="toShowChildren">\
-            <span class="device-switch-icon" :style="switchStyle" ></span>\
-            <p>{{deviceNode.name}}</p>\
-            <p>{{deviceNode.id}}</p>\
-            <p>{{deviceNode.brand}}</p>\
-            <p>{{deviceNode.ip}}</p>\
-            <p>{{deviceNode.port}}</p>\
-            <p>{{deviceNode.username}}</p>\
-            <p>{{deviceNode.password}}</p>\
-            <p>{{deviceNode.stream}}</p>\
-            <p>{{deviceNode.timeout}}</p>\
-            <p>{{deviceNode.state}}</p>\
-            <p><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></p>\
-            <div class="device-menu" v-show="showDeviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
-        </span>\
-        <ul v-if="showChildren">\
-            <li v-for="(camera,num) in deviceNode.children" :key="index">\
-                <p>{{camera.name}}</p>\
-                <p>{{camera.id}}</p>\
-                <p>{{camera.brand}}</p>\
-                <p>{{camera.ip}}</p>\
-                <p>{{camera.port}}</p>\
-                <p>{{camera.username}}</p>\
-                <p>{{camera.password}}</p>\
-                <p>{{camera.stream}}</p>\
-                <p>{{camera.timeout}}</p>\
-                <p>{{camera.state}}</p>\
-                <p><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @click="toShowMenu(index)"></p>\
-                <div class="device-menu" v-show="showCameraMenu(index)"><button @click="deleteCamera(index)">删除</button></div>\
+        <div class="device-info" @dblclick="toShowChildren">\
+        <div class="switch-icon" :style="switchStyle"></div>\
+            <span>{{deviceNode.name}}</span>\
+            <span>{{deviceNode.id}}</span>\
+            <span>{{deviceNode.brand}}</span>\
+            <span>{{deviceNode.ip}}</span>\
+            <span>{{deviceNode.port}}</span>\
+            <span>{{deviceNode.username}}</span>\
+            <span>{{deviceNode.password}}</span>\
+            <span>{{deviceNode.stream}}</span>\
+            <span>{{deviceNode.timeout}}</span>\
+            <span>{{deviceNode.state}}</span>\
+            <span><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></span>\
+            <div class="device-menu" v-show="showMenu.deviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
+        </div>\
+        <ul v-show="showChildren">\
+            <li v-for="(camera,index) in deviceNode.children">\
+                <span>{{camera.name}}</span>\
+                <span>{{camera.id}}</span>\
+                <span>{{camera.brand}}</span>\
+                <span>{{camera.ip}}</span>\
+                <span>{{camera.port}}</span>\
+                <span>{{camera.username}}</span>\
+                <span>{{camera.password}}</span>\
+                <span>{{camera.stream}}</span>\
+                <span>{{camera.timeout}}</span>\
+                <span>{{camera.state}}</span>\
+                <span><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @click="toShowMenu(index)"></span>\
+                <div class="device-menu" v-if="showMenu.cameraMenu[index] && !showMenu.deviceMenu" ><button @click="deleteCamera(index)">删除</button></div>\
             </li>\
         </ul>\
         </div>',
-        props:['deviceNode','parentIndex'],
         data:function () {
             return {
                 showChildren:false,
-                showDeviceMenu:false,
-                cameraMenu:[true,true,true]
+                showMenu:{
+                    deviceMenu:false,
+                    cameraMenu:[]
+                }
             }
         },
+        props:['deviceNode','parentIndex'],
         computed:{
             switchStyle:function () {
                 if(this.showChildren){
                     return {
-                        'background-image': 'url("lib/img/left_menu.png")',
+                        'background': 'url("lib/img/left_menu.png") no-repeat',
                         'background-position': '0px -20px'
                     }
                 }else{
                     return {
-                        'background-image': 'url("lib/img/left_menu.png")',
+                        'background': 'url("lib/img/left_menu.png") no-repeat',
                         'background-position': '-20px -20px'
+
                     }
                 }
             }
         },
         methods:{
             toShowChildren:function () {
-                while (this.cameraMenu.length < this.deviceNode.children.length){
-                    this.cameraMenu.push(false);
+                while (this.showMenu.cameraMenu.length < this.deviceNode.children.length){
+                    this.showMenu.cameraMenu.push(false);
                 }
                 this.showChildren = !this.showChildren;
             },
-            showCameraMenu:function (index) {
-                if(this.cameraMenu[index] === undefined){
-                    this.cameraMenu[index] = false;
-                    return true;
-                }
-                return this.cameraMenu[index];
-            },
             toShowMenu:function (num) {
-                if(num === -1){
-                    this.showDeviceMenu = !this.showDeviceMenu;
-                    return;
+                if (num === -1) {
+                    this.showMenu.deviceMenu = !this.showMenu.deviceMenu;
+                } else {
+                    if (!this.showMenu.deviceMenu) {
+                        Vue.set(this.showMenu.cameraMenu, num, !this.showMenu.cameraMenu[num]);
+                    }
                 }
-                this.cameraMenu[num] = !this.cameraMenu[num];
-
             },
             changeDevice:function () {
               this.$emit('change-device');
@@ -200,16 +197,16 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.$emit('change-camera',this.parentIndex,cameraIndex);
             },
             deleteItem:function () {
+                this.showMenu.deviceMenu = false;
                 this.$emit('delete-device');
-                this.showDeviceMenu = false;
             },
             deleteCamera:function (cameraIndex) {
+                Vue.set(this.showMenu.cameraMenu,cameraIndex,false)
                 this.$emit('delete-camera',this.parentIndex,cameraIndex);
-                this.showCameraMenu[cameraIndex] = false;
             },
             addCamera:function () {
+                this.showMenu.deviceMenu = false;
                 this.$emit('add-camera');
-                this.showDeviceMenu = false;
             }
         }
     };
@@ -218,8 +215,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     let deviceManage = new Vue({
         el:"#device-manage",
         data:{
-            deviceShowMode:2,
-            btnShowMode:2,
+            deviceShowMode:0,
+            btnShowMode:0,
             cityIndex:0,
             courtIndex:0,
             deviceNodes:[]

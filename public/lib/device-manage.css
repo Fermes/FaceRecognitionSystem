@@ -28,7 +28,6 @@ body {
 }
 .frs-nav label {
   text-align: center;
-  line-height: 30px;
   font-size: medium;
   letter-spacing: 3px;
   color: #2fbb3e;
@@ -153,7 +152,6 @@ body {
   height: 64.5rem;
   width: 95.37rem;
   margin: 6px 0 0 386px;
-  overflow: hidden;
 }
 .frs-device-manage .device-nav {
   position: relative;
@@ -189,7 +187,7 @@ body {
   position: absolute;
   border: none;
   box-shadow: none;
-  margin: -1.7rem 0 0 82rem;
+  margin: -1.7rem 0 0 85rem;
 }
 .frs-device-manage .device-nav .device-nav-btn button {
   height: 1.6rem;
@@ -293,136 +291,122 @@ body {
 .frs-device-manage .device-camera {
   font-size: 1rem;
   width: 95.3rem;
-  padding: 0 0 0 0;
-  height: 61rem;
-  line-height: 2rem;
-}
-.frs-device-manage .device-camera p {
-  position: relative;
-  height: 2rem;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
+  height: 61rem;
+  color: #2fbb3e;
+}
+.frs-device-manage .device-camera span {
   text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.frs-device-manage .device-camera p:nth-of-type(1) {
-  width: 10rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(2) {
-  width: 3rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(3) {
-  width: 8rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(4) {
-  width: 8rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(5) {
-  width: 5rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(6) {
-  width: 8rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(7) {
-  width: 10rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(8) {
-  width: 20rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(9) {
-  width: 7rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(10) {
-  width: 8rem;
-}
-.frs-device-manage .device-camera p:nth-of-type(11) label {
-  cursor: pointer;
-}
-.frs-device-manage .device-camera p:nth-of-type(11) img {
-  margin-left: 0.7rem;
-  width: 1rem;
-  height: 1rem;
-  cursor: pointer;
-}
-.frs-device-manage .device-camera p:hover {
-  text-overflow: inherit;
+.frs-device-manage .device-camera span:hover {
   word-wrap: break-word;
   white-space: normal;
 }
+.frs-device-manage .device-camera span:nth-of-type(1) {
+  width: 10rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(2) {
+  width: 4rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(3) {
+  width: 6rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(4) {
+  width: 10rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(5) {
+  width: 5rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(6) {
+  width: 10rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(7) {
+  width: 10rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(8) {
+  width: 20rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(9) {
+  width: 5rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(10) {
+  width: 6rem;
+}
+.frs-device-manage .device-camera span:nth-of-type(11) label,
+.frs-device-manage .device-camera span:nth-of-type(11) img {
+  cursor: pointer;
+}
 .frs-device-manage .device-camera div.camera-title {
-  color: #1f8e2b;
-  height: 2rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
   border-bottom: 1px solid #1b5c24;
 }
-.frs-device-manage .device-camera div.camera-title p {
+.frs-device-manage .device-camera div.camera-title span {
   border-right: 1px solid #1b5c24;
 }
-.frs-device-manage .device-camera div.camera-title p:last-of-type {
+.frs-device-manage .device-camera div.camera-title span:last-of-type {
   border: none;
 }
-.frs-device-manage .device-camera div.camera-info {
-  overflow-y: auto;
+.frs-device-manage .device-camera div.camera-list {
+  overflow-y: scroll;
   height: 59.2rem;
   scrollbar-track-color: #0b1013;
   scrollbar-face-color: #00880b;
   scrollbar-arrow-color: #0b1013;
   scrollbar-shadow-color: #1b5c24;
-  color: #2fbb3e;
 }
-.frs-device-manage .device-camera div.camera-info::-webkit-scrollbar {
+.frs-device-manage .device-camera div.camera-list::-webkit-scrollbar {
   width: 10px;
   background-color: #0b1013;
 }
-.frs-device-manage .device-camera div.camera-info::-webkit-scrollbar-track {
+.frs-device-manage .device-camera div.camera-list::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: #0b1013;
 }
-.frs-device-manage .device-camera div.camera-info::-webkit-scrollbar-thumb {
+.frs-device-manage .device-camera div.camera-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
   border: 1px solid #2fbb3e;
   -webkit-box-shadow: inset 0 0 10px #1b5c24;
   background-color: #2fbb3e;
 }
-.frs-device-manage .device-camera div.camera-info .device-item {
-  width: 95.2rem;
+.frs-device-manage .device-camera div.camera-list img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0 0.2rem 0.7rem;
 }
-.frs-device-manage .device-camera div.camera-info .device-item span.device-info {
-  width: inherit;
-  display: inline-block;
-  line-height: 2.5rem;
+.frs-device-manage .device-camera div.camera-list div.device-item li {
+  line-height: 2.1rem;
+}
+.frs-device-manage .device-camera div.camera-list div.device-item div.device-info {
   height: 2.5rem;
+  line-height: 2.5rem;
   background-color: #141e16;
 }
-.frs-device-manage .device-camera div.camera-info .device-item span.device-info span.device-switch-icon {
-  display: inline-block;
-  margin: 0 -2.5rem 0.2rem 1rem;
+.frs-device-manage .device-camera div.camera-list div.device-item div.device-info div.switch-icon {
+  margin: 0.8rem 0 0 0.3rem;
+  position: absolute;
   width: 1rem;
   height: 1rem;
 }
-.frs-device-manage .device-camera div.camera-info .device-item span.device-info span.device-menu {
-  display: inline-block;
-  width: 2rem;
-}
-.frs-device-manage .device-camera div.camera-info .device-item li {
-  height: 2.3rem;
-  line-height: 2.3rem;
-}
-.frs-device-manage .device-camera div.camera-info .device-item div.device-menu {
-  margin: -0.5rem 0 0 87rem;
-  position: absolute;
-  z-index: 3;
-  background-color: #0b1013;
+.frs-device-manage .device-camera div.camera-list div.device-item div.device-menu {
   border: 1px solid #1b5c24;
+  position: absolute;
+  background-color: #0b1013;
   width: 6rem;
-  line-height: 1.4rem;
+  line-height: 1.8rem;
+  margin: -1rem 0 0 86.2rem;
 }
-.frs-device-manage .device-camera div.camera-info .device-item div.device-menu button {
-  width: inherit;
-  font-size: 1rem;
+.frs-device-manage .device-camera div.camera-list div.device-item div.device-menu button {
+  height: 1.8rem;
+  width: 6rem;
   border: none;
   background-color: #0b1013;
 }
-.frs-device-manage .device-camera div.camera-info .device-item div.device-menu button:hover {
+.frs-device-manage .device-camera div.camera-list div.device-item div.device-menu button:hover {
   background-color: #1b5c24;
+  border-radius: 0;
 }
