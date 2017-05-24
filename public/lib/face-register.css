@@ -358,6 +358,9 @@ body {
   font-size: 1rem;
   padding: 0 0 0 0;
 }
+.face-reg div.multi-reg span.select-item:hover {
+  background-color: #1b5c24;
+}
 .face-reg div.multi-reg span.select-item label {
   padding: 0.2rem 0 0.2rem 1rem;
   margin: 0 0 0 0;

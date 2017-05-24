@@ -160,7 +160,6 @@
       }
     }
     span.site-item-add{
-      margin-left: 2rem;
       background: url("img/add-dark.png") no-repeat center;
       background-size: 5rem 5rem;
       &:hover{
@@ -251,10 +250,11 @@
           line-height: 2.5rem;
           background-color: #141e16;
           div.switch-icon{
-            margin: 0.8rem 0 0 0.3rem;
-            position: absolute;
+            display: inline-block;
+            position: relative;
+            margin: 0 -1.1rem 0 0.1rem;
             width: 1rem;
-            height: 1rem;
+            height: 1.7rem;
           }
         }
         div.device-menu{
@@ -276,6 +276,177 @@
           }
         }
       }
+    }
+  }
+
+}
+
+div.device-process{
+  width: 64rem;
+  height: 24rem;
+  color: @font-green;
+  border: 1px solid @border-dark;
+  background-color: @back-color;
+  box-shadow: inset 0 0 5rem @border-dark;
+  span.close-icon{
+    display: inline-block;
+    margin: 1rem 0 0 60rem;
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    background: url("img/close-dark.png") no-repeat center;
+    background-size: 2rem 2rem;
+    &:hover{
+      background: url("img/close-light.png") no-repeat center;
+      background-size: 2rem 2rem;
+    }
+  }
+  p{
+    font-size: 1.5rem;
+    margin: 2rem 0 0 27rem;
+  }
+  input{
+    background-color: @back-color;
+    border: none;
+    border-bottom: 2px solid @font-green;
+    outline: none;
+    color: @font-green;
+    height: 1.3rem;
+    font-size: 1.2rem;
+  }
+  label{
+    font-size: 1.2rem;
+    display: inline-block;
+    &:nth-of-type(1){
+      margin: 1.5rem 3.5rem 0 5rem;
+    }
+    &:nth-of-type(2){
+      margin: 1.5rem 3.5rem 0 8rem;
+    }
+    &:nth-of-type(3){
+      margin: 3rem 1.2rem 0 5rem;
+    }
+    &:nth-of-type(4){
+      margin: 3rem 1.2rem 0 7.8rem;
+    }
+    &:nth-of-type(5){
+      margin: 3.5rem 3.5rem 0 5rem;
+    }
+  }
+  button{
+    position: absolute;
+    width: 8rem;
+    height: 1.8rem;
+    margin: 7rem 0 0 21rem;
+  }
+  .frs-select(@width:14rem);
+}
+
+div.camera-process{
+  width: 64rem;
+  height: 36rem;
+  color: @font-green;
+  border: 1px solid @border-dark;
+  background-color: @back-color;
+  box-shadow: inset 0 0 5rem @border-dark;
+  span.close-icon{
+    display: inline-block;
+    margin: 1rem 0 0 60rem;
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    background: url("img/close-dark.png") no-repeat center;
+    background-size: 2rem 2rem;
+    &:hover{
+      background: url("img/close-light.png") no-repeat center;
+      background-size: 2rem 2rem;
+    }
+  }
+  p{
+    font-size: 1.5rem;
+    margin: 2rem 0 0 27rem;
+  }
+  input{
+    background-color: @back-color;
+    border: none;
+    border-bottom: 2px solid @font-green;
+    outline: none;
+    color: @font-green;
+    height: 1.3rem;
+    font-size: 1.2rem;
+    &:nth-of-type(7){
+      width: 25rem;
+    }
+    &:nth-of-type(8){
+      width: 9rem;
+    }
+  }
+  label{
+    font-size: 1.2rem;
+    display: inline-block;
+    &:nth-of-type(1){
+      margin: 1.5rem 1rem 0 5rem;
+    }
+    &:nth-of-type(2){
+      margin: 1.5rem 1rem 0 8rem;
+    }
+    &:nth-of-type(3){
+      margin: 3rem 3.5rem 0 5rem;
+    }
+    &:nth-of-type(4){
+      margin: 3rem 3.5rem 0 8rem;
+    }
+    &:nth-of-type(5){
+      margin: 3.5rem 3.4rem 0 5rem;
+    }
+    &:nth-of-type(6){
+      margin: 3.5rem 4.7rem 0 8rem;
+    }
+    &:nth-of-type(7){
+      margin: 4rem 3.3rem 0 5rem;
+    }
+    &:nth-of-type(8){
+      margin: 4rem 1rem 0 2.6rem;
+    }
+    &:nth-of-type(9){
+      margin: 4.5rem 1rem 0 5rem;
+    }
+  }
+  button{
+    position: absolute;
+    width: 8rem;
+    height: 1.8rem;
+    margin: 8rem 0 0 22rem;
+  }
+  .frs-select(@width:14rem);
+}
+.layui-layer-prompt,.layui-layer-dialog{
+  background-color: @back-color;
+  .layui-layer-title{
+    color: @font-green;
+    background-color: @border-dark;
+    border-bottom: none;
+  }
+  .layui-layer-content{
+    color: @font-green;
+    input{
+      outline: none;
+      background-color: @back-color;
+      border: none;
+      border-bottom: 2px solid @font-green;
+      color: @font-green;
+    }
+  }
+  .layui-layer-btn{
+    .layui-layer-btn0{
+      background-color: @border-dark;
+      color: @font-green;
+      border: none;
+    }
+    .layui-layer-btn1{
+      background-color: @border-dark;
+      color: @font-green - #333;
+      border: none;
     }
   }
 }

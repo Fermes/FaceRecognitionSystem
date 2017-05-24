@@ -239,6 +239,9 @@ body {
   font-size: 1rem;
   padding: 0 0 0 0;
 }
+.frs-query .query-condition div:nth-child(1) span.select-item:hover {
+  background-color: #1b5c24;
+}
 .frs-query .query-condition div:nth-child(1) span.select-item label {
   padding: 0.2rem 0 0.2rem 1rem;
   margin: 0 0 0 0;

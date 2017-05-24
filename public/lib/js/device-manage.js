@@ -127,7 +127,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             <span>{{deviceNode.password}}</span>\
             <span>{{deviceNode.stream}}</span>\
             <span>{{deviceNode.timeout}}</span>\
-            <span>{{deviceNode.state}}</span>\
+            <span :style="stateStyle(-1)">{{deviceNode.state}}</span>\
             <span><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></span>\
             <div class="device-menu" v-show="showMenu.deviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
         </div>\
@@ -142,7 +142,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 <span>{{camera.password}}</span>\
                 <span>{{camera.stream}}</span>\
                 <span>{{camera.timeout}}</span>\
-                <span>{{camera.state}}</span>\
+                <span :style="stateStyle(index)">{{camera.state}}</span>\
                 <span><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @click="toShowMenu(index)"></span>\
                 <div class="device-menu" v-if="showMenu.cameraMenu[index] && !showMenu.deviceMenu" ><button @click="deleteCamera(index)">删除</button></div>\
             </li>\
@@ -175,6 +175,21 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             }
         },
         methods:{
+            stateStyle:function (index) {
+              if(index === -1){
+                   if(this.deviceNode.state === '离线' || this.deviceNode.state === '错误'){
+                       return {
+                           'color':'red'
+                       }
+                   }
+              }else{
+                  if(this.deviceNode.children[index].state === '离线' || this.deviceNode.children[index].state === '错误'){
+                      return {
+                          'color':'red'
+                      }
+                  }
+              }
+            },
             toShowChildren:function () {
                 while (this.showMenu.cameraMenu.length < this.deviceNode.children.length){
                     this.showMenu.cameraMenu.push(false);
@@ -246,8 +261,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     this.btnShowMode = 1;
                 }else if(this.btnShowMode === 1){
                     this.btnShowMode = 0;
-                }else{
-
                 }
             },
             siteClick:function (num) {
@@ -275,8 +288,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             deleteConfirm:function (parentNode,num) {
                 layer.confirm("确定要删除 " + parentNode[num].name +' 么？',{
-                    icon: 0,
-                    skin: 'layui-layer-molv',
+                    title:'删除确认',
                     btn:['删除','取消']
                 },function (index) {
                     parentNode.splice(num,1);
@@ -284,6 +296,31 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     layer.close(index);
                 },function () {
 
+                });
+            },
+            addItem:function () {
+                let _this = this;
+                let date = new Date();
+                let now = date.getFullYear().toString() + '-' + (date.getMonth() + 1 < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1).toString()) + '-' + (date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString());
+
+                layer.prompt({
+                    value: '',
+                    title: '请输入' + ((_this.deviceShowMode===0)?'城市名':'小区名')
+                }, function(value, index, elem){
+                    let tmpNode = {
+                        id:'-1',
+                        name:value,
+                        date:now,
+                        errorNumber:0,
+                        offlineNumber:0,
+                        children:[]
+                    };
+                    if(_this.deviceShowMode === 0){
+                        _this.deviceNodes.push(tmpNode);
+                    }else if(_this.deviceShowMode === 1){
+                        _this.deviceNodes[_this.cityIndex].children.push(tmpNode);
+                    }
+                    layer.close(index);
                 });
             },
             deleteItem:function (deviceIndex) {
@@ -296,13 +333,81 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 }
             },
             changeDevice:function (deviceIndex) {
-                layer.msg('修改设备'+deviceIndex);
+                processDevice.deviceIndex = deviceIndex;
+                processDevice.mode = '修改设备';
+                let curDevice = this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex];
+                processDevice.newDevice.id = curDevice.id;
+                processDevice.newDevice.name = curDevice.name;
+                processDevice.newDevice.ip = curDevice.ip;
+                processDevice.newDevice.username = curDevice.username;
+                processDevice.newDevice.password = curDevice.password;
+                processDevice.newDevice.state = curDevice.state;
+                processDevice.showThis = true;
+                processDevice.thisLayer = layer.open({
+                    type: 1,
+                    shade: 0.6,
+                    closeBtn:0,
+                    shadeClose:false,
+                    title: false,
+                    area: ['64.1rem','24.1rem'],
+                    content: $('#device-process'),
+                    cancel: function(){
+
+                    }
+                });
+            },
+            addDevice:function () {
+                processDevice.mode = '添加设备';
+                processDevice.deviceIndex = -1;
+                processDevice.showThis = true;
+                processDevice.thisLayer = layer.open({
+                    type: 1,
+                    shade: 0.6,
+                    closeBtn:0,
+                    shadeClose:false,
+                    title: false,
+                    area: ['64.1rem','24.1rem'],
+                    content: $('#device-process'),
+                    cancel: function(){
+
+                    }
+                });
             },
             changeCamera:function (deviceIndex,cameraIndex) {
-                layer.msg(deviceIndex+'修改'+cameraIndex);
+                processCamera.deviceIndex = deviceIndex;
+                processCamera.cameraIndex = cameraIndex;
+                processCamera.newCamera = JSON.parse(JSON.stringify(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children[cameraIndex]));
+                processCamera.mode = '修改摄像头';
+                processCamera.showThis = true;
+                processCamera.thisLayer = layer.open({
+                    type: 1,
+                    shade: 0.6,
+                    closeBtn:0,
+                    shadeClose:false,
+                    title: false,
+                    area: ['64.1rem','36.1rem'],
+                    content: $('#camera-process'),
+                    cancel: function(){
+
+                    }
+                });
             },
             addCamera:function (deviceIndex) {
-                layer.msg('增加摄像头'+deviceIndex);
+                processCamera.deviceIndex = deviceIndex;
+                processCamera.cameraIndex = -1;
+                processCamera.showThis = true;
+                processCamera.mode = '添加摄像头';
+                processCamera.thisLayer = layer.open({
+                    type: 1,
+                    shade: 0.6,
+                    closeBtn:0,
+                    shadeClose:false,
+                    title: false,
+                    area: ['64.1rem','36.1rem'],
+                    content: $('#camera-process'),
+                    cancel: function(){
+                    }
+                });
             },
             deleteCamera:function (deviceIndex,cameraIndex) {
                 this.deleteConfirm(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children,cameraIndex);
@@ -314,6 +419,156 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         }
     });
 
+    let processDevice = new Vue({
+        el:'#device-process',
+        data: {
+            deviceIndex: -1,
+            mode:'添加设备',
+            thisLayer:null,
+            newDevice: {
+                name:'',
+                id:'-1',
+                brand:'-',
+                ip:'',
+                port:'-',
+                username:'',
+                password:'',
+                stream:'-',
+                timeout:'-',
+                state:'空闲',
+                showChildren:false,
+                children:[]
+            },
+            showSelectStates:false,
+            selectStates:['空闲','工作','错误','离线'],
+            showThis:false
+        },
+        methods:{
+            closeThis:function () {
+                layer.close(this.thisLayer);
+                this.deviceIndex = -1;
+                this.showThis = false;
+                this.newDevice = {
+                    name:'',
+                    id:'-1',
+                    brand:'-',
+                    ip:'',
+                    port:'-',
+                    username:'',
+                    password:'',
+                    stream:'-',
+                    timeout:'-',
+                    state:'空闲',
+                    showChildren:false,
+                    children:[]
+                };
+            },
+            selectState:function (index) {
+                this.newDevice.state =  this.selectStates[index];
+                this.showSelectStates = false;
+            },
+            doDeviceProcess:function () {
+                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[deviceManage.courtIndex].children;
+                if(this.mode === '添加设备'){
+                    par.push(this.newDevice);
+                }else if(this.mode === '修改设备'){
+                    par[this.deviceIndex].name = this.newDevice.name;
+                    par[this.deviceIndex].ip = this.newDevice.ip;
+                    par[this.deviceIndex].username = this.newDevice.username;
+                    par[this.deviceIndex].password = this.newDevice.password;
+                    par[this.deviceIndex].state = this.newDevice.state;
+                }
+                layer.close(this.thisLayer);
+                this.showThis = false;
+                this.newDevice={
+                    name:'',
+                    id:'-1',
+                    brand:'-',
+                    ip:'',
+                    port:'-',
+                    username:'',
+                    password:'',
+                    stream:'-',
+                    timeout:'-',
+                    state:'空闲',
+                    showChildren:false,
+                    children:[]
+                };
+            }
+        }
+    })
+
+    let processCamera = new Vue({
+        el:'#camera-process',
+        data: {
+            deviceIndex: -1,
+            cameraIndex: -1,
+            mode:'添加摄像机',
+            thisLayer:null,
+            newCamera: {
+                name: '',
+                id: '-1',
+                brand: '',
+                ip: '',
+                port: '',
+                username: '',
+                password: '',
+                stream: '',
+                timeout: '',
+                state: '空闲',
+                nocheck: true
+            },
+            showSelectStates:false,
+            selectStates:['空闲','工作','错误','离线'],
+            showThis:false
+        },
+        methods:{
+            closeThis:function () {
+              layer.close(this.thisLayer);
+              this.showThis = false;
+              this.newCamera = {
+                  name: '',
+                  id: '-1',
+                  brand: '',
+                  ip: '',
+                  port: '',
+                  username: '',
+                  password: '',
+                  stream: '',
+                  timeout: '',
+                  state: '空闲',
+                  nocheck: true
+              };
+            },
+            selectState:function (index) {
+              this.newCamera.state =   this.selectStates[index];
+              this.showSelectStates = false;
+            },
+            doCameraProcess:function () {
+                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[deviceManage.courtIndex].children[this.deviceIndex].children;
+                if(this.mode === '添加摄像头'){
+                    par.push(this.newCamera);
+                }else if(this.mode === '修改摄像头'){
+                    Vue.set(par,this.cameraIndex,this.newCamera);
+                }
+                layer.close(this.thisLayer);
+                this.showThis = false;
+                this.newCamera={
+                    name: '',
+                    id: '-1',
+                    brand: '',
+                    ip: '',
+                    port: '',
+                    username: '',
+                    password: '',
+                    stream: '',
+                    timeout: '',
+                    state: '空闲',
+                    nocheck: true
+                };
+            }
+        }
+    })
 
     exports('device-manage', {});
 });

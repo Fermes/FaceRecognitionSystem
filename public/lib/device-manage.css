@@ -279,7 +279,6 @@ body {
   background-position: 0 0.5rem;
 }
 .frs-device-manage .device-site span.site-item-add {
-  margin-left: 2rem;
   background: url("img/add-dark.png") no-repeat center;
   background-size: 5rem 5rem;
 }
@@ -387,10 +386,11 @@ body {
   background-color: #141e16;
 }
 .frs-device-manage .device-camera div.camera-list div.device-item div.device-info div.switch-icon {
-  margin: 0.8rem 0 0 0.3rem;
-  position: absolute;
+  display: inline-block;
+  position: relative;
+  margin: 0 -1.1rem 0 0.1rem;
   width: 1rem;
-  height: 1rem;
+  height: 1.7rem;
 }
 .frs-device-manage .device-camera div.camera-list div.device-item div.device-menu {
   border: 1px solid #1b5c24;
@@ -409,4 +409,272 @@ body {
 .frs-device-manage .device-camera div.camera-list div.device-item div.device-menu button:hover {
   background-color: #1b5c24;
   border-radius: 0;
+}
+div.device-process {
+  width: 64rem;
+  height: 24rem;
+  color: #2fbb3e;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  box-shadow: inset 0 0 5rem #1b5c24;
+}
+div.device-process span.close-icon {
+  display: inline-block;
+  margin: 1rem 0 0 60rem;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background: url("img/close-dark.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+div.device-process span.close-icon:hover {
+  background: url("img/close-light.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+div.device-process p {
+  font-size: 1.5rem;
+  margin: 2rem 0 0 27rem;
+}
+div.device-process input {
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  outline: none;
+  color: #2fbb3e;
+  height: 1.3rem;
+  font-size: 1.2rem;
+}
+div.device-process label {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+div.device-process label:nth-of-type(1) {
+  margin: 1.5rem 3.5rem 0 5rem;
+}
+div.device-process label:nth-of-type(2) {
+  margin: 1.5rem 3.5rem 0 8rem;
+}
+div.device-process label:nth-of-type(3) {
+  margin: 3rem 1.2rem 0 5rem;
+}
+div.device-process label:nth-of-type(4) {
+  margin: 3rem 1.2rem 0 7.8rem;
+}
+div.device-process label:nth-of-type(5) {
+  margin: 3.5rem 3.5rem 0 5rem;
+}
+div.device-process button {
+  position: absolute;
+  width: 8rem;
+  height: 1.8rem;
+  margin: 7rem 0 0 21rem;
+}
+div.device-process span.select-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: #2fbb3e;
+  border-radius: 4px;
+  width: 14rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+div.device-process span.select-item:hover {
+  background-color: #1b5c24;
+}
+div.device-process span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 13rem;
+  height: 1.2rem;
+  background-color: #0b1013;
+}
+div.device-process span.select-item label:first-child {
+  background: url("img/left_menu.png") no-repeat 12.5rem -0.95rem;
+}
+div.device-process span.select-item label:hover {
+  background-color: #1b5c24;
+}
+div.device-process span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
+}
+div.device-process span.select-item span.select-node label {
+  display: block;
+}
+div.device-process span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
+  border-top: 1px solid #1b5c24;
+}
+div.device-process span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
+}
+div.camera-process {
+  width: 64rem;
+  height: 36rem;
+  color: #2fbb3e;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  box-shadow: inset 0 0 5rem #1b5c24;
+}
+div.camera-process span.close-icon {
+  display: inline-block;
+  margin: 1rem 0 0 60rem;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background: url("img/close-dark.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+div.camera-process span.close-icon:hover {
+  background: url("img/close-light.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+div.camera-process p {
+  font-size: 1.5rem;
+  margin: 2rem 0 0 27rem;
+}
+div.camera-process input {
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  outline: none;
+  color: #2fbb3e;
+  height: 1.3rem;
+  font-size: 1.2rem;
+}
+div.camera-process input:nth-of-type(7) {
+  width: 25rem;
+}
+div.camera-process input:nth-of-type(8) {
+  width: 9rem;
+}
+div.camera-process label {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+div.camera-process label:nth-of-type(1) {
+  margin: 1.5rem 1rem 0 5rem;
+}
+div.camera-process label:nth-of-type(2) {
+  margin: 1.5rem 1rem 0 8rem;
+}
+div.camera-process label:nth-of-type(3) {
+  margin: 3rem 3.5rem 0 5rem;
+}
+div.camera-process label:nth-of-type(4) {
+  margin: 3rem 3.5rem 0 8rem;
+}
+div.camera-process label:nth-of-type(5) {
+  margin: 3.5rem 3.4rem 0 5rem;
+}
+div.camera-process label:nth-of-type(6) {
+  margin: 3.5rem 4.7rem 0 8rem;
+}
+div.camera-process label:nth-of-type(7) {
+  margin: 4rem 3.3rem 0 5rem;
+}
+div.camera-process label:nth-of-type(8) {
+  margin: 4rem 1rem 0 2.6rem;
+}
+div.camera-process label:nth-of-type(9) {
+  margin: 4.5rem 1rem 0 5rem;
+}
+div.camera-process button {
+  position: absolute;
+  width: 8rem;
+  height: 1.8rem;
+  margin: 8rem 0 0 22rem;
+}
+div.camera-process span.select-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: #2fbb3e;
+  border-radius: 4px;
+  width: 14rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+div.camera-process span.select-item:hover {
+  background-color: #1b5c24;
+}
+div.camera-process span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 13rem;
+  height: 1.2rem;
+  background-color: #0b1013;
+}
+div.camera-process span.select-item label:first-child {
+  background: url("img/left_menu.png") no-repeat 12.5rem -0.95rem;
+}
+div.camera-process span.select-item label:hover {
+  background-color: #1b5c24;
+}
+div.camera-process span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
+}
+div.camera-process span.select-item span.select-node label {
+  display: block;
+}
+div.camera-process span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
+  border-top: 1px solid #1b5c24;
+}
+div.camera-process span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
+}
+.layui-layer-prompt,
+.layui-layer-dialog {
+  background-color: #0b1013;
+}
+.layui-layer-prompt .layui-layer-title,
+.layui-layer-dialog .layui-layer-title {
+  color: #2fbb3e;
+  background-color: #1b5c24;
+  border-bottom: none;
+}
+.layui-layer-prompt .layui-layer-content,
+.layui-layer-dialog .layui-layer-content {
+  color: #2fbb3e;
+}
+.layui-layer-prompt .layui-layer-content input,
+.layui-layer-dialog .layui-layer-content input {
+  outline: none;
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  color: #2fbb3e;
+}
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn0,
+.layui-layer-dialog .layui-layer-btn .layui-layer-btn0 {
+  background-color: #1b5c24;
+  color: #2fbb3e;
+  border: none;
+}
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn1,
+.layui-layer-dialog .layui-layer-btn .layui-layer-btn1 {
+  background-color: #1b5c24;
+  color: #00880b;
+  border: none;
 }
