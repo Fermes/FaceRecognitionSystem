@@ -8,6 +8,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         form = layui.form(),
         laypage=layui.laypage;
 
+    let socket = io('10.141.5.146:1001');
+
     let deviceList=new Vue({
         el:"#deviceList",
         data:{
@@ -412,7 +414,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                deviceList.deviceNodes = response.data;
+                deviceList.deviceNodes = response.data.children;
                 $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
             })
             .catch(function (error) {
@@ -428,7 +430,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                let records = response.data;
+                let records = response.data.children;
                 for (let i = 0; i < records.length; i++) {
                     recordTable.addRecord(records[i].id, records[i].user.name, records[i].user.label, records[i].user.passportNumber, records[i].createTime, records[i].place);
                 }

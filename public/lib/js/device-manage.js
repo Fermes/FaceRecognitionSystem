@@ -32,6 +32,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 let zTree = $.fn.zTree.getZTreeObj("deviceTree");
                 zTree.expandAll(false);
                 this.searchNode(newValue);
+            },
+            deviceNodes:function () {
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
             }
         },
         methods: {
@@ -97,7 +100,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         <span class="site-item-icon" v-show="showButton" @click="deleteItem"></span>\
                 <p>{{item.name.split(" ")[0]}}</p>\
                 <p>{{item.date}}</p>\
-                <p>{{item.errorNumber}}错误&nbsp;&nbsp;{{item.offlineNumber}}离线</p>\
+                <p>{{item.offlineNumber}}&nbsp;&nbsp;离线</p>\
     </span>',
         props:['item','mode'],
         computed:{
@@ -120,13 +123,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         <div class="switch-icon" :style="switchStyle"></div>\
             <span>{{deviceNode.name}}</span>\
             <span>{{deviceNode.id}}</span>\
-            <span>{{deviceNode.brand}}</span>\
+            <span>-</span>\
             <span>{{deviceNode.ip}}</span>\
-            <span>{{deviceNode.port}}</span>\
+            <span>-</span>\
             <span>{{deviceNode.username}}</span>\
             <span>{{deviceNode.password}}</span>\
-            <span>{{deviceNode.stream}}</span>\
-            <span>{{deviceNode.timeout}}</span>\
+            <span>-</span>\
+            <span>-</span>\
             <span :style="stateStyle(-1)">{{deviceNode.state}}</span>\
             <span><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></span>\
             <div class="device-menu" v-show="showMenu.deviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
@@ -158,6 +161,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             }
         },
         props:['deviceNode','parentIndex'],
+        mounted:function () {
+            while (this.showMenu.cameraMenu.length < this.deviceNode.children.length){
+                this.showMenu.cameraMenu.push(false);
+            }
+        },
         computed:{
             switchStyle:function () {
                 if(this.showChildren){
@@ -191,9 +199,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
               }
             },
             toShowChildren:function () {
-                while (this.showMenu.cameraMenu.length < this.deviceNode.children.length){
-                    this.showMenu.cameraMenu.push(false);
-                }
                 this.showChildren = !this.showChildren;
             },
             toShowMenu:function (num) {
@@ -377,7 +382,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 processCamera.deviceIndex = deviceIndex;
                 processCamera.cameraIndex = cameraIndex;
                 processCamera.newCamera = JSON.parse(JSON.stringify(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children[cameraIndex]));
-                processCamera.mode = '修改摄像头';
+                processCamera.mode = '修改摄像机';
                 processCamera.showThis = true;
                 processCamera.thisLayer = layer.open({
                     type: 1,
@@ -396,7 +401,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 processCamera.deviceIndex = deviceIndex;
                 processCamera.cameraIndex = -1;
                 processCamera.showThis = true;
-                processCamera.mode = '添加摄像头';
+                processCamera.mode = '添加摄像机';
                 processCamera.thisLayer = layer.open({
                     type: 1,
                     shade: 0.6,
@@ -436,7 +441,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 stream:'-',
                 timeout:'-',
                 state:'空闲',
-                showChildren:false,
                 children:[]
             },
             showSelectStates:false,
@@ -459,7 +463,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     stream:'-',
                     timeout:'-',
                     state:'空闲',
-                    showChildren:false,
                     children:[]
                 };
             },
@@ -491,7 +494,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     stream:'-',
                     timeout:'-',
                     state:'空闲',
-                    showChildren:false,
                     children:[]
                 };
             }
@@ -515,11 +517,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 password: '',
                 stream: '',
                 timeout: '',
-                state: '空闲',
+                state: '在线',
                 nocheck: true
             },
             showSelectStates:false,
-            selectStates:['空闲','工作','错误','离线'],
+            selectStates:['在线','工作','错误','离线'],
             showThis:false
         },
         methods:{
@@ -546,9 +548,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             doCameraProcess:function () {
                 let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[deviceManage.courtIndex].children[this.deviceIndex].children;
-                if(this.mode === '添加摄像头'){
+                if(this.mode === '添加摄像机'){
                     par.push(this.newCamera);
-                }else if(this.mode === '修改摄像头'){
+                }else if(this.mode === '修改摄像机'){
                     Vue.set(par,this.cameraIndex,this.newCamera);
                 }
                 layer.close(this.thisLayer);

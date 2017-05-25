@@ -2,6 +2,7 @@
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="lib/index.css">
 <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="lib/js/socket.io.js"></script>
 <script type="text/javascript" src="lib/js/vue.min.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.min.js"></script>
@@ -9,7 +10,6 @@
 <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <script>
-    let wsUrl = "ws://10.141.208.243:1001";
     let ws = null;
     layui.config({
         base:'lib/js/'

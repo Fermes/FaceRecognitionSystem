@@ -14,11 +14,13 @@
     "formidable": "^1.1.1",
     "less": "^2.7.2",
     "pug": "^2.0.0-rc.1",
+    "socket.io": "^2.0.1",
     "vue": "^2.3.3"
   },
   "devDependencies": {
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
-    "jade-babel": "^5.0.0"
+    "jade-babel": "^5.0.0",
+    "mockjs": "^1.0.1-beta3"
   }
 }
