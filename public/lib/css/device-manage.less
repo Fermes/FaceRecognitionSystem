@@ -16,7 +16,7 @@
       width: 88%;
       height: 3.3%;
       border-radius: 5px;
-      background: @border-dark url("img/search.png") no-repeat 97%;
+      background: @border-dark url("../img/search.png") no-repeat 97%;
       background-size: 20px;
     }
     input {
@@ -112,7 +112,7 @@
       height: 6rem;
       border: 1px solid @border-dark;
       box-shadow: inset 0 0 2rem @border-dark;
-      background: url('img/city-dark.png') no-repeat;
+      background: url('../img/city-dark.png') no-repeat;
       background-size: 7rem 5.1rem;
       background-position: 0 0.5rem;
       p{
@@ -141,11 +141,11 @@
         position: absolute;
         margin: 0.4rem 0 0 13.5rem;
         border: 1px solid @border-dark;
-        background: url("img/close-dark.png") no-repeat;
+        background: url("../img/close-dark.png") no-repeat;
         background-size:cover;
         &:hover{
           border: 1px solid @font-green;
-          background: url("img/close-light.png") no-repeat;
+          background: url("../img/close-light.png") no-repeat;
           background-size:cover;
         }
       }
@@ -154,17 +154,17 @@
         border: 1px solid @font-green;
         transition: 0.3s;
         cursor: pointer;
-        background: url('img/city-light.png') no-repeat;
+        background: url('../img/city-light.png') no-repeat;
         background-size: 7rem 5.1rem;
         background-position: 0 0.5rem;
       }
     }
     span.site-item-add{
-      background: url("img/add-dark.png") no-repeat center;
+      background: url("../img/add-dark.png") no-repeat center;
       background-size: 5rem 5rem;
       &:hover{
         cursor: pointer;
-        background: url("img/add-light.png") no-repeat center;
+        background: url("../img/add-light.png") no-repeat center;
         background-size: 5rem 5rem;
       }
     }
@@ -281,68 +281,108 @@
 
 }
 
-div.device-process{
-  width: 64rem;
-  height: 24rem;
-  color: @font-green;
-  border: 1px solid @border-dark;
+
+.layui-layer-prompt,.layui-layer-dialog{
   background-color: @back-color;
-  box-shadow: inset 0 0 5rem @border-dark;
-  span.close-icon{
-    display: inline-block;
-    margin: 1rem 0 0 60rem;
-    position: absolute;
-    width: 2rem;
-    height: 2rem;
-    background: url("img/close-dark.png") no-repeat center;
-    background-size: 2rem 2rem;
-    &:hover{
-      background: url("img/close-light.png") no-repeat center;
-      background-size: 2rem 2rem;
-    }
-  }
-  p{
-    font-size: 1.5rem;
-    margin: 2rem 0 0 27rem;
-  }
-  input{
-    background-color: @back-color;
-    border: none;
-    border-bottom: 2px solid @font-green;
-    outline: none;
+  .layui-layer-title{
     color: @font-green;
-    height: 1.3rem;
-    font-size: 1.2rem;
+    background-color: @border-dark;
+    border-bottom: none;
   }
-  label{
-    font-size: 1.2rem;
-    display: inline-block;
-    &:nth-of-type(1){
-      margin: 2rem 3.5rem 0 5rem;
-    }
-    &:nth-of-type(2){
-      margin: 2rem 3.5rem 0 8rem;
-    }
-    &:nth-of-type(3){
-      margin: 3rem 1.2rem 0 5rem;
-    }
-    &:nth-of-type(4){
-      margin: 3rem 1.2rem 0 7.8rem;
-    }
-    &:nth-of-type(5){
-      margin: 3.5rem 3.5rem 0 5rem;
+  .layui-layer-content{
+    color: @font-green;
+    input{
+      outline: none;
+      background-color: @back-color;
+      border: none;
+      border-bottom: 2px solid @font-green;
+      color: @font-green;
     }
   }
-  button{
-    position: absolute;
-    width: 8rem;
-    height: 1.8rem;
-    margin: 7rem 0 0 21rem;
+  .layui-layer-btn{
+    .layui-layer-btn0{
+      background-color: @border-dark;
+      color: @font-green;
+      border: none;
+    }
+    .layui-layer-btn1{
+      background-color: @border-dark;
+      color: @font-green - #333;
+      border: none;
+    }
   }
-  .frs-select(@width:14rem);
 }
 
-div.camera-process{
+.menu-enter-active,.menu-leave-active{
+  transition: opacity 0.5s;
+}
+.menu-leave-active{
+  opacity: 0
+}
+.device-process{
+   width: 64rem;
+   height: 24rem;
+   color: @font-green;
+   border: 1px solid @border-dark;
+   background-color: @back-color;
+   box-shadow: inset 0 0 5rem @border-dark;
+   span.close-icon{
+     display: inline-block;
+     margin: 1rem 0 0 60rem;
+     position: absolute;
+     width: 2rem;
+     height: 2rem;
+     background: url("../img/close-dark.png") no-repeat center;
+     background-size: 2rem 2rem;
+     &:hover{
+       background: url("../img/close-light.png") no-repeat center;
+       background-size: 2rem 2rem;
+     }
+   }
+   p{
+     font-size: 1.5rem;
+     margin: 2rem 0 0 27rem;
+   }
+   input{
+     background-color: @back-color;
+     border: none;
+     border-bottom: 2px solid @font-green;
+     outline: none;
+     color: @font-green;
+     height: 1.5rem;
+     font-size: 1.2rem;
+     line-height: 1.5rem;
+   }
+   label{
+     font-size: 1.2rem;
+     display: inline-block;
+     &:nth-of-type(1){
+       margin: 2rem 3.5rem 0 5rem;
+     }
+     &:nth-of-type(2){
+       margin: 2rem 3.5rem 0 8rem;
+     }
+     &:nth-of-type(3){
+       margin: 3rem 1.2rem 0 5rem;
+     }
+     &:nth-of-type(4){
+       margin: 3rem 1.2rem 0 7.8rem;
+     }
+     &:nth-of-type(5){
+       margin: 3.5rem 3.5rem 0 5rem;
+     }
+   }
+   button{
+     font-size: 1rem;
+     position: absolute;
+     width: 8rem;
+     height: 1.8rem;
+     margin: 7rem 0 0 21rem;
+   }
+   .frs-select(@width:14rem);
+ }
+
+.camera-process{
   width: 64rem;
   height: 36rem;
   color: @font-green;
@@ -355,10 +395,10 @@ div.camera-process{
     position: absolute;
     width: 2rem;
     height: 2rem;
-    background: url("img/close-dark.png") no-repeat center;
+    background: url("../img/close-dark.png") no-repeat center;
     background-size: 2rem 2rem;
     &:hover{
-      background: url("img/close-light.png") no-repeat center;
+      background: url("../img/close-light.png") no-repeat center;
       background-size: 2rem 2rem;
     }
   }
@@ -372,7 +412,8 @@ div.camera-process{
     border-bottom: 2px solid @font-green;
     outline: none;
     color: @font-green;
-    height: 1.3rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
     font-size: 1.2rem;
     &:nth-of-type(7){
       width: 25rem;
@@ -413,40 +454,11 @@ div.camera-process{
     }
   }
   button{
+    font-size: 1rem;
     position: absolute;
     width: 8rem;
     height: 1.8rem;
     margin: 8rem 0 0 22rem;
   }
   .frs-select(@width:14rem);
-}
-.layui-layer-prompt,.layui-layer-dialog{
-  background-color: @back-color;
-  .layui-layer-title{
-    color: @font-green;
-    background-color: @border-dark;
-    border-bottom: none;
-  }
-  .layui-layer-content{
-    color: @font-green;
-    input{
-      outline: none;
-      background-color: @back-color;
-      border: none;
-      border-bottom: 2px solid @font-green;
-      color: @font-green;
-    }
-  }
-  .layui-layer-btn{
-    .layui-layer-btn0{
-      background-color: @border-dark;
-      color: @font-green;
-      border: none;
-    }
-    .layui-layer-btn1{
-      background-color: @border-dark;
-      color: @font-green - #333;
-      border: none;
-    }
-  }
 }

@@ -1,5 +1,6 @@
-@import "zTree_v3/css/metroStyle/metroStyle.css";
-@import "layui/css/layui.css";
+@import "../zTree_v3/css/metroStyle/metroStyle.css";
+@import "../layui/css/layui.css";
+@import "iview.css";
 html {
   font-size: 16px;
 }
@@ -65,7 +66,7 @@ body {
   width: 88%;
   height: 3.3%;
   border-radius: 5px;
-  background: #1b5c24 url("img/search.png") no-repeat 97%;
+  background: #1b5c24 url("../img/search.png") no-repeat 97%;
   background-size: 20px;
 }
 .frs-device .search input {
@@ -144,8 +145,8 @@ body {
   padding: 5px 0 0 3px;
 }
 .frs-device .ztree li span.button.switch {
-  background-image: url("img/left_menu.png");
-  *background-image: url("img/left_menu.gif");
+  background-image: url("../img/left_menu.png");
+  *background-image: url("../img/left_menu.gif");
   width: 20px;
   height: 20px;
   margin-top: 5px;
@@ -247,12 +248,14 @@ body {
   margin: 0 0 0 0;
   position: relative;
   display: inline-block;
-  width: 15rem;
-  height: 1.2rem;
+  width: 15.85rem;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
   background-color: #0b1013;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item label:first-child {
-  background: url("img/left_menu.png") no-repeat 14.5rem -0.95rem;
+  background: url("../img/left_menu.png") no-repeat 14.5rem -0.95rem;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item label:hover {
   background-color: #1b5c24;

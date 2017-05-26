@@ -1,5 +1,6 @@
-@import "zTree_v3/css/metroStyle/metroStyle.css";
-@import "layui/css/layui.css";
+@import "../zTree_v3/css/metroStyle/metroStyle.css";
+@import "../layui/css/layui.css";
+@import "iview.css";
 html {
   font-size: 16px;
 }

@@ -34,7 +34,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.searchNode(newValue);
             },
             deviceNodes:function () {
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                $.fn.zTree.init($("#deviceTree"), this.setting, this.deviceNodes);
             }
         },
         methods: {
@@ -74,7 +74,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
 
     function getFontCss(treeId, treeNode) {
-        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        if(treeNode.state === '离线'){
+            return {color:'red'};
+        }else{
+            return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        }
     }
 
     $(document).ready(function(){
@@ -86,9 +90,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                deviceList.deviceNodes = response.data;
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                deviceManage.deviceNodes = deviceList.deviceNodes;
+                if(response.data.type === 'OK'){
+                    deviceList.deviceNodes = response.data.children;
+                    deviceManage.deviceNodes = deviceList.deviceNodes;
+                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                }else {
+
+                }
             })
             .catch(function (error) {
 
@@ -98,8 +106,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     const siteItem = {
         template:'<span class="site-item" v-on:click="changeInterface">\
         <span class="site-item-icon" v-show="showButton" @click="deleteItem"></span>\
-                <p>{{item.name.split(" ")[0]}}</p>\
-                <p>{{item.date}}</p>\
+                <p>{{item.name}}</p>\
+                <p>{{item.createTime.split(" ")[0]}}</p>\
                 <p>{{item.offlineNumber}}&nbsp;&nbsp;离线</p>\
     </span>',
         props:['item','mode'],
@@ -127,12 +135,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             <span>{{deviceNode.ip}}</span>\
             <span>-</span>\
             <span>{{deviceNode.username}}</span>\
-            <span>{{deviceNode.password}}</span>\
+            <span>{{deviceNode.pwd}}</span>\
             <span>-</span>\
             <span>-</span>\
             <span :style="stateStyle(-1)">{{deviceNode.state}}</span>\
-            <span><label @click="changeDevice">修改</label><img src="lib/img/down.png" @click="toShowMenu(-1)"></span>\
-            <div class="device-menu" v-show="showMenu.deviceMenu"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div>\
+            <span><label @click="changeDevice">修改</label><img src="lib/img/down.png" @mouseover="toShowMenu(-1)" @mouseout="toCloseMenu(-1)"></span>\
+            <transition name="menu">\
+            <div class="device-menu" v-show="showMenu.deviceMenu" @mouseover="toShowMenu(-1)" @mouseout="toCloseMenu(-1)"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div></transition>\
         </div>\
         <ul v-show="showChildren">\
             <li v-for="(camera,index) in deviceNode.children">\
@@ -142,12 +151,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 <span>{{camera.ip}}</span>\
                 <span>{{camera.port}}</span>\
                 <span>{{camera.username}}</span>\
-                <span>{{camera.password}}</span>\
+                <span>{{camera.pwd}}</span>\
                 <span>{{camera.stream}}</span>\
                 <span>{{camera.timeout}}</span>\
                 <span :style="stateStyle(index)">{{camera.state}}</span>\
-                <span><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @click="toShowMenu(index)"></span>\
-                <div class="device-menu" v-if="showMenu.cameraMenu[index] && !showMenu.deviceMenu" ><button @click="deleteCamera(index)">删除</button></div>\
+                <span><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @mouseenter="toShowMenu(index) " @mouseleave="toCloseMenu(index)"></span>\
+                <transition name="menu">\
+                <div class="device-menu" v-if="showMenu.cameraMenu[index] && !showMenu.deviceMenu" @mouseenter="toShowMenu(index)" @mouseleave="toCloseMenu(index)"><button @click="deleteCamera(index)">删除</button></div></transition>\
             </li>\
         </ul>\
         </div>',
@@ -185,13 +195,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         methods:{
             stateStyle:function (index) {
               if(index === -1){
-                   if(this.deviceNode.state === '离线' || this.deviceNode.state === '错误'){
+                   if(this.deviceNode.state === '离线'){
                        return {
                            'color':'red'
                        }
                    }
               }else{
-                  if(this.deviceNode.children[index].state === '离线' || this.deviceNode.children[index].state === '错误'){
+                  if(this.deviceNode.children[index].state === '离线'){
                       return {
                           'color':'red'
                       }
@@ -201,14 +211,19 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             toShowChildren:function () {
                 this.showChildren = !this.showChildren;
             },
-            toShowMenu:function (num) {
-                if (num === -1) {
-                    this.showMenu.deviceMenu = !this.showMenu.deviceMenu;
+            toShowMenu:function (index) {
+                if (index === -1) {
+                    this.showMenu.deviceMenu = true;
                 } else {
-                    if (!this.showMenu.deviceMenu) {
-                        Vue.set(this.showMenu.cameraMenu, num, !this.showMenu.cameraMenu[num]);
-                    }
+                    Vue.set(this.showMenu.cameraMenu, index, true);
                 }
+            },
+            toCloseMenu:function (index) {
+              if(index === -1){
+                  this.showMenu.deviceMenu = false;
+              }  else{
+                  Vue.set(this.showMenu.cameraMenu,index,false);
+              }
             },
             changeDevice:function () {
               this.$emit('change-device');
@@ -238,28 +253,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             deviceShowMode:0,
             btnShowMode:0,
             cityIndex:0,
-            courtIndex:0,
             deviceNodes:[]
         },
-        computed:{
-            siteNodes:function () {
-                if(this.deviceShowMode === 0){
-                    return this.deviceNodes;
-                }else{
-                    return this.deviceNodes[this.cityIndex].children;
-                }
-            }
-        },
         methods:{
-            navClick:function (num) {
+            navClick:function () {
                 this.btnShowMode = 0;
-                if(num === -1){
-                    this.deviceShowMode = 0;
-                    this.cityIndex = -1;
-                }else{
-                    this.deviceShowMode = 1;
-                    this.courtIndex = -1;
-                }
+                this.deviceShowMode = 0;
+                this.cityIndex = -1;
             },
             btnClick:function () {
                 if(this.btnShowMode === 0){
@@ -272,15 +272,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 if(this.btnShowMode === 1){
                     return ;
                 }
-                if(this.deviceShowMode === 0){
-                    this.cityIndex = num;
-                    this.courtIndex = -1;
-                    this.deviceShowMode = 1;
-                }else{
-                    this.deviceShowMode = 2;
-                    this.btnShowMode = 2;
-                    this.courtIndex = num;
-                }
+                this.cityIndex = num;
+                this.deviceShowMode = 1;
+                this.btnShowMode = 2;
             },
             showButton:function (curMode) {
                 return curMode === this.btnShowMode;
@@ -289,7 +283,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 return curMode <= this.deviceShowMode;
             },
             showMode:function (curMode) {
-                return curMode === this.deviceShowMode || (curMode === 0 && this.deviceShowMode === 1);
+                return curMode === this.deviceShowMode;
             },
             deleteConfirm:function (parentNode,num) {
                 layer.confirm("确定要删除 " + parentNode[num].name +' 么？',{
@@ -310,13 +304,12 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
                 layer.prompt({
                     value: '',
-                    title: '请输入' + ((_this.deviceShowMode===0)?'城市名':'小区名')
+                    title: '请输入地区名'
                 }, function(value, index, elem){
                     let tmpNode = {
                         id:'-1',
                         name:value,
-                        date:now,
-                        errorNumber:0,
+                        createTime:now,
                         offlineNumber:0,
                         children:[]
                     };
@@ -331,21 +324,19 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             deleteItem:function (deviceIndex) {
                 if(this.deviceShowMode === 0){
                     this.deleteConfirm(this.deviceNodes,deviceIndex);
-                }else if(this.deviceShowMode === 1){
-                    this.deleteConfirm(this.deviceNodes[this.cityIndex].children,deviceIndex);
                 }else{
-                    this.deleteConfirm(this.deviceNodes[this.cityIndex].children[this.courtIndex].children,deviceIndex);
+                    this.deleteConfirm(this.deviceNodes[this.cityIndex].children,deviceIndex);
                 }
             },
             changeDevice:function (deviceIndex) {
                 processDevice.deviceIndex = deviceIndex;
                 processDevice.mode = '修改设备';
-                let curDevice = this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex];
+                let curDevice = this.deviceNodes[this.cityIndex].children[deviceIndex];
                 processDevice.newDevice.id = curDevice.id;
                 processDevice.newDevice.name = curDevice.name;
                 processDevice.newDevice.ip = curDevice.ip;
                 processDevice.newDevice.username = curDevice.username;
-                processDevice.newDevice.password = curDevice.password;
+                processDevice.newDevice.pwd = curDevice.pwd;
                 processDevice.newDevice.state = curDevice.state;
                 processDevice.showThis = true;
                 processDevice.thisLayer = layer.open({
@@ -354,7 +345,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64.1rem','24.1rem'],
+                    area: ['64rem','24rem'],
                     content: $('#device-process'),
                     cancel: function(){
 
@@ -371,7 +362,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64.1rem','24.1rem'],
+                    area: ['64rem','24rem'],
                     content: $('#device-process'),
                     cancel: function(){
 
@@ -381,7 +372,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             changeCamera:function (deviceIndex,cameraIndex) {
                 processCamera.deviceIndex = deviceIndex;
                 processCamera.cameraIndex = cameraIndex;
-                processCamera.newCamera = JSON.parse(JSON.stringify(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children[cameraIndex]));
+                processCamera.newCamera = JSON.parse(JSON.stringify(this.deviceNodes[this.cityIndex].children[deviceIndex].children[cameraIndex]));
                 processCamera.mode = '修改摄像机';
                 processCamera.showThis = true;
                 processCamera.thisLayer = layer.open({
@@ -390,7 +381,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64.1rem','36.1rem'],
+                    area: ['64rem','36rem'],
                     content: $('#camera-process'),
                     cancel: function(){
 
@@ -408,7 +399,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64.1rem','36.1rem'],
+                    area: ['64rem','36rem'],
                     content: $('#camera-process'),
                     cancel: function(){
                     }
@@ -437,14 +428,14 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 ip:'',
                 port:'-',
                 username:'',
-                password:'',
+                pwd:'',
                 stream:'-',
                 timeout:'-',
                 state:'空闲',
                 children:[]
             },
             showSelectStates:false,
-            selectStates:['空闲','工作','错误','离线'],
+            selectStates:['空闲','工作','离线'],
             showThis:false
         },
         methods:{
@@ -455,13 +446,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.newDevice = {
                     name:'',
                     id:'-1',
-                    brand:'-',
                     ip:'',
-                    port:'-',
                     username:'',
-                    password:'',
-                    stream:'-',
-                    timeout:'-',
+                    pwd:'',
                     state:'空闲',
                     children:[]
                 };
@@ -471,14 +458,14 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.showSelectStates = false;
             },
             doDeviceProcess:function () {
-                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[deviceManage.courtIndex].children;
+                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children;
                 if(this.mode === '添加设备'){
                     par.push(this.newDevice);
                 }else if(this.mode === '修改设备'){
                     par[this.deviceIndex].name = this.newDevice.name;
                     par[this.deviceIndex].ip = this.newDevice.ip;
                     par[this.deviceIndex].username = this.newDevice.username;
-                    par[this.deviceIndex].password = this.newDevice.password;
+                    par[this.deviceIndex].pwd = this.newDevice.pwd;
                     par[this.deviceIndex].state = this.newDevice.state;
                 }
                 layer.close(this.thisLayer);
@@ -486,13 +473,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.newDevice={
                     name:'',
                     id:'-1',
-                    brand:'-',
                     ip:'',
-                    port:'-',
                     username:'',
-                    password:'',
-                    stream:'-',
-                    timeout:'-',
+                    pwd:'',
                     state:'空闲',
                     children:[]
                 };
@@ -514,14 +497,14 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 ip: '',
                 port: '',
                 username: '',
-                password: '',
+                pwd: '',
                 stream: '',
                 timeout: '',
-                state: '在线',
+                state: '空闲',
                 nocheck: true
             },
             showSelectStates:false,
-            selectStates:['在线','工作','错误','离线'],
+            selectStates:['空闲','工作','离线'],
             showThis:false
         },
         methods:{
@@ -535,7 +518,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                   ip: '',
                   port: '',
                   username: '',
-                  password: '',
+                  pwd: '',
                   stream: '',
                   timeout: '',
                   state: '空闲',
@@ -547,7 +530,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
               this.showSelectStates = false;
             },
             doCameraProcess:function () {
-                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[deviceManage.courtIndex].children[this.deviceIndex].children;
+                let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[this.deviceIndex].children;
                 if(this.mode === '添加摄像机'){
                     par.push(this.newCamera);
                 }else if(this.mode === '修改摄像机'){
@@ -562,7 +545,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     ip: '',
                     port: '',
                     username: '',
-                    password: '',
+                    pwd: '',
                     stream: '',
                     timeout: '',
                     state: '空闲',

@@ -8,7 +8,23 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         form = layui.form(),
         laypage=layui.laypage;
 
-    let socket = io('10.141.5.146:1001');
+    let socket = io(document.location.hostname + ':1001');
+    socket.on('nohit-record',function (record) {
+        if(record.type === 'NOHIT'){
+            nohitRecords.records.unshift(record.children);
+        }else{
+
+        }
+    });
+    socket.on('hit-record',function (record) {
+       if(record.type === 'HIT'){
+           recordTable.records.unshift(record.children);
+           layer.close(layer.index);
+           popWindow(record.children);
+       } else{
+
+       }
+    });
 
     let deviceList=new Vue({
         el:"#deviceList",
@@ -76,7 +92,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     });
 
     function getFontCss(treeId, treeNode) {
-        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        if(treeNode.state === '离线'){
+            return {color:'red'};
+        }else{
+            return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        }
     }
 
     let cameraTotal=new Vue({
@@ -154,85 +174,28 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     }
 
 
-    const nothitImg = {
-        props: ['photo'],
-        template: '<div><img :src="photo.img_path"> <p>{{photo.time}}<br/><br/>{{photo.site}}</p></div>'
+    const nohitImg = {
+        props: ['img'],
+        template: '<div><img :src="img.queryImage"> <p>{{img.createTime}}<br/><br/>{{img.place}}</p></div>'
     };
 
-    let nothitPhoto=new Vue({
-        el:"#nothit-photo",
+    let nohitRecords=new Vue({
+        el:"#nohit-image",
         data:{
-            newRecord:{
-                img_path:"",
-                time:"",
-                site:""
-            },
-            records:[
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"锡林郭勒-碧桂园-设备01-Camera01"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                },
-                {
-                    img_path:"lib/img/person.jpg",
-                    time:"2017-04-26 08:53",
-                    site:"上海-小区2-camera10"
-                }
-            ]
+            records:[]
         },
-        computed:{
-            eightRecords:function () {
+       watch:{
+            records:function () {
                 while(this.records.length>8){
                     this.records.pop();
                 }
-                return this.records;
             }
         },
         methods:{
-            addRecord:function (path,time,site) {
-                this.newRecord.img_path=path;
-                this.newRecord.time=time;
-                this.newRecord.site=site;
 
-                this.records.unshift(this.newRecord);
-
-                this.newRecord.img_path="";
-                this.newRecord.time="";
-                this.newRecord.site="";
-            }
         },
         components:{
-            'nothit-img':nothitImg
+            'nohit-img':nohitImg
         }
     });
 
@@ -258,30 +221,46 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         data:{
             curPage: 0,
             newRecord:{
-                id:-1,
-                name:"\0",
-                type:"",
-                number:"",
-                time:"",
-                site:""
+                id: -1,
+                createTime:'',
+                place:'',
+                queryImage:'',
+                cameraId:'',
+                user:{
+                    id:-1,
+                    name:'\0',
+                    nationality:'',
+                    gender:'',
+                    thumbnailName:'',
+                    fullImage:'',
+                    thumbnailImage:'',
+                    comments:'',
+                    label:'',
+                    passportNumber: ''
+                }
             },
             records:[]
         },
         watch:{
             records:function () {
-                layui.laypage({
-                    cont: 'laypager'
-                    ,pages: Math.ceil(recordTable.records.length/5)
-                    ,first: 1
-                    ,last: Math.ceil(recordTable.records.length/5)
-                    ,prev: '<em><</em>'
-                    ,next: '<em>></em>'
-                    ,skin: '#202d24'
-                    ,groups: 3
-                    ,jump: function(obj) {
-                        recordTable.curPage = obj.curr - 1;
-                    }
-                });
+                while(this.records.length > 100){
+                    this.records.pop();
+                }
+                if(recordTable.records.length/5 < 20){
+                    layui.laypage({
+                        cont: 'laypager'
+                        ,pages: Math.ceil(recordTable.records.length/5)
+                        ,first: 1
+                        ,last: Math.ceil(recordTable.records.length/5)
+                        ,prev: '<em><</em>'
+                        ,next: '<em>></em>'
+                        ,skin: '#202d24'
+                        ,groups: 3
+                        ,jump: function(obj) {
+                            recordTable.curPage = obj.curr - 1;
+                        }
+                    });
+                }
             }
         },
         computed:{
@@ -297,11 +276,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         },
         methods:{
             styleObject:function (index) {
-                if(this.pageRecords[index].type==="黑名单"){
+                if(this.pageRecords[index].user.label === "黑名单"){
                     return {
                         color:"red"
                     };
-                }else if(this.pageRecords[index].name==="\0"){
+                }else if(this.pageRecords[index].user.name==="\0"){
                     if(index%2===0){
                         return {
                             color: "#0a0f0b"
@@ -316,29 +295,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     return "";
                 }
             },
-            addRecord:function (id,name,type,number,time,site) {
-                this.newRecord.id = id;
-                this.newRecord.name = name;
-                this.newRecord.type = type;
-                this.newRecord.number = number;
-                this.newRecord.time = time;
-                this.newRecord.site = site;
-
-                this.records.unshift(this.newRecord);
-                if(this.records.length > 100){
-                    this.records.pop();
-                }
-                this.newRecord = {
-                    id:-1,
-                    name:"\0",
-                    type:"",
-                    number:"",
-                    time:"",
-                    site:""
-                };
-            },
             popWin:function (num) {
-                popWindow(this.records[this.curPage * 5 + num]);
+                if(this.pageRecords[num].user.name !== '\0'){
+                    popWindow(this.records[this.curPage * 5 + num]);
+                }
             }
         }
     });
@@ -350,35 +310,35 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
     function popWindow(node) {
         let tmpContent = "";
-        if(node.type==="黑名单"){
+        if(node.user.label==="黑名单"){
             tmpContent = '<div class="pop-main">\
                               <div class="pop-title">\
                                   <p>警告！发现黑名单</p>\
                               </div>\
                               <div class="pop-info">\
-                                  <img src="lib/img/ironman.jpg">\
-                                  <img src="lib/img/ironman2.jpg">\
-                                  <label>姓名</label><p>'+node.name+'</p>\
-                                  <label>类别</label><p>'+node.type+'</p>\
-                                  <label>时间</label><p>'+node.time+'</p>\
-                                  <label>地点</label><p>'+node.site+'</p>\
-                                  <label>备注</label><p>'+node.remark+'</p>\
+                                  <img src=' + node.user.fullImage +'>\
+                                  <img src=' + node.queryImage +'>\
+                                  <label>姓名</label><p>'+node.user.name+'</p>\
+                                  <label>类别</label><p>'+node.user.label+'</p>\
+                                  <label>时间</label><p>'+node.createTime+'</p>\
+                                  <label>地点</label><p>'+node.place+'</p>\
+                                  <label>备注</label><p>'+node.user.comments+'</p>\
                               </div>\
                           </div>';
-        }else if(node.type === "白名单"){
+        }else if(node.user.label === "白名单"){
 
             tmpContent = '<div class="pop-main pop-main-white">\
                               <div class="pop-title">\
                                   <p>发现白名单</p>\
                               </div>\
                               <div class="pop-info">\
-                                  <img src="lib/img/ironman.jpg">\
-                                  <img src="lib/img/ironman2.jpg">\
-                                  <label>姓名</label><p>' + node.name + '</p>\
-                                  <label>类别</label><p>' + node.type + '</p>\
-                                  <label>时间</label><p>' + node.time + '</p>\
-                                  <label>地点</label><p>' + node.site + '</p>\
-                                  <label>备注</label><p>' + node.remark + '</p>\
+                                  <img src=' + node.user.fullImage +'>\
+                                  <img src=' + node.queryImage +'>\
+                                  <label>姓名</label><p>'+node.user.name+'</p>\
+                                  <label>类别</label><p>'+node.user.label+'</p>\
+                                  <label>时间</label><p>'+node.createTime+'</p>\
+                                  <label>地点</label><p>'+node.place+'</p>\
+                                  <label>备注</label><p>'+node.user.comments+'</p>\
                               </div>\
                           </div>';
         }
@@ -406,7 +366,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     }
 
     $(document).ready(function(){
-
         axios({
             method: 'get',
             url: '/get_device_list',
@@ -414,8 +373,12 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                deviceList.deviceNodes = response.data.children;
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                if(response.data.type === 'OK'){
+                    deviceList.deviceNodes = response.data.children;
+                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                }else {
+
+                }
             })
             .catch(function (error) {
 
@@ -430,9 +393,23 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                let records = response.data.children;
-                for (let i = 0; i < records.length; i++) {
-                    recordTable.addRecord(records[i].id, records[i].user.name, records[i].user.label, records[i].user.passportNumber, records[i].createTime, records[i].place);
+                if(response.data.type === 'OK'){
+                    recordTable.records = response.data.children;
+                    layui.laypage({
+                        cont: 'laypager'
+                        ,pages: Math.ceil(recordTable.records.length/5)
+                        ,first: 1
+                        ,last: Math.ceil(recordTable.records.length/5)
+                        ,prev: '<em><</em>'
+                        ,next: '<em>></em>'
+                        ,skin: '#202d24'
+                        ,groups: 3
+                        ,jump: function(obj) {
+                            recordTable.curPage = obj.curr - 1;
+                        }
+                    });
+                }else {
+
                 }
             })
             .catch(function (error) {
@@ -471,20 +448,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         };
     })
     */
-
-    layui.laypage({
-        cont: 'laypager'
-        ,pages: Math.ceil(recordTable.records.length/5)
-        ,first: 1
-        ,last: Math.ceil(recordTable.records.length/5)
-        ,prev: '<em><</em>'
-        ,next: '<em>></em>'
-        ,skin: '#202d24'
-        ,groups: 3
-        ,jump: function(obj) {
-            recordTable.curPage = obj.curr - 1;
-        }
-    });
 
     exports('index', {});
 });

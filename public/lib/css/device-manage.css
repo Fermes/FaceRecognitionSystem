@@ -1,5 +1,6 @@
-@import "zTree_v3/css/metroStyle/metroStyle.css";
-@import "layui/css/layui.css";
+@import "../zTree_v3/css/metroStyle/metroStyle.css";
+@import "../layui/css/layui.css";
+@import "iview.css";
 html {
   font-size: 16px;
 }
@@ -63,7 +64,7 @@ body {
   width: 88%;
   height: 3.3%;
   border-radius: 5px;
-  background: #1b5c24 url("img/search.png") no-repeat 97%;
+  background: #1b5c24 url("../img/search.png") no-repeat 97%;
   background-size: 20px;
 }
 .frs-device .search input {
@@ -111,8 +112,8 @@ body {
   padding: 5px 0 0 3px;
 }
 .frs-device .ztree li span.button.switch {
-  background-image: url("img/left_menu.png");
-  *background-image: url("img/left_menu.gif");
+  background-image: url("../img/left_menu.png");
+  *background-image: url("../img/left_menu.gif");
   width: 20px;
   height: 20px;
   margin-top: 5px;
@@ -130,8 +131,9 @@ body {
 }
 .frs-device .ztree li a {
   width: 93%;
-  padding: 3px 0 3px 1px;
+  padding: 0 0 3px 1px;
   border-radius: 4px;
+  height: 1.6rem;
 }
 .frs-device .ztree li a:hover {
   border: 1px solid #1b5c24;
@@ -139,9 +141,7 @@ body {
   box-shadow: inset 0 0 1rem #12ad02;
 }
 .frs-device .ztree li a.curSelectedNode {
-  padding-top: 3px;
   opacity: 1;
-  height: 21px;
   background-color: inherit;
   border: 1px solid #1b5c24;
   border-left: 4px solid #12ad02;
@@ -231,7 +231,7 @@ body {
   height: 6rem;
   border: 1px solid #1b5c24;
   box-shadow: inset 0 0 2rem #1b5c24;
-  background: url('img/city-dark.png') no-repeat;
+  background: url('../img/city-dark.png') no-repeat;
   background-size: 7rem 5.1rem;
   background-position: 0 0.5rem;
 }
@@ -261,12 +261,12 @@ body {
   position: absolute;
   margin: 0.4rem 0 0 13.5rem;
   border: 1px solid #1b5c24;
-  background: url("img/close-dark.png") no-repeat;
+  background: url("../img/close-dark.png") no-repeat;
   background-size: cover;
 }
 .frs-device-manage .device-site span.site-item span.site-item-icon:hover {
   border: 1px solid #2fbb3e;
-  background: url("img/close-light.png") no-repeat;
+  background: url("../img/close-light.png") no-repeat;
   background-size: cover;
 }
 .frs-device-manage .device-site span.site-item:hover {
@@ -274,17 +274,17 @@ body {
   border: 1px solid #2fbb3e;
   transition: 0.3s;
   cursor: pointer;
-  background: url('img/city-light.png') no-repeat;
+  background: url('../img/city-light.png') no-repeat;
   background-size: 7rem 5.1rem;
   background-position: 0 0.5rem;
 }
 .frs-device-manage .device-site span.site-item-add {
-  background: url("img/add-dark.png") no-repeat center;
+  background: url("../img/add-dark.png") no-repeat center;
   background-size: 5rem 5rem;
 }
 .frs-device-manage .device-site span.site-item-add:hover {
   cursor: pointer;
-  background: url("img/add-light.png") no-repeat center;
+  background: url("../img/add-light.png") no-repeat center;
   background-size: 5rem 5rem;
 }
 .frs-device-manage .device-camera {
@@ -410,240 +410,6 @@ body {
   background-color: #1b5c24;
   border-radius: 0;
 }
-div.device-process {
-  width: 64rem;
-  height: 24rem;
-  color: #2fbb3e;
-  border: 1px solid #1b5c24;
-  background-color: #0b1013;
-  box-shadow: inset 0 0 5rem #1b5c24;
-}
-div.device-process span.close-icon {
-  display: inline-block;
-  margin: 1rem 0 0 60rem;
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  background: url("img/close-dark.png") no-repeat center;
-  background-size: 2rem 2rem;
-}
-div.device-process span.close-icon:hover {
-  background: url("img/close-light.png") no-repeat center;
-  background-size: 2rem 2rem;
-}
-div.device-process p {
-  font-size: 1.5rem;
-  margin: 2rem 0 0 27rem;
-}
-div.device-process input {
-  background-color: #0b1013;
-  border: none;
-  border-bottom: 2px solid #2fbb3e;
-  outline: none;
-  color: #2fbb3e;
-  height: 1.3rem;
-  font-size: 1.2rem;
-}
-div.device-process label {
-  font-size: 1.2rem;
-  display: inline-block;
-}
-div.device-process label:nth-of-type(1) {
-  margin: 2rem 3.5rem 0 5rem;
-}
-div.device-process label:nth-of-type(2) {
-  margin: 2rem 3.5rem 0 8rem;
-}
-div.device-process label:nth-of-type(3) {
-  margin: 3rem 1.2rem 0 5rem;
-}
-div.device-process label:nth-of-type(4) {
-  margin: 3rem 1.2rem 0 7.8rem;
-}
-div.device-process label:nth-of-type(5) {
-  margin: 3.5rem 3.5rem 0 5rem;
-}
-div.device-process button {
-  position: absolute;
-  width: 8rem;
-  height: 1.8rem;
-  margin: 7rem 0 0 21rem;
-}
-div.device-process span.select-item {
-  position: relative;
-  display: inline-block;
-  border: 1px solid #1b5c24;
-  background-color: #0b1013;
-  color: #2fbb3e;
-  border-radius: 4px;
-  width: 14rem;
-  height: auto;
-  font-size: 1rem;
-  padding: 0 0 0 0;
-}
-div.device-process span.select-item:hover {
-  background-color: #1b5c24;
-}
-div.device-process span.select-item label {
-  padding: 0.2rem 0 0.2rem 1rem;
-  margin: 0 0 0 0;
-  position: relative;
-  display: inline-block;
-  width: 13rem;
-  height: 1.2rem;
-  background-color: #0b1013;
-}
-div.device-process span.select-item label:first-child {
-  background: url("img/left_menu.png") no-repeat 12.5rem -0.95rem;
-}
-div.device-process span.select-item label:hover {
-  background-color: #1b5c24;
-}
-div.device-process span.select-item span.select-node {
-  z-index: 2;
-  position: absolute;
-  display: block;
-  margin-left: -1px;
-  border: 1px solid #1b5c24;
-  border-top: none;
-}
-div.device-process span.select-item span.select-node label {
-  display: block;
-}
-div.device-process span.select-item span.select-node label:first-child {
-  background: none;
-  background-color: #0b1013;
-  border-top: 1px solid #1b5c24;
-}
-div.device-process span.select-item span.select-node label:first-child:hover {
-  background-color: #1b5c24;
-}
-div.camera-process {
-  width: 64rem;
-  height: 36rem;
-  color: #2fbb3e;
-  border: 1px solid #1b5c24;
-  background-color: #0b1013;
-  box-shadow: inset 0 0 5rem #1b5c24;
-}
-div.camera-process span.close-icon {
-  display: inline-block;
-  margin: 1rem 0 0 60rem;
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  background: url("img/close-dark.png") no-repeat center;
-  background-size: 2rem 2rem;
-}
-div.camera-process span.close-icon:hover {
-  background: url("img/close-light.png") no-repeat center;
-  background-size: 2rem 2rem;
-}
-div.camera-process p {
-  font-size: 1.5rem;
-  margin: 2rem 0 0 27rem;
-}
-div.camera-process input {
-  background-color: #0b1013;
-  border: none;
-  border-bottom: 2px solid #2fbb3e;
-  outline: none;
-  color: #2fbb3e;
-  height: 1.3rem;
-  font-size: 1.2rem;
-}
-div.camera-process input:nth-of-type(7) {
-  width: 25rem;
-}
-div.camera-process input:nth-of-type(8) {
-  width: 9rem;
-}
-div.camera-process label {
-  font-size: 1.2rem;
-  display: inline-block;
-}
-div.camera-process label:nth-of-type(1) {
-  margin: 2rem 1rem 0 5rem;
-}
-div.camera-process label:nth-of-type(2) {
-  margin: 2rem 1rem 0 8rem;
-}
-div.camera-process label:nth-of-type(3) {
-  margin: 3rem 3.5rem 0 5rem;
-}
-div.camera-process label:nth-of-type(4) {
-  margin: 3rem 3.5rem 0 8rem;
-}
-div.camera-process label:nth-of-type(5) {
-  margin: 3.5rem 3.4rem 0 5rem;
-}
-div.camera-process label:nth-of-type(6) {
-  margin: 3.5rem 4.7rem 0 8rem;
-}
-div.camera-process label:nth-of-type(7) {
-  margin: 4rem 3.3rem 0 5rem;
-}
-div.camera-process label:nth-of-type(8) {
-  margin: 4rem 1rem 0 2.6rem;
-}
-div.camera-process label:nth-of-type(9) {
-  margin: 4.5rem 1rem 0 5rem;
-}
-div.camera-process button {
-  position: absolute;
-  width: 8rem;
-  height: 1.8rem;
-  margin: 8rem 0 0 22rem;
-}
-div.camera-process span.select-item {
-  position: relative;
-  display: inline-block;
-  border: 1px solid #1b5c24;
-  background-color: #0b1013;
-  color: #2fbb3e;
-  border-radius: 4px;
-  width: 14rem;
-  height: auto;
-  font-size: 1rem;
-  padding: 0 0 0 0;
-}
-div.camera-process span.select-item:hover {
-  background-color: #1b5c24;
-}
-div.camera-process span.select-item label {
-  padding: 0.2rem 0 0.2rem 1rem;
-  margin: 0 0 0 0;
-  position: relative;
-  display: inline-block;
-  width: 13rem;
-  height: 1.2rem;
-  background-color: #0b1013;
-}
-div.camera-process span.select-item label:first-child {
-  background: url("img/left_menu.png") no-repeat 12.5rem -0.95rem;
-}
-div.camera-process span.select-item label:hover {
-  background-color: #1b5c24;
-}
-div.camera-process span.select-item span.select-node {
-  z-index: 2;
-  position: absolute;
-  display: block;
-  margin-left: -1px;
-  border: 1px solid #1b5c24;
-  border-top: none;
-}
-div.camera-process span.select-item span.select-node label {
-  display: block;
-}
-div.camera-process span.select-item span.select-node label:first-child {
-  background: none;
-  background-color: #0b1013;
-  border-top: 1px solid #1b5c24;
-}
-div.camera-process span.select-item span.select-node label:first-child:hover {
-  background-color: #1b5c24;
-}
 .layui-layer-prompt,
 .layui-layer-dialog {
   background-color: #0b1013;
@@ -677,4 +443,253 @@ div.camera-process span.select-item span.select-node label:first-child:hover {
   background-color: #1b5c24;
   color: #00880b;
   border: none;
+}
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.5s;
+}
+.menu-leave-active {
+  opacity: 0;
+}
+.device-process {
+  width: 64rem;
+  height: 24rem;
+  color: #2fbb3e;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  box-shadow: inset 0 0 5rem #1b5c24;
+}
+.device-process span.close-icon {
+  display: inline-block;
+  margin: 1rem 0 0 60rem;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background: url("../img/close-dark.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+.device-process span.close-icon:hover {
+  background: url("../img/close-light.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+.device-process p {
+  font-size: 1.5rem;
+  margin: 2rem 0 0 27rem;
+}
+.device-process input {
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  outline: none;
+  color: #2fbb3e;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+.device-process label {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+.device-process label:nth-of-type(1) {
+  margin: 2rem 3.5rem 0 5rem;
+}
+.device-process label:nth-of-type(2) {
+  margin: 2rem 3.5rem 0 8rem;
+}
+.device-process label:nth-of-type(3) {
+  margin: 3rem 1.2rem 0 5rem;
+}
+.device-process label:nth-of-type(4) {
+  margin: 3rem 1.2rem 0 7.8rem;
+}
+.device-process label:nth-of-type(5) {
+  margin: 3.5rem 3.5rem 0 5rem;
+}
+.device-process button {
+  font-size: 1rem;
+  position: absolute;
+  width: 8rem;
+  height: 1.8rem;
+  margin: 7rem 0 0 21rem;
+}
+.device-process span.select-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: #2fbb3e;
+  border-radius: 4px;
+  width: 14rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+.device-process span.select-item:hover {
+  background-color: #1b5c24;
+}
+.device-process span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 13.85rem;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  background-color: #0b1013;
+}
+.device-process span.select-item label:first-child {
+  background: url("../img/left_menu.png") no-repeat 12.5rem -0.95rem;
+}
+.device-process span.select-item label:hover {
+  background-color: #1b5c24;
+}
+.device-process span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
+}
+.device-process span.select-item span.select-node label {
+  display: block;
+}
+.device-process span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
+  border-top: 1px solid #1b5c24;
+}
+.device-process span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
+}
+.camera-process {
+  width: 64rem;
+  height: 36rem;
+  color: #2fbb3e;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  box-shadow: inset 0 0 5rem #1b5c24;
+}
+.camera-process span.close-icon {
+  display: inline-block;
+  margin: 1rem 0 0 60rem;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background: url("../img/close-dark.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+.camera-process span.close-icon:hover {
+  background: url("../img/close-light.png") no-repeat center;
+  background-size: 2rem 2rem;
+}
+.camera-process p {
+  font-size: 1.5rem;
+  margin: 2rem 0 0 27rem;
+}
+.camera-process input {
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  outline: none;
+  color: #2fbb3e;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  font-size: 1.2rem;
+}
+.camera-process input:nth-of-type(7) {
+  width: 25rem;
+}
+.camera-process input:nth-of-type(8) {
+  width: 9rem;
+}
+.camera-process label {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+.camera-process label:nth-of-type(1) {
+  margin: 2rem 1rem 0 5rem;
+}
+.camera-process label:nth-of-type(2) {
+  margin: 2rem 1rem 0 8rem;
+}
+.camera-process label:nth-of-type(3) {
+  margin: 3rem 3.5rem 0 5rem;
+}
+.camera-process label:nth-of-type(4) {
+  margin: 3rem 3.5rem 0 8rem;
+}
+.camera-process label:nth-of-type(5) {
+  margin: 3.5rem 3.4rem 0 5rem;
+}
+.camera-process label:nth-of-type(6) {
+  margin: 3.5rem 4.7rem 0 8rem;
+}
+.camera-process label:nth-of-type(7) {
+  margin: 4rem 3.3rem 0 5rem;
+}
+.camera-process label:nth-of-type(8) {
+  margin: 4rem 1rem 0 2.6rem;
+}
+.camera-process label:nth-of-type(9) {
+  margin: 4.5rem 1rem 0 5rem;
+}
+.camera-process button {
+  font-size: 1rem;
+  position: absolute;
+  width: 8rem;
+  height: 1.8rem;
+  margin: 8rem 0 0 22rem;
+}
+.camera-process span.select-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #1b5c24;
+  background-color: #0b1013;
+  color: #2fbb3e;
+  border-radius: 4px;
+  width: 14rem;
+  height: auto;
+  font-size: 1rem;
+  padding: 0 0 0 0;
+}
+.camera-process span.select-item:hover {
+  background-color: #1b5c24;
+}
+.camera-process span.select-item label {
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0 0 0 0;
+  position: relative;
+  display: inline-block;
+  width: 13.85rem;
+  height: 1.5rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  background-color: #0b1013;
+}
+.camera-process span.select-item label:first-child {
+  background: url("../img/left_menu.png") no-repeat 12.5rem -0.95rem;
+}
+.camera-process span.select-item label:hover {
+  background-color: #1b5c24;
+}
+.camera-process span.select-item span.select-node {
+  z-index: 2;
+  position: absolute;
+  display: block;
+  margin-left: -1px;
+  border: 1px solid #1b5c24;
+  border-top: none;
+}
+.camera-process span.select-item span.select-node label {
+  display: block;
+}
+.camera-process span.select-item span.select-node label:first-child {
+  background: none;
+  background-color: #0b1013;
+  border-top: 1px solid #1b5c24;
+}
+.camera-process span.select-item span.select-node label:first-child:hover {
+  background-color: #1b5c24;
 }
