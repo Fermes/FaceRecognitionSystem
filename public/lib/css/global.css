@@ -1,6 +1,5 @@
 @import "../zTree_v3/css/metroStyle/metroStyle.css";
 @import "../layui/css/layui.css";
-@import "iview.css";
 html {
   font-size: 16px;
 }
@@ -45,4 +44,22 @@ body {
 }
 .frs-nav label:first-child {
   margin-left: 2rem;
+}
+.layui-laypage a,
+.layui-laypage span {
+  background-color: #0a0f0b;
+  color: #259c3d;
+  border: none;
+  font-size: 1rem;
+}
+.layui-laypage a:hover {
+  color: white;
+}
+.layui-laypage a.layui-laypage-prev,
+.layui-laypage a.layui-laypage-next {
+  background-color: #0b2c11;
+  border: 1px solid #259c3d;
+}
+.layui-laypage a[data-page="1"] {
+  border-left: 1px solid #259c3d;
 }

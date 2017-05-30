@@ -81,27 +81,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         }
     }
 
-    $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-        axios({
-            method: 'get',
-            url: '/get_device_list',
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if(response.data.type === 'OK'){
-                    deviceList.deviceNodes = response.data.children;
-                    deviceManage.deviceNodes = deviceList.deviceNodes;
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                }else {
 
-                }
-            })
-            .catch(function (error) {
-
-            });
-    });
 
     const siteItem = {
         template:'<span class="site-item" v-on:click="changeInterface">\
@@ -255,11 +235,18 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             cityIndex:0,
             deviceNodes:[]
         },
+        computed:{
+
+        },
         methods:{
-            navClick:function () {
-                this.btnShowMode = 0;
-                this.deviceShowMode = 0;
-                this.cityIndex = -1;
+            navClick:function (num) {
+                if(num === -1){
+                    this.btnShowMode = 0;
+                    this.deviceShowMode = 0;
+                }else{
+                    this.deviceShowMode = 1;
+                    this.cityIndex = num;
+                }
             },
             btnClick:function () {
                 if(this.btnShowMode === 0){
@@ -279,12 +266,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             showButton:function (curMode) {
                 return curMode === this.btnShowMode;
             },
-            showNav:function (curMode) {
-                return curMode <= this.deviceShowMode;
-            },
-            showMode:function (curMode) {
-                return curMode === this.deviceShowMode;
-            },
             deleteConfirm:function (parentNode,num) {
                 layer.confirm("确定要删除 " + parentNode[num].name +' 么？',{
                     title:'删除确认',
@@ -296,6 +277,13 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 },function () {
 
                 });
+            },
+            deleteItem:function (deviceIndex) {
+                if(this.deviceShowMode === 0){
+                    this.deleteConfirm(this.deviceNodes,deviceIndex);
+                }else{
+                    this.deleteConfirm(this.deviceNodes[this.cityIndex].children,deviceIndex);
+                }
             },
             addItem:function () {
                 let _this = this;
@@ -320,13 +308,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     }
                     layer.close(index);
                 });
-            },
-            deleteItem:function (deviceIndex) {
-                if(this.deviceShowMode === 0){
-                    this.deleteConfirm(this.deviceNodes,deviceIndex);
-                }else{
-                    this.deleteConfirm(this.deviceNodes[this.cityIndex].children,deviceIndex);
-                }
             },
             changeDevice:function (deviceIndex) {
                 processDevice.deviceIndex = deviceIndex;
@@ -406,7 +387,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 });
             },
             deleteCamera:function (deviceIndex,cameraIndex) {
-                this.deleteConfirm(this.deviceNodes[this.cityIndex].children[this.courtIndex].children[deviceIndex].children,cameraIndex);
+                this.deleteConfirm(this.deviceNodes[this.cityIndex].children[deviceIndex].children,cameraIndex);
             }
         },
         components:{
@@ -424,13 +405,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             newDevice: {
                 name:'',
                 id:'-1',
-                brand:'-',
                 ip:'',
-                port:'-',
                 username:'',
                 pwd:'',
-                stream:'-',
-                timeout:'-',
                 state:'空闲',
                 children:[]
             },
@@ -481,7 +458,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 };
             }
         }
-    })
+    });
 
     let processCamera = new Vue({
         el:'#camera-process',
@@ -531,6 +508,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             doCameraProcess:function () {
                 let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[this.deviceIndex].children;
+                if(this.newCamera.name === '' || this.newCamera.username || '' || this.newCamera.pwd !== ''){
+                    return;
+                }
                 if(this.mode === '添加摄像机'){
                     par.push(this.newCamera);
                 }else if(this.mode === '修改摄像机'){
@@ -554,6 +534,28 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             }
         }
     })
+
+    $(document).ready(function(){
+        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+        axios({
+            method: 'get',
+            url: '/get_device_list',
+            responseType: 'json',
+            async: false
+        })
+            .then(function (response) {
+                if(response.data.type === 'OK'){
+                    deviceList.deviceNodes = response.data.children;
+                    deviceManage.deviceNodes = deviceList.deviceNodes;
+                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                }else {
+
+                }
+            })
+            .catch(function (error) {
+
+            });
+    });
 
     exports('device-manage', {});
 });

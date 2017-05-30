@@ -1,6 +1,5 @@
 @import "../zTree_v3/css/metroStyle/metroStyle.css";
 @import "../layui/css/layui.css";
-@import "iview.css";
 
 @back-color: #0b1013;
 @font-green: #2fbb3e;
@@ -53,6 +52,26 @@ body {
     }
   }
 }
+.layui-laypage{
+  a,span{
+    background-color: #0a0f0b;
+    color: #259c3d;
+    border: none;
+    font-size: 1rem;
+  }
+  a{
+    &:hover{
+      color: white;
+    }
+    &.layui-laypage-prev,&.layui-laypage-next{
+      background-color: #0b2c11;
+      border: 1px solid #259c3d;
+    }
+    &[data-page="1"]{
+      border-left:1px solid #259c3d;
+    }
+  }
+}
 .frs-scroll-bar(){
   scrollbar-track-color: @back-color;
   scrollbar-face-color: @font-green - #333;
@@ -82,25 +101,27 @@ body {
     background-color: @back-color;
     color: @font-green;
     border-radius: 4px;
-    width: @width;
-    height: auto;
+    width: @width + 0.85rem;
+    height: 1.5rem;
     font-size: 1rem;
     padding: 0 0 0 0;
+    line-height: 1.5rem;
     &:hover{
       background-color: @border-dark;
     }
     label {
-      padding: 0.2rem 0 0.2rem 1rem;
+      padding: 0 0 0 1rem;
       margin: 0 0 0 0;
       position: relative;
-      display: inline-block;
+      display: block;
       width: @width - 0.15rem;
       height: 1.5rem;
-      font-size: 1.2rem;
-      line-height: 1.2rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
       background-color: @back-color;
+      color:@font-green;
       &:first-child{
-        background: url("../img/left_menu.png") no-repeat @width - 1.5rem -0.95rem;
+        background: url("../img/left_menu.png") no-repeat @width - 0.5rem -1rem;
       }
       &:hover {
         background-color: @border-dark;
@@ -109,15 +130,14 @@ body {
     span.select-node {
       z-index: 2;
       position: absolute;
-      display: block;
+      display: inline-block;
       margin-left: -1px;
       border: 1px solid @border-dark;
       border-top:none;
       label {
         display: block;
         &:first-child {
-          background: none;
-          background-color: @back-color;
+          background: @back-color none;
           border-top: 1px solid @border-dark;
           &:hover {
             background-color: @border-dark;
@@ -178,28 +198,11 @@ body {
   }
 }
 .tree-check(){
+  .tree-normal();
   .ztree{
-    span {
-      font-size: 130%;
-      padding: 5px 0 0 3px;
-    }
-
     li{
       span{
         &.button{
-          &.switch{
-            background-image: url("../img/left_menu.png");
-            *background-image: url("../img/left_menu.gif");
-            width: 20px;
-            height: 20px;
-            margin-top: 5px;
-          }
-          &.noline_open{
-            background-position: 0 -18px;
-          }
-          &.noline_close {
-            background-position: -18px -18px;
-          }
           &.edit,&.remove,&.noline_docu{
             visibility: hidden;
           }
@@ -209,25 +212,6 @@ body {
             left: 330px;
             border: none;
           }
-        }
-      }
-      a{
-        width: 93%;
-        padding: 3px 0 3px 1px;
-        border-radius: 2px;
-        &:hover{
-          border:1px solid @border-dark;
-          border-left: 4px solid #12ad02;
-          box-shadow: inset 0 0 1rem #12ad02;
-        }
-        &.curSelectedNode{
-          padding-top: 3px;
-          opacity: 1;
-          height: 21px;
-          background-color: inherit;
-          border:1px solid @border-dark;
-          border-left: 4px solid #12ad02;
-          box-shadow: inset 0 0 1rem #12ad02;
         }
       }
     }

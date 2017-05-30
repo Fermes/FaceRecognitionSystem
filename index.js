@@ -103,6 +103,26 @@ let hitRecords= Mock.mock({
         }
     ]
 });
+
+let regFace = Mock.mock({
+    type:'REG',
+    'children|100':[
+        {
+            id: '@natural(1,9999)',
+            name: '@cname',
+            nationality: '中国',
+            gender: '@pick(["男","男","男","男","女"])',
+            thumbnailName: '',
+            fullImage: '@image("288x400",@color)',
+            thumbnailImage: '@image("123x160","@color")',
+            comments: '@string(10,30)',
+            'label|1': ['白名单', '黑名单', '白名单'],
+            passportNumber: Mock.mock('@id'),
+            createTime: '@datetime',
+            place:'@county(true) @pick(["Camera01","Camera02","Camera03","Camera04"])'
+        }
+    ]
+});
 /*
 setInterval(function () {
     setTimeout(function () {
@@ -168,8 +188,13 @@ app.get('/get_device_list',({req,res}) => {
 app.get('/get_hit_list', function (req,res) {
     let n = req.params.n;
     res.json(hitRecords);
+    res.end();
 });
 
+app.post('/get_reg_face',function (req,res) {
+   res.json(regFace);
+   res.end();
+});
 
 http.createServer(app).listen(port,hostname,() => {
     console.log(`Server running at http://${hostname}:${port}/`);

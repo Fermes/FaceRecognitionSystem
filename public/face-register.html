@@ -6,7 +6,7 @@
     <title>视频监控-人脸注册</title>
     <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
     <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
-    <script type="text/javascript" src="lib/js/vue.min.js"></script>
+    <script type="text/javascript" src="lib/js/vue.js"></script>
     <script type="text/javascript" src="lib/js/axios.min.js"></script>
     <script type="text/javascript" src="lib/js/lodash.min.js"></script>
     <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
@@ -44,46 +44,73 @@
         <ul id="deviceTree" class="ztree"></ul>
     </div>
 </div>
-<div class="hit-record">
-    <table id="record-table" >
-        <span class="span-search" onclick="window.location.href='statistics-query.html';"><img src="lib/img/search.png"></span>
-        <thead>
-        <tr>
-            <th>姓名</th>
-            <th>类别</th>
-            <th>证件号</th>
-            <th>注册时间</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(record,index) in pageRecords" :key="index">
-            <template>
-                <td :style="styleObject(index)">{{record.name}}</td>
-                <td :style="styleObject(index)">{{record.type}}</td>
-                <td :style="styleObject(index)">{{record.number}}</td>
-                <td :style="styleObject(index)">{{record.time}}</td>
-            </template>
-        </tr>
-        </tbody>
-    </table>
-    <div id="laypager"></div>
+<div class="face-query" id="face-query">
+    <div class="query-condition">
+        <p>人脸搜索</p>
+        <span class="condition-item">
+            <label class="condition-label">姓名</label>
+            <input class="condition-input">
+        </span>
+
+        <span class="condition-item">
+            <label class="condition-label">证件号</label>
+            <input class="condition-input">
+        </span>
+
+        <span class="condition-item">
+            <label class="condition-label">类别</label>
+            <input class="condition-input">
+        </span>
+
+        <span class="condition-item">
+            <label class="condition-label">注册时间</label>
+            <span class="time-start">
+                <input v-model="startTime.year"/>
+                <span>-</span>
+                <input v-model="startTime.month"/>
+                <span>-</span>
+                <input v-model="startTime.day"/>
+
+                <input v-model="startTime.hour"/>
+                <span>:</span>
+                <input v-model="startTime.minute"/>
+            </span>
+            <label>至</label>
+            <span class="time-end">
+                <input v-model="endTime.year"/>
+                <span>-</span>
+                <input v-model="endTime.month"/>
+                <span>-</span>
+                <input v-model="endTime.day"/>
+
+                <input v-model="endTime.hour"/>
+                <span>:</span>
+                <input v-model="endTime.minute"/>
+            </span>
+        </span>
+        <button class="search-btn" @click="querySubmit">搜索</button>
+    </div>
+    <div class="face-display">
+        <face-item v-for="(record,index) in pageRecords" :key="index" :record="record" :index="index"></face-item>
+        <div id="laypager"></div>
+    </div>
+
 </div>
 
 <div class="face-reg" id="face-reg">
     <div class="multi-reg">
         <label>批量注册</label>
-        <span class="select-item">
-            <label @click="selectNodeShow('selectTypes')">{{selectTypes.type}}</label>
-            <span class="select-node" v-show="selectTypes.isShow">
-                <label v-for="(type,index) in selectTypes.data" :key="index" @click="selectItem('selectTypes',type)">{{type}}</label>
-            </span>
-        </span>
+        <frs-select :select.sync="selectTypes"></frs-select>
         <button v-on:click="multiImages">选择多张图片</button>
         <input type="file" id="multi-upload" multiple="multiple" style="display: none"/>
         <button v-on:click="multiSubmit">注册</button>
         <span class="multi-progress">
             <span v-for="n in 40" :key="n" :style="progressStyle(n)"></span>
         </span>
+    </div>
+    <div class="error-info">
+        <span><label>错误日志</label></span>
+        <textarea v-model="errorMessage"></textarea>
     </div>
     <div class="single-reg" >
         <input type="file" style="display: none" id="single-upload" v-on:change="imgPreview"/>
@@ -128,5 +155,27 @@
 
 
 </body>
-
+<div class="reg-face-info" id="reg-face-info" v-show="isShow"><span class="close-icon" @click="closeThis"></span>
+    <div class="reg-face-title">
+        <label>人脸信息</label>
+    </div>
+    <div class="reg-face-content"><span><img :src="fullImage"></span><span>
+          <label>姓名</label>
+          <label>证件号</label>
+          <input :disabled="!isModify" v-model="name" :style="modifyStyle">
+          <input :disabled="!isModify" v-model="passportNumber" :style="modifyStyle">
+          <label>性别</label>
+          <label>类别</label>
+          <frs-select :select.sync="selectGenders"></frs-select>
+          <frs-select :select.sync="selectTypes"></frs-select>
+          <label>注册时间</label>
+          <input :disabled="!isModify" v-model="createTime" :style="modifyStyle">
+          <label>地址</label>
+          <input :disabled="!isModify" v-model="place" :style="modifyStyle">
+          <label>备注</label>
+          <textarea :disabled="!isModify" v-model="comments"></textarea></span>
+        <button v-if="!isModify" @click="toModify">修改</button>
+        <button v-if="isModify" @click="toSubmit">应用</button>
+    </div>
+</div>
 </html>

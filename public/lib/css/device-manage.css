@@ -1,6 +1,5 @@
 @import "../zTree_v3/css/metroStyle/metroStyle.css";
 @import "../layui/css/layui.css";
-@import "iview.css";
 html {
   font-size: 16px;
 }
@@ -45,6 +44,24 @@ body {
 }
 .frs-nav label:first-child {
   margin-left: 2rem;
+}
+.layui-laypage a,
+.layui-laypage span {
+  background-color: #0a0f0b;
+  color: #259c3d;
+  border: none;
+  font-size: 1rem;
+}
+.layui-laypage a:hover {
+  color: white;
+}
+.layui-laypage a.layui-laypage-prev,
+.layui-laypage a.layui-laypage-next {
+  background-color: #0b2c11;
+  border: 1px solid #259c3d;
+}
+.layui-laypage a[data-page="1"] {
+  border-left: 1px solid #259c3d;
 }
 .frs-device {
   position: absolute;
@@ -184,12 +201,27 @@ body {
   box-shadow: inset 0 0 2rem #2fbb3e;
 }
 .frs-device-manage .device-nav .device-nav-btn {
-  position: absolute;
+  position: relative;
   border: none;
   box-shadow: none;
   margin: -1.7rem 0 0 85rem;
 }
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-enter-active,
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-leave-active {
+  transition: all 0.3s;
+}
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-enter,
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-leave-active {
+  opacity: 0;
+}
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-enter {
+  transform: translateX(-7rem);
+}
+.frs-device-manage .device-nav .device-nav-btn .nav-btn-leave-active {
+  transform: translateX(7rem);
+}
 .frs-device-manage .device-nav .device-nav-btn button {
+  position: absolute;
   height: 1.6rem;
   width: 7rem;
   line-height: 1.2rem;
@@ -444,11 +476,11 @@ body {
   color: #00880b;
   border: none;
 }
-.menu-enter-active,
-.menu-leave-active {
-  transition: opacity 0.5s;
+.menu-leave {
+  opacity: 1;
 }
 .menu-leave-active {
+  transition: 0.5s;
   opacity: 0;
 }
 .device-process {
@@ -457,7 +489,7 @@ body {
   color: #2fbb3e;
   border: 1px solid #1b5c24;
   background-color: #0b1013;
-  box-shadow: inset 0 0 5rem #1b5c24;
+  box-shadow: inset 0 0 3rem #1b5c24;
 }
 .device-process span.close-icon {
   display: inline-block;
@@ -519,27 +551,29 @@ body {
   background-color: #0b1013;
   color: #2fbb3e;
   border-radius: 4px;
-  width: 14rem;
-  height: auto;
+  width: 14.85rem;
+  height: 1.5rem;
   font-size: 1rem;
   padding: 0 0 0 0;
+  line-height: 1.5rem;
 }
 .device-process span.select-item:hover {
   background-color: #1b5c24;
 }
 .device-process span.select-item label {
-  padding: 0.2rem 0 0.2rem 1rem;
+  padding: 0 0 0 1rem;
   margin: 0 0 0 0;
   position: relative;
-  display: inline-block;
+  display: block;
   width: 13.85rem;
   height: 1.5rem;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   background-color: #0b1013;
+  color: #2fbb3e;
 }
 .device-process span.select-item label:first-child {
-  background: url("../img/left_menu.png") no-repeat 12.5rem -0.95rem;
+  background: url("../img/left_menu.png") no-repeat 13.5rem -1rem;
 }
 .device-process span.select-item label:hover {
   background-color: #1b5c24;
@@ -547,7 +581,7 @@ body {
 .device-process span.select-item span.select-node {
   z-index: 2;
   position: absolute;
-  display: block;
+  display: inline-block;
   margin-left: -1px;
   border: 1px solid #1b5c24;
   border-top: none;
@@ -556,8 +590,7 @@ body {
   display: block;
 }
 .device-process span.select-item span.select-node label:first-child {
-  background: none;
-  background-color: #0b1013;
+  background: #0b1013 none;
   border-top: 1px solid #1b5c24;
 }
 .device-process span.select-item span.select-node label:first-child:hover {
@@ -569,7 +602,7 @@ body {
   color: #2fbb3e;
   border: 1px solid #1b5c24;
   background-color: #0b1013;
-  box-shadow: inset 0 0 5rem #1b5c24;
+  box-shadow: inset 0 0 3rem #1b5c24;
 }
 .camera-process span.close-icon {
   display: inline-block;
@@ -633,14 +666,14 @@ body {
   margin: 4rem 1rem 0 2.6rem;
 }
 .camera-process label:nth-of-type(9) {
-  margin: 4.5rem 1rem 0 5rem;
+  margin: 4.5rem 2rem 0 5rem;
 }
 .camera-process button {
   font-size: 1rem;
   position: absolute;
   width: 8rem;
   height: 1.8rem;
-  margin: 8rem 0 0 22rem;
+  margin: 7rem 0 0 21rem;
 }
 .camera-process span.select-item {
   position: relative;
@@ -649,27 +682,29 @@ body {
   background-color: #0b1013;
   color: #2fbb3e;
   border-radius: 4px;
-  width: 14rem;
-  height: auto;
+  width: 14.85rem;
+  height: 1.5rem;
   font-size: 1rem;
   padding: 0 0 0 0;
+  line-height: 1.5rem;
 }
 .camera-process span.select-item:hover {
   background-color: #1b5c24;
 }
 .camera-process span.select-item label {
-  padding: 0.2rem 0 0.2rem 1rem;
+  padding: 0 0 0 1rem;
   margin: 0 0 0 0;
   position: relative;
-  display: inline-block;
+  display: block;
   width: 13.85rem;
   height: 1.5rem;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   background-color: #0b1013;
+  color: #2fbb3e;
 }
 .camera-process span.select-item label:first-child {
-  background: url("../img/left_menu.png") no-repeat 12.5rem -0.95rem;
+  background: url("../img/left_menu.png") no-repeat 13.5rem -1rem;
 }
 .camera-process span.select-item label:hover {
   background-color: #1b5c24;
@@ -677,7 +712,7 @@ body {
 .camera-process span.select-item span.select-node {
   z-index: 2;
   position: absolute;
-  display: block;
+  display: inline-block;
   margin-left: -1px;
   border: 1px solid #1b5c24;
   border-top: none;
@@ -686,8 +721,7 @@ body {
   display: block;
 }
 .camera-process span.select-item span.select-node label:first-child {
-  background: none;
-  background-color: #0b1013;
+  background: #0b1013 none;
   border-top: 1px solid #1b5c24;
 }
 .camera-process span.select-item span.select-node label:first-child:hover {

@@ -141,8 +141,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                deviceList.deviceNodes = response.data;
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                if(response.data.type === 'OK'){
+                    deviceList.deviceNodes = response.data.children;
+                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                }
             })
             .catch(function (error) {
 

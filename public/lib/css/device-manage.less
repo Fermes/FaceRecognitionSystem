@@ -81,11 +81,25 @@
       }
     }
     .device-nav-btn{
-      position: absolute;
+      position: relative;
       border: none;
       box-shadow: none;
       margin:-1.7rem 0 0 85rem;
+
+      .nav-btn-enter-active,.nav-btn-leave-active{
+        transition:all 0.3s;
+      }
+      .nav-btn-enter,.nav-btn-leave-active{
+        opacity: 0;
+      }
+      .nav-btn-enter{
+        transform: translateX(-7rem);
+      }
+      .nav-btn-leave-active{
+        transform: translateX(7rem);
+      }
       button{
+        position: absolute;
         height: 1.6rem;
         width: 7rem;
         line-height: 1.2rem;
@@ -104,6 +118,7 @@
     overflow-y: auto;
     margin-left: 3.5rem;
     .frs-scroll-bar();
+
     span.site-item{
       position: relative;
       display:inline-block;
@@ -313,19 +328,21 @@
   }
 }
 
-.menu-enter-active,.menu-leave-active{
-  transition: opacity 0.5s;
+.menu-leave{
+  opacity:1;
 }
 .menu-leave-active{
+  transition: 0.5s;
   opacity: 0
 }
+
 .device-process{
    width: 64rem;
    height: 24rem;
    color: @font-green;
    border: 1px solid @border-dark;
    background-color: @back-color;
-   box-shadow: inset 0 0 5rem @border-dark;
+   box-shadow: inset 0 0 3rem @border-dark;
    span.close-icon{
      display: inline-block;
      margin: 1rem 0 0 60rem;
@@ -388,7 +405,7 @@
   color: @font-green;
   border: 1px solid @border-dark;
   background-color: @back-color;
-  box-shadow: inset 0 0 5rem @border-dark;
+  box-shadow: inset 0 0 3rem @border-dark;
   span.close-icon{
     display: inline-block;
     margin: 1rem 0 0 60rem;
@@ -450,7 +467,7 @@
       margin: 4rem 1rem 0 2.6rem;
     }
     &:nth-of-type(9){
-      margin: 4.5rem 1rem 0 5rem;
+      margin: 4.5rem 2rem 0 5rem;
     }
   }
   button{
@@ -458,7 +475,7 @@
     position: absolute;
     width: 8rem;
     height: 1.8rem;
-    margin: 8rem 0 0 22rem;
+    margin: 7rem 0 0 21rem;
   }
   .frs-select(@width:14rem);
 }

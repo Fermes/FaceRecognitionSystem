@@ -3,11 +3,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
 <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
-<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.min.js"></script>
 <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
 <script type="text/javascript" src="lib/zTree_v3/js/jquery.ztree.all.min.js"></script>
 <link rel="stylesheet" href="lib/css/device-manage.css">
 <script>
@@ -41,29 +41,33 @@
 </div>
 <div class="frs-device-manage" id="device-manage">
     <div class="device-nav">
-        <span v-if="showNav(0)" v-on:click="navClick(-1)"><p>Home</p></span>
-        <span v-if="showNav(1)" v-on:click="navClick(cityIndex)"><p>{{deviceNodes[cityIndex].name}}</p></span>
+        <span @click="navClick(-1)"><p>Home</p></span>
+        <span v-show="deviceShowMode === 1" @click="navClick(cityIndex)"><p>{{deviceNodes[cityIndex].name}}</p></span>
 
         <div class="device-nav-btn">
-        <template v-if="showButton(0)">
-            <button v-on:click="btnClick"><img src="lib/img/cogwheel.png">管理设备</button>
-        </template>
-        <template v-else-if="showButton(1)">
-            <button v-on:click="btnClick">应用</button>
-        </template>
-        <template v-else>
-            <button v-on:click="addDevice"><img src="lib/img/plus.png">添加设备</button>
-        </template>
+            <transition name="nav-btn" mode="in-out">
+                <template v-if="showButton(0)" key="btn0">
+                    <button v-on:click="btnClick"><img src="lib/img/cogwheel.png">管理设备</button>
+                </template>
+                <template v-if="showButton(1)" key="btn1">
+                    <button v-on:click="btnClick">应用</button>
+                </template>
+                <template v-if="showButton(2)" key="btn3">
+                    <button v-on:click="addDevice"><img src="lib/img/plus.png">添加设备</button>
+                </template>
+            </transition>
         </div>
 
+
     </div>
-    <div class="device-site" v-if="showMode(0)" >
+    <div class="device-site" v-if="deviceShowMode === 0" >
         <site-item :item="node" :mode="btnShowMode" v-for="(node,index) in deviceNodes" :key="index" v-on:change-interface="siteClick(index)" @delete-item="deleteItem(index)"></site-item>
         <span class="site-item site-item-add" @click="addItem">
 
         </span>
+
     </div>
-    <div class="device-camera" v-if="showMode(1)">
+    <div class="device-camera" v-else>
         <div class="camera-title">
             <span>设备名称</span>
             <span>ID</span>

@@ -1,6 +1,5 @@
 @import "../zTree_v3/css/metroStyle/metroStyle.css";
 @import "../layui/css/layui.css";
-@import "iview.css";
 html {
   font-size: 16px;
 }
@@ -45,6 +44,24 @@ body {
 }
 .frs-nav label:first-child {
   margin-left: 2rem;
+}
+.layui-laypage a,
+.layui-laypage span {
+  background-color: #0a0f0b;
+  color: #259c3d;
+  border: none;
+  font-size: 1rem;
+}
+.layui-laypage a:hover {
+  color: white;
+}
+.layui-laypage a.layui-laypage-prev,
+.layui-laypage a.layui-laypage-next {
+  background-color: #0b2c11;
+  border: 1px solid #259c3d;
+}
+.layui-laypage a[data-page="1"] {
+  border-left: 1px solid #259c3d;
 }
 .frs-device {
   color: #2fbb3e;
@@ -100,6 +117,8 @@ body {
   margin-left: -80px;
 }
 .frs-device .separate .parallelogram label {
+  display: inline-block;
+  transform: skew(25deg, 0deg);
   color: #2fbb3e;
   margin-left: 100px;
 }
@@ -152,10 +171,33 @@ body {
   margin-top: 5px;
 }
 .frs-device .ztree li span.button.noline_open {
-  background-position: 0 -18px;
+  background-position: 0px -18px;
 }
 .frs-device .ztree li span.button.noline_close {
   background-position: -18px -18px;
+}
+.frs-device .ztree li span.button.edit,
+.frs-device .ztree li span.button.remove,
+.frs-device .ztree li span.button.noline_docu {
+  visibility: hidden;
+}
+.frs-device .ztree li a {
+  width: 93%;
+  padding: 0 0 3px 1px;
+  border-radius: 4px;
+  height: 1.6rem;
+}
+.frs-device .ztree li a:hover {
+  border: 1px solid #1b5c24;
+  border-left: 4px solid #12ad02;
+  box-shadow: inset 0 0 1rem #12ad02;
+}
+.frs-device .ztree li a.curSelectedNode {
+  opacity: 1;
+  background-color: inherit;
+  border: 1px solid #1b5c24;
+  border-left: 4px solid #12ad02;
+  box-shadow: inset 0 0 1rem #12ad02;
 }
 .frs-device .ztree li span.button.edit,
 .frs-device .ztree li span.button.remove,
@@ -167,25 +209,6 @@ body {
   margin: 8px 0 0 0;
   left: 330px;
   border: none;
-}
-.frs-device .ztree li a {
-  width: 93%;
-  padding: 3px 0 3px 1px;
-  border-radius: 2px;
-}
-.frs-device .ztree li a:hover {
-  border: 1px solid #1b5c24;
-  border-left: 4px solid #12ad02;
-  box-shadow: inset 0 0 1rem #12ad02;
-}
-.frs-device .ztree li a.curSelectedNode {
-  padding-top: 3px;
-  opacity: 1;
-  height: 21px;
-  background-color: inherit;
-  border: 1px solid #1b5c24;
-  border-left: 4px solid #12ad02;
-  box-shadow: inset 0 0 1rem #12ad02;
 }
 .frs-query {
   position: absolute;
@@ -235,27 +258,29 @@ body {
   background-color: #0b1013;
   color: #2fbb3e;
   border-radius: 4px;
-  width: 16rem;
-  height: auto;
+  width: 15.85rem;
+  height: 1.5rem;
   font-size: 1rem;
   padding: 0 0 0 0;
+  line-height: 1.5rem;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item:hover {
   background-color: #1b5c24;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item label {
-  padding: 0.2rem 0 0.2rem 1rem;
+  padding: 0 0 0 1rem;
   margin: 0 0 0 0;
   position: relative;
-  display: inline-block;
-  width: 15.85rem;
+  display: block;
+  width: 14.85rem;
   height: 1.5rem;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   background-color: #0b1013;
+  color: #2fbb3e;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item label:first-child {
-  background: url("../img/left_menu.png") no-repeat 14.5rem -0.95rem;
+  background: url("../img/left_menu.png") no-repeat 14.5rem -1rem;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item label:hover {
   background-color: #1b5c24;
@@ -263,7 +288,7 @@ body {
 .frs-query .query-condition div:nth-child(1) span.select-item span.select-node {
   z-index: 2;
   position: absolute;
-  display: block;
+  display: inline-block;
   margin-left: -1px;
   border: 1px solid #1b5c24;
   border-top: none;
@@ -272,8 +297,7 @@ body {
   display: block;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item span.select-node label:first-child {
-  background: none;
-  background-color: #0b1013;
+  background: #0b1013 none;
   border-top: 1px solid #1b5c24;
 }
 .frs-query .query-condition div:nth-child(1) span.select-item span.select-node label:first-child:hover {
@@ -288,7 +312,7 @@ body {
 }
 .frs-query .query-condition div:nth-child(2) {
   width: 86rem;
-  height: 2rem;
+  height: 1.5rem;
   margin: 2.2rem 0 0 3rem;
 }
 .frs-query .query-condition div:nth-child(2) label {
@@ -299,7 +323,7 @@ body {
 }
 .frs-query .query-condition div:nth-child(2) div {
   width: 16rem;
-  height: 1.87rem;
+  height: 1.5rem;
   border: 1px solid #1b5c24;
   border-radius: 4px;
 }

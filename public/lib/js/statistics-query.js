@@ -109,8 +109,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 year:"2017",
                 month:"01",
                 day:"01",
-                hour:"12",
-                minute:"00"
+                hour:"01",
+                minute:"01"
             },
             endTime:{
                 year:"",
@@ -187,8 +187,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.startTime.year = "2017";
                 this.startTime.month = "01";
                 this.startTime.day = "01";
-                this.startTime.hour = "12";
-                this.startTime.minute = "00";
+                this.startTime.hour = "01";
+                this.startTime.minute = "01";
                 let now = new Date();
                 this.endTime.year = now.getFullYear().toString();
                 let month = now.getMonth()+1;
@@ -305,8 +305,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             async: false
         })
             .then(function (response) {
-                deviceList.deviceNodes = response.data;
-                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                if(response.data.type==='OK'){
+                    deviceList.deviceNodes = response.data.children;
+                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                }
             })
             .catch(function (error) {
 
