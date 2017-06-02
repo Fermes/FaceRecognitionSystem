@@ -17,6 +17,7 @@ body {
 }
 .frs-nav {
   border-top: none;
+  width: 120rem;
   border-bottom: 2px solid #2fbb3e;
   background-color: #0b1013;
 }
@@ -35,6 +36,7 @@ body {
   height: 30px;
   width: 120px;
   transition: 0.3s;
+  line-height: 1.8rem;
 }
 .frs-nav label:hover {
   border: 1px solid #2fbb3e;
@@ -62,6 +64,40 @@ body {
 }
 .layui-laypage a[data-page="1"] {
   border-left: 1px solid #259c3d;
+}
+.layui-layer-prompt,
+.layui-layer-dialog {
+  background-color: #0b1013;
+}
+.layui-layer-prompt .layui-layer-title,
+.layui-layer-dialog .layui-layer-title {
+  color: #2fbb3e;
+  background-color: #1b5c24;
+  border-bottom: none;
+}
+.layui-layer-prompt .layui-layer-content,
+.layui-layer-dialog .layui-layer-content {
+  color: #2fbb3e;
+}
+.layui-layer-prompt .layui-layer-content input,
+.layui-layer-dialog .layui-layer-content input {
+  outline: none;
+  background-color: #0b1013;
+  border: none;
+  border-bottom: 2px solid #2fbb3e;
+  color: #2fbb3e;
+}
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn0,
+.layui-layer-dialog .layui-layer-btn .layui-layer-btn0 {
+  background-color: #1b5c24;
+  color: #2fbb3e;
+  border: none;
+}
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn1,
+.layui-layer-dialog .layui-layer-btn .layui-layer-btn1 {
+  background-color: #1b5c24;
+  color: #00880b;
+  border: none;
 }
 .frs-device {
   color: #2fbb3e;
@@ -160,7 +196,7 @@ body {
   background-color: #2fbb3e;
 }
 .frs-device .ztree span {
-  font-size: 130%;
+  font-size: 1rem;
   padding: 5px 0 0 3px;
 }
 .frs-device .ztree li span.button.switch {
@@ -185,7 +221,7 @@ body {
   width: 93%;
   padding: 0 0 3px 1px;
   border-radius: 4px;
-  height: 1.6rem;
+  height: 1.4rem;
 }
 .frs-device .ztree li a:hover {
   border: 1px solid #1b5c24;

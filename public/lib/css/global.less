@@ -24,6 +24,7 @@ body {
 }
 .frs-nav{
   border-top: none;
+  width: 120rem;
   border-bottom: 2px solid @font-green;
   background-color: @back-color;
   .current{
@@ -41,6 +42,7 @@ body {
     height: 30px;
     width: 120px;
     transition: 0.3s;
+    line-height: 1.8rem;
     &:hover{
       border:1px solid @font-green;
       border-top: none;
@@ -147,10 +149,42 @@ body {
     }
   }
 }
+
+.layui-layer-prompt,.layui-layer-dialog{
+  background-color: @back-color;
+  .layui-layer-title{
+    color: @font-green;
+    background-color: @border-dark;
+    border-bottom: none;
+  }
+  .layui-layer-content{
+    color: @font-green;
+    input{
+      outline: none;
+      background-color: @back-color;
+      border: none;
+      border-bottom: 2px solid @font-green;
+      color: @font-green;
+    }
+  }
+  .layui-layer-btn{
+    .layui-layer-btn0{
+      background-color: @border-dark;
+      color: @font-green;
+      border: none;
+    }
+    .layui-layer-btn1{
+      background-color: @border-dark;
+      color: @font-green - #333;
+      border: none;
+    }
+  }
+}
+
 .tree-normal(){
   .ztree{
     span {
-      font-size: 130%;
+      font-size: 1rem;
       padding: 5px 0 0 3px;
     }
 
@@ -179,7 +213,7 @@ body {
         width: 93%;
         padding: 0 0 3px 1px;
         border-radius: 4px;
-        height: 1.6rem;
+        height: 1.4rem;
         &:hover{
           border:1px solid @border-dark;
           border-left: 4px solid #12ad02;

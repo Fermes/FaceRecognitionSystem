@@ -326,7 +326,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64rem','24rem'],
+                    area: ['64.1rem','24.1rem'],
                     content: $('#device-process'),
                     cancel: function(){
 
@@ -343,7 +343,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64rem','24rem'],
+                    area: ['64.1rem','24.1rem'],
                     content: $('#device-process'),
                     cancel: function(){
 
@@ -362,7 +362,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64rem','36rem'],
+                    area: ['64.1rem','36.1rem'],
                     content: $('#camera-process'),
                     cancel: function(){
 
@@ -380,7 +380,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     closeBtn:0,
                     shadeClose:false,
                     title: false,
-                    area: ['64rem','36rem'],
+                    area: ['64.1rem','36.1rem'],
                     content: $('#camera-process'),
                     cancel: function(){
                     }
@@ -508,7 +508,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             doCameraProcess:function () {
                 let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[this.deviceIndex].children;
-                if(this.newCamera.name === '' || this.newCamera.username || '' || this.newCamera.pwd !== ''){
+                if(this.newCamera.name === '' || this.newCamera.username === '' || this.newCamera.pwd === ''){
                     return;
                 }
                 if(this.mode === '添加摄像机'){

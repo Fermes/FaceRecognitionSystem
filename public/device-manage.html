@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
 <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
@@ -46,13 +45,13 @@
 
         <div class="device-nav-btn">
             <transition name="nav-btn" mode="in-out">
-                <template v-if="showButton(0)" key="btn0">
+                <template v-if="showButton(0)">
                     <button v-on:click="btnClick"><img src="lib/img/cogwheel.png">管理设备</button>
                 </template>
-                <template v-if="showButton(1)" key="btn1">
+                <template v-if="showButton(1)">
                     <button v-on:click="btnClick">应用</button>
                 </template>
-                <template v-if="showButton(2)" key="btn3">
+                <template v-if="showButton(2)">
                     <button v-on:click="addDevice"><img src="lib/img/plus.png">添加设备</button>
                 </template>
             </transition>

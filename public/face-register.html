@@ -2,11 +2,10 @@
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
     <title>视频监控-人脸注册</title>
+    <script type="text/javascript" src="lib/js/vue.js"></script>
     <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
     <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
-    <script type="text/javascript" src="lib/js/vue.js"></script>
     <script type="text/javascript" src="lib/js/axios.min.js"></script>
     <script type="text/javascript" src="lib/js/lodash.min.js"></script>
     <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
@@ -91,10 +90,12 @@
         <button class="search-btn" @click="querySubmit">搜索</button>
     </div>
     <div class="face-display">
-        <face-item v-for="(record,index) in pageRecords" :key="index" :record="record" :index="index"></face-item>
+        <face-item v-for="(record,index) in pageRecords" :key="index" :record="record" :index="index" @pop-info="popRecordInfo(index)"></face-item>
         <div id="laypager"></div>
     </div>
-
+    <div id="reg-face-info">
+    <reg-face-info :pop-record="popRecord" @update-item="updateItem"></reg-face-info>
+    </div>
 </div>
 
 <div class="face-reg" id="face-reg">
@@ -155,27 +156,4 @@
 
 
 </body>
-<div class="reg-face-info" id="reg-face-info" v-show="isShow"><span class="close-icon" @click="closeThis"></span>
-    <div class="reg-face-title">
-        <label>人脸信息</label>
-    </div>
-    <div class="reg-face-content"><span><img :src="fullImage"></span><span>
-          <label>姓名</label>
-          <label>证件号</label>
-          <input :disabled="!isModify" v-model="name" :style="modifyStyle">
-          <input :disabled="!isModify" v-model="passportNumber" :style="modifyStyle">
-          <label>性别</label>
-          <label>类别</label>
-          <frs-select :select.sync="selectGenders"></frs-select>
-          <frs-select :select.sync="selectTypes"></frs-select>
-          <label>注册时间</label>
-          <input :disabled="!isModify" v-model="createTime" :style="modifyStyle">
-          <label>地址</label>
-          <input :disabled="!isModify" v-model="place" :style="modifyStyle">
-          <label>备注</label>
-          <textarea :disabled="!isModify" v-model="comments"></textarea></span>
-        <button v-if="!isModify" @click="toModify">修改</button>
-        <button v-if="isModify" @click="toSubmit">应用</button>
-    </div>
-</div>
 </html>

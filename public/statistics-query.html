@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns = "http://www.w3.org/1999/xhtml">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1">
 <script type="text/javascript" src="lib/js/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="lib/layui/lay/dest/layui.all.js"></script>
-<script type="text/javascript" src="lib/js/vue.min.js"></script>
+<script type="text/javascript" src="lib/js/vue.js"></script>
 <script type="text/javascript" src="lib/js/axios.min.js"></script>
 <script type="text/javascript" src="lib/js/lodash.min.js"></script>
 <script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
@@ -97,8 +96,8 @@
             </div>
         </div>
     </div>
-    <div class="query-table">
-        <table id="record-table" >
+    <div class="query-table" id="record-table" >
+        <table>
             <thead>
             <tr>
                 <th>姓名</th>
@@ -106,23 +105,26 @@
                 <th>证件号</th>
                 <th>注册时间</th>
                 <th>地址</th>
-                <th><button>清空</button></th>
+                <th><button @click="deleteItem(-1)">清空</button></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(record,index) in pageRecords" :key="index">
+            <tr v-for="(record,index) in pageRecords" :key="index" @dblclick="popRecordInfo(index)">
                 <template>
-                    <td :style="styleObject(index)">{{record.name}}</td>
-                    <td :style="styleObject(index)">{{record.type}}</td>
-                    <td :style="styleObject(index)">{{record.number}}</td>
-                    <td :style="styleObject(index)">{{record.time}}</td>
-                    <td :style="styleObject(index)">{{record.site}}</td>
-                    <td><a v-if="record.name !== '\0'">删除</a><span></span></td>
+                    <td :style="styleObject(index)">{{record.user.name}}</td>
+                    <td :style="styleObject(index)">{{record.user.label}}</td>
+                    <td :style="styleObject(index)">{{record.user.passportNumber}}</td>
+                    <td :style="styleObject(index)">{{record.createTime}}</td>
+                    <td :style="styleObject(index)">{{record.place}}</td>
+                    <td><a v-if="record.user.name !== '\0'" @click="deleteItem(index)">删除</a><span></span></td>
                 </template>
             </tr>
             </tbody>
         </table>
         <div id="laypager"></div>
+        <div id="pop-hit-record" v-show="popRecord.isShow">
+            <pop-hit-record :pop-record="popRecord"></pop-hit-record>
+        </div>
     </div>
 </div>
 </body>

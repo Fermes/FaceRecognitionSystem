@@ -250,6 +250,9 @@
     label{
       margin:0 2rem 0 38.5rem;
       color: @font-red - #555;
+      &:nth-of-type(4){
+        margin-bottom: 2rem;
+      }
     }
     p{
       line-height: 1.6rem;
@@ -262,6 +265,18 @@
       &:nth-of-type(1){
         margin-top: 2rem;
       }
+      &:last-of-type{
+        margin-bottom: 2rem;
+      }
+    }
+    textarea{
+      position: absolute;
+      width: 20rem;
+      height: 8rem;
+      resize: none;
+      border:none;
+      background-color: #1C1C1C;
+      color: @font-red;
     }
   }
 }
@@ -276,7 +291,7 @@
     label{
       color: @border-dark;
     }
-    p{
+    p,textarea{
       color: @font-green;
     }
   }

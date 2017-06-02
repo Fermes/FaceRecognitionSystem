@@ -3,61 +3,89 @@
  */
 
 
-layui.define(['layer', 'form', 'element','laypage'], function (exports) {
+layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
     let layer = layui.layer,
         form = layui.form(),
-        laypage=layui.laypage;
+        laypage = layui.laypage;
+
+    let client_id = 0;
+    let ws = new WebSocket('ws://' + document.location.hostname + ':1001');
+
+    ws.onopen = function () {
+
+    };
+    ws.onclose = function () {
+        layer.msg('服务器连接断开,请刷新界面！');
+    };
+    ws.onerror = function () {
+        layer.msg('数据传输错误！');
+    };
+    ws.onmessage = function (receiveMsg) {
+        let msg = receiveMsg.split(':');
+        if(msg[0] === 'id'){
+            client_id = msg[2];
+        }
+    };
+    ws.ondata = function (record) {
+        if (record.type === 'HIT') {
+            recordTable.records.unshift(record.children);
+            layer.close(layer.index);
+            popWindow(record.children);
+        } else if (record.type === 'NOHIT') {
+            nohitRecords.records.unshift(record.children);
+        }
+    };
 
     let socket = io(document.location.hostname + ':1001');
-    socket.on('nohit-record',function (record) {
-        if(record.type === 'NOHIT'){
+    socket.on('nohit-record', function (record) {
+        if (record.type === 'NOHIT') {
             nohitRecords.records.unshift(record.children);
-        }else{
+        } else {
 
         }
     });
-    socket.on('hit-record',function (record) {
-       if(record.type === 'HIT'){
-           recordTable.records.unshift(record.children);
-           layer.close(layer.index);
-           popWindow(record.children);
-       } else{
+    socket.on('hit-record', function (record) {
+        if (record.type === 'HIT') {
+            recordTable.records.unshift(record.children);
+            layer.close(layer.index);
+            popWindow(record.children);
+        } else {
 
-       }
+        }
     });
 
-    let deviceList=new Vue({
-        el:"#deviceList",
-        data:{
-            value:"",
-            setting:{
-                edit:{
-                    enable:true
+    let deviceList = new Vue({
+        el: "#deviceList",
+        data: {
+            value: "",
+            setting: {
+                edit: {
+                    enable: true
                 },
-                view:{
-                    showIcon:false,
-                    showLine:false,
+                view: {
+                    showIcon: false,
+                    showLine: false,
                     fontCss: getFontCss
                 },
-                callback:{
-                    onDrop:dragToPlay
+                callback: {
+                    onDrop: dragToPlay
                 }
             },
-            deviceNodes:[],
-            preNodeList:null
+            deviceNodes: [],
+            preNodeList: null
         },
-        watch:{
+        watch: {
             value: function (newValue) {
                 let zTree = $.fn.zTree.getZTreeObj("deviceTree");
                 zTree.expandAll(false);
                 this.searchNode(newValue);
             },
-            deviceNodes:function () {
+            deviceNodes: function () {
                 $.fn.zTree.init($("#deviceTree"), this.setting, this.deviceNodes);
             }
         },
         methods: {
-            searchNode:_.debounce(
+            searchNode: _.debounce(
                 function (newValue) {
                     if (newValue === "") {
                         return;
@@ -92,14 +120,17 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     });
 
     function getFontCss(treeId, treeNode) {
-        if(treeNode.state === '离线'){
-            return {color:'red'};
-        }else{
-            return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        if (treeNode.state === '离线') {
+            return {color: 'red'};
+        } else {
+            return (treeNode.highlight) ? {color: "#2fbb3e", "font-weight": "bold"} : {
+                color: "#2fbb3e",
+                "font-weight": "normal"
+            };
         }
     }
 
-    let cameraTotal=new Vue({
+    let cameraTotal = new Vue({
         el: "#camera-total",
         data: {
             camera_address0: "",
@@ -108,11 +139,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             camera_address3: "",
             camera_address4: "",
             camera_4x4: true,
-            isPop:true
+            isPop: true
         },
-        computed:{
-
-        },
+        computed: {},
         watch: {
             camera_address0: function (newAddress) {
                 play('camera0', newAddress)
@@ -129,10 +158,10 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             camera_address4: function (newAddress) {
                 play('camera4', newAddress)
             },
-            camera_4x4:function (newMode) {
-                if(newMode){
+            camera_4x4: function (newMode) {
+                if (newMode) {
                     stopPlay("camera0");
-                }else{
+                } else {
                     stopPlay("camera1");
                     stopPlay("camera2");
                     stopPlay("camera3");
@@ -140,8 +169,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 }
             }
         },
-        methods:{
-            switchPlayMode:function () {
+        methods: {
+            switchPlayMode: function () {
                 this.camera_4x4 = !this.camera_4x4;
             }
         }
@@ -179,23 +208,21 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         template: '<div><img :src="img.queryImage"> <p>{{img.createTime}}<br/><br/>{{img.place}}</p></div>'
     };
 
-    let nohitRecords=new Vue({
-        el:"#nohit-image",
-        data:{
-            records:[]
+    let nohitRecords = new Vue({
+        el: "#nohit-image",
+        data: {
+            records: []
         },
-       watch:{
-            records:function () {
-                while(this.records.length>8){
+        watch: {
+            records: function () {
+                while (this.records.length > 8) {
                     this.records.pop();
                 }
             }
         },
-        methods:{
-
-        },
-        components:{
-            'nohit-img':nohitImg
+        methods: {},
+        components: {
+            'nohit-img': nohitImg
         }
     });
 
@@ -216,87 +243,87 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     };
 
 
-    let recordTable=new Vue({
-        el:"#record-table",
-        data:{
+    let recordTable = new Vue({
+        el: "#record-table",
+        data: {
             curPage: 0,
-            newRecord:{
+            newRecord: {
                 id: -1,
-                createTime:'',
-                place:'',
-                queryImage:'',
-                cameraId:'',
-                user:{
-                    id:-1,
-                    name:'\0',
-                    nationality:'',
-                    gender:'',
-                    thumbnailName:'',
-                    fullImage:'',
-                    thumbnailImage:'',
-                    comments:'',
-                    label:'',
+                createTime: '',
+                place: '',
+                queryImage: '',
+                cameraId: '',
+                user: {
+                    id: -1,
+                    name: '\0',
+                    nationality: '',
+                    gender: '',
+                    thumbnailName: '',
+                    fullImage: '',
+                    thumbnailImage: '',
+                    comments: '',
+                    label: '',
                     passportNumber: ''
                 }
             },
-            records:[]
+            records: []
         },
-        watch:{
-            records:function () {
-                while(this.records.length > 100){
+        watch: {
+            records: function () {
+                while (this.records.length > 100) {
                     this.records.pop();
                 }
-                if(recordTable.records.length/5 < 20){
+                if (recordTable.records.length / 5 < 20) {
                     layui.laypage({
                         cont: 'laypager'
-                        ,pages: Math.ceil(recordTable.records.length/5)
-                        ,first: 1
-                        ,last: Math.ceil(recordTable.records.length/5)
-                        ,prev: '<em><</em>'
-                        ,next: '<em>></em>'
-                        ,skin: '#202d24'
-                        ,groups: 3
-                        ,jump: function(obj) {
+                        , pages: Math.ceil(recordTable.records.length / 5)
+                        , first: 1
+                        , last: Math.ceil(recordTable.records.length / 5)
+                        , prev: '<em><</em>'
+                        , next: '<em>></em>'
+                        , skin: '#202d24'
+                        , groups: 3
+                        , jump: function (obj) {
                             recordTable.curPage = obj.curr - 1;
                         }
                     });
                 }
             }
         },
-        computed:{
-            pageRecords:function () {
+        computed: {
+            pageRecords: function () {
                 let start = this.curPage * 5;
                 let end = (start + 5) > this.records.length ? (this.records.length) : (start + 5);
                 let result = this.records.slice(start, end);
-                while(result.length < 5){
+                while (result.length < 5) {
                     result.push(this.newRecord);
                 }
                 return result;
             }
         },
-        methods:{
-            styleObject:function (index) {
-                if(this.pageRecords[index].user.label === "黑名单"){
+        methods: {
+            styleObject: function (index) {
+                if (this.pageRecords[index].user.label === "黑名单") {
                     return {
-                        color:"red"
+                        color: "red"
                     };
-                }else if(this.pageRecords[index].user.name==="\0"){
-                    if(index%2===0){
+                } else if (this.pageRecords[index].user.name === "\0") {
+                    if (index % 2 === 0) {
                         return {
                             color: "#0a0f0b"
                         }
-                    }else{
-                        return{
-                            color:"#141e16"
+                    } else {
+                        return {
+                            color: "#141e16"
                         }
                     }
 
-                }else{
+                } else {
                     return "";
                 }
             },
-            popWin:function (num) {
-                if(this.pageRecords[num].user.name !== '\0'){
+            popWin: function (num) {
+                if (this.pageRecords[num].user.name !== '\0') {
                     popWindow(this.records[this.curPage * 5 + num]);
                 }
             }
@@ -310,144 +337,108 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
     function popWindow(node) {
         let tmpContent = "";
-        if(node.user.label==="黑名单"){
+        if (node.user.label === "黑名单") {
             tmpContent = '<div class="pop-main">\
                               <div class="pop-title">\
                                   <p>警告！发现黑名单</p>\
                               </div>\
                               <div class="pop-info">\
-                                  <img src=' + node.user.fullImage +'>\
-                                  <img src=' + node.queryImage +'>\
-                                  <label>姓名</label><p>'+node.user.name+'</p>\
-                                  <label>类别</label><p>'+node.user.label+'</p>\
-                                  <label>时间</label><p>'+node.createTime+'</p>\
-                                  <label>地点</label><p>'+node.place+'</p>\
-                                  <label>备注</label><p>'+node.user.comments+'</p>\
+                                  <img src=' + node.user.fullImage + '>\
+                                  <img src=' + node.queryImage + '>\
+                                  <label>姓名</label><p>' + node.user.name + '</p>\
+                                  <label>类别</label><p>' + node.user.label + '</p>\
+                                  <label>时间</label><p>' + node.createTime + '</p>\
+                                  <label>地点</label><p>' + node.place + '</p>\
+                                  <label>备注</label><p>' + node.user.comments + '</p>\
                               </div>\
                           </div>';
-        }else if(node.user.label === "白名单"){
-
+        } else if (node.user.label === "白名单") {
             tmpContent = '<div class="pop-main pop-main-white">\
                               <div class="pop-title">\
                                   <p>发现白名单</p>\
                               </div>\
                               <div class="pop-info">\
-                                  <img src=' + node.user.fullImage +'>\
-                                  <img src=' + node.queryImage +'>\
-                                  <label>姓名</label><p>'+node.user.name+'</p>\
-                                  <label>类别</label><p>'+node.user.label+'</p>\
-                                  <label>时间</label><p>'+node.createTime+'</p>\
-                                  <label>地点</label><p>'+node.place+'</p>\
-                                  <label>备注</label><p>'+node.user.comments+'</p>\
+                                  <img src=' + node.user.fullImage + '>\
+                                  <img src=' + node.queryImage + '>\
+                                  <label>姓名</label><p>' + node.user.name + '</p>\
+                                  <label>类别</label><p>' + node.user.label + '</p>\
+                                  <label>时间</label><p>' + node.createTime + '</p>\
+                                  <label>地点</label><p>' + node.place + '</p>\
+                                  <label>备注</label><p>' + node.user.comments + '</p>\
                               </div>\
                           </div>';
         }
         layer.open({
             type: 1,
-            title:false,
+            title: false,
             shadeClose: true,
-            anim:1,
-            area:['64rem','34rem'],
-            shade:0.6,
+            anim: 1,
+            area: ['64rem', '34rem'],
+            shade: 0.6,
             content: tmpContent
         });
     }
 
-    function play(id,camera_address){
+    function play(id, camera_address) {
         let vlc = document.getElementById(id);
         vlc.playlist.clear();
         let itemId = vlc.playlist.add(camera_address);
         vlc.playlist.playItem(itemId);
     }
 
-    function fullScreen(id) {
-        let vlc = document.getElementById(id);
-        vlc.fullscreen = true;
-    }
 
-    $(document).ready(function(){
-        axios({
-            method: 'get',
-            url: '/get_device_list',
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if(response.data.type === 'OK'){
-                    deviceList.deviceNodes = response.data.children;
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                }else {
-
-                }
-            })
-            .catch(function (error) {
-
-            });
-        axios({
-            method: 'get',
-            url: '/get_hit_list',
-            params: {
-                n: 100
-            },
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if(response.data.type === 'OK'){
-                    recordTable.records = response.data.children;
-                    layui.laypage({
-                        cont: 'laypager'
-                        ,pages: Math.ceil(recordTable.records.length/5)
-                        ,first: 1
-                        ,last: Math.ceil(recordTable.records.length/5)
-                        ,prev: '<em><</em>'
-                        ,next: '<em>></em>'
-                        ,skin: '#202d24'
-                        ,groups: 3
-                        ,jump: function(obj) {
-                            recordTable.curPage = obj.curr - 1;
-                        }
-                    });
-                }else {
-
-                }
-            })
-            .catch(function (error) {
-
-            });
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-    });
-    /*
-    $(document).ready(function () {
-        if (ws === null) {
-            ws = new WebSocket(wsUrl);
-        }
-
-        ws.onopen = function () {
-            layer.alert('服务器连接断开,请刷新界面！', {
-                icon: 0,
-                title: '警告'
-            });
-            layer.msg('服务器已连接', {
-                time: 2000
-            });
-        };
-        ws.onclose = function () {
-            layer.alert('服务器连接断开,请刷新界面！', {
-                icon: 0,
-                title: '警告'
-            });
-        };
-        ws.onerror = function () {
-            layer.msg('数据传输错误！');
-        };
-        ws.onmessage = function (receiveMsg) {
-
-        };
-        ws.ondata = function (receiveData) {
-        };
+    axios({
+        method: 'get',
+        url: '/get_device_list',
+        responseType: 'json',
+        async: false
     })
-    */
+        .then(function (response) {
+            if (response.data.type === 'OK') {
+                deviceList.deviceNodes = response.data.children;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+            } else {
+
+            }
+        })
+        .catch(function (error) {
+
+        });
+    axios({
+        method: 'get',
+        url: '/get_hit_list',
+        params: {
+            n: 100
+        },
+        responseType: 'json',
+        async: false
+    })
+        .then(function (response) {
+            if (response.data.type === 'OK') {
+                recordTable.records = response.data.children;
+                layui.laypage({
+                    cont: 'laypager',
+                    pages: Math.ceil(recordTable.records.length / 5) > 20 ? 20 : Math.ceil(recordTable.records.length / 5),
+                    first: 1,
+                    last: Math.ceil(recordTable.records.length / 5) > 20 ? 20 : Math.ceil(recordTable.records.length / 5),
+                    prev: '<em><</em>',
+                    next: '<em>></em>',
+                    skin: '#202d24',
+                    groups: 3,
+                    jump: function (obj) {
+                        recordTable.curPage = obj.curr - 1;
+                    }
+                });
+            } else {
+
+            }
+        })
+        .catch(function (error) {
+
+        });
+
+
+
 
     exports('index', {});
 });

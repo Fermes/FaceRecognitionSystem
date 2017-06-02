@@ -149,7 +149,7 @@
             cursor: default;
           }
           input{
-            font-size: small;
+            font-size: 1rem;
             border: none;
             width: 1.7rem;
             margin-left: 0.5rem;
@@ -167,7 +167,7 @@
         }
         .time-end{
           position: absolute;
-          margin: -1.5rem 0 0 36.8rem;
+          margin: -1.5rem 0 0 36.7rem;
         }
         .time-end + div{
           border: none;
@@ -181,7 +181,7 @@
           input{
             width: 16rem;
             height: 1.8rem;
-            margin: 0 0 0 1rem;
+            margin: 0 0 0 0.7rem;
             border-bottom: 2px solid @border-dark;
           }
           button{
@@ -296,4 +296,85 @@
       }
     }
   }
+
+  @font-red: #f00000;
+  .pop-main{
+    background-color: #1C1C1C;
+    width: 64rem;
+    height: 34rem;
+    color: @font-red;
+    font-size: 1.5rem;
+    .pop-title{
+      width: 64rem;
+      height: 3.5rem;
+      background-color: @font-red;
+      text-align: center;
+      p{
+        color: white;
+        line-height: 3.5rem;
+      }
+    }
+    .pop-info{
+      position: relative;
+      img{
+        position: absolute;
+        width: 18rem;
+        height:25rem;
+        &:nth-of-type(1){
+          margin: 2.5rem 0 0 0.5rem;
+        }
+        &:nth-of-type(2){
+          margin: 2.5rem 0 0 19rem;
+        }
+      }
+      label{
+        margin:0 2rem 0 38.5rem;
+        color: @font-red - #555;
+        &:nth-of-type(4){
+          margin-bottom: 2rem;
+        }
+      }
+      p{
+        line-height: 1.6rem;
+        margin-top: 3rem;
+        width: 20rem;
+        display: inline-flex;
+        word-wrap: break-word;
+        white-space: normal;
+        overflow: hidden;
+        &:nth-of-type(1){
+          margin-top: 2rem;
+        }
+        &:last-of-type{
+          margin-bottom: 2rem;
+        }
+      }
+      textarea{
+        position: absolute;
+        width: 20rem;
+        height: 8rem;
+        resize: none;
+        border:none;
+        background-color: #1C1C1C;
+        color: @font-red;
+      }
+    }
+  }
+  .pop-main-white{
+    .pop-title{
+      background-color: @border-dark;
+      p{
+        color: @font-green;
+      }
+    }
+    .pop-info{
+      label{
+        color: @border-dark;
+      }
+      p,textarea{
+        color: @font-green;
+      }
+    }
+  }
 }
+

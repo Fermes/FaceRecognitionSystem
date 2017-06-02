@@ -101,7 +101,7 @@
     .condition-item{
       font-size: 1.1rem;
       display: inline-block;
-      margin:1rem 1rem 0 2rem;
+      margin:1rem 0 0 2rem;
       border:1px solid @border-dark;
       border-radius: 4px;
       .condition-label{
@@ -123,17 +123,17 @@
       }
       &:nth-of-type(4){
         .time-start,.time-end{
-          margin:0 0.6rem 0 0.6rem;
+          margin:0 0.5rem 0 0.5rem;
           input{
             color:@font-green;
             background-color:@back-color;
             border: none;
             width: 2rem;
             &:nth-child(1){
-              width: 3.1rem;
+              width: 3rem;
             }
             &:nth-of-type(4){
-              margin-left: 0.7rem;
+              margin-left: 0.5rem;
             }
 
           }
@@ -142,7 +142,7 @@
     }
     .search-btn{
       width: 14.5rem;
-      margin-left: 2.1rem;
+      margin-left: 2rem;
       background: url("../img/search.png") 8.5rem 0.25rem no-repeat;
       background-size: 1rem 1rem;
       padding-right: 1rem;
@@ -170,7 +170,7 @@
     #laypager{
       position: absolute;
       left:34rem;
-      top:53.2rem;
+      top:53rem;
     }
   }
 
@@ -298,6 +298,7 @@
       div{
         color:@font-green;
         input{
+          color:@font-green;
           background-color: @back-color;
           outline: none;
           border:none;
@@ -395,7 +396,7 @@
             margin: 0 0 1rem 0;
           }
           &:nth-of-type(2){
-            margin: 0 0 1rem 2rem;
+            margin: 0 0 1rem 2.5rem;
           }
           .select-node{
             label{
@@ -430,12 +431,13 @@
           width: 17.6rem;
           height: 4rem;
           resize: none;
+          overflow-y:auto;
+          .frs-scroll-bar();
         }
       }
     }
     button{
       width: 8rem;
-      position: absolute;
       margin: 1.2rem 0 0 12.8rem;
     }
   }
