@@ -200,6 +200,10 @@ body {
   font-size: 1rem;
   padding: 5px 0 0 3px;
 }
+.frs-device .ztree li span {
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
 .frs-device .ztree li span.button.switch {
   background-image: url("../img/left_menu.png");
   *background-image: url("../img/left_menu.gif");
@@ -222,7 +226,6 @@ body {
   width: 93%;
   padding: 0 0 3px 1px;
   border-radius: 4px;
-  height: 1.4rem;
 }
 .frs-device .ztree li a:hover {
   border: 1px solid #1b5c24;
@@ -738,5 +741,14 @@ body {
 }
 .reg-face-info .reg-face-content button {
   width: 8rem;
+  position: absolute;
+}
+.reg-face-info .reg-face-content button:nth-of-type(1) {
+  margin: 1.2rem 0 0 9.3rem;
+}
+.reg-face-info .reg-face-content button:nth-of-type(2) {
+  margin: 1.2rem 0 0 18.3rem;
+}
+.reg-face-info .reg-face-content button:only-of-type {
   margin: 1.2rem 0 0 12.8rem;
 }

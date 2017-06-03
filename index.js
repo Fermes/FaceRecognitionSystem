@@ -3,7 +3,7 @@ let express = require('express');
 let pug = require('pug');
 let babel = require('jade-babel');
 let bodyParser = require('body-parser');
-let form = require('formidable');
+let formidable = require('formidable');
 let app = express();
 let router = express.Router();
 
@@ -29,7 +29,7 @@ wsServer.listen(1001);
 
 app.set('view engine', 'pug')
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 io.on('connection', function (socket) {
     console.log('a user connected');
@@ -67,8 +67,7 @@ let deviceList = Mock.mock({
                             pwd: '@string(5,10)',
                             'stream|1': ['mpeg4', 'H264', 'h264', 'cam', 'VP8'],
                             timeout: '@natural(50, 2000)',
-                            'state|1': ['空闲', '工作', '离线'],
-                            nocheck: true
+                            'state|1': ['空闲', '工作', '离线']
                         }
                     ]
                 }
@@ -186,6 +185,24 @@ app.get('/get_device_list', ({req, res}) => {
 app.get('/get_hit_list', function (req, res) {
     let n = req.params.n;
     res.json(hitRecords);
+    res.end();
+});
+
+let back = {
+    name:'OK',
+    children :{
+        id:'222'
+    }
+};
+
+app.post('/add_user_to_platform', function (req, res) {
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files) {
+        console.log(fields.label);
+        console.log(files.fullImage);
+    });
+    res.json(back);
     res.end();
 });
 

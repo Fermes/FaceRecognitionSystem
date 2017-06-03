@@ -94,7 +94,7 @@
         <div id="laypager"></div>
     </div>
     <div id="reg-face-info">
-    <reg-face-info :pop-record="popRecord" @update-item="updateItem"></reg-face-info>
+    <reg-face-info :pop-record="popRecord" @update-item="updateItem" @delete-item="deleteItem"></reg-face-info>
     </div>
 </div>
 
@@ -133,19 +133,19 @@
             </div>
             <div>
                 <label>类别</label> <br>
-                <input type="text" v-model="type">
+                <input type="text" v-model="label">
             </div>
             <div>
                 <label>证件号</label> <br>
-                <input type="text" v-model="number">
+                <input type="text" v-model="passportNumber">
             </div>
             <div>
                 <label>地址</label> <br>
-                <input type="text" v-model="site">
+                <input type="text" v-model="place">
             </div>
             <div>
                 <label>备注</label> <br>
-                <input type="text" v-model="remark">
+                <input type="text" v-model="comments">
             </div>
             <div>
                 <button v-on:click="singleSubmit">注册</button>

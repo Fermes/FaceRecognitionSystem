@@ -21,17 +21,16 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         layer.msg('数据传输错误！');
     };
     ws.onmessage = function (receiveMsg) {
-        let msg = receiveMsg.split(':');
-        if(msg[0] === 'id'){
-            client_id = msg[2];
-        }
+
     };
     ws.ondata = function (record) {
-        if (record.type === 'HIT') {
+        if(record.name === 'CLIENTID'){
+            client_id = record.children.id;
+        } else if (record.name === 'HIT') {
             recordTable.records.unshift(record.children);
             layer.close(layer.index);
             popWindow(record.children);
-        } else if (record.type === 'NOHIT') {
+        } else if (record.name === 'NOHIT') {
             nohitRecords.records.unshift(record.children);
         }
     };
@@ -394,7 +393,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         async: false
     })
         .then(function (response) {
-            if (response.data.type === 'OK') {
+            if (response.data.name === 'OK') {
                 deviceList.deviceNodes = response.data.children;
                 $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
             } else {
@@ -414,7 +413,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         async: false
     })
         .then(function (response) {
-            if (response.data.type === 'OK') {
+            if (response.data.name === 'OK') {
                 recordTable.records = response.data.children;
                 layui.laypage({
                     cont: 'laypager',

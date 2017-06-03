@@ -40,7 +40,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 check:{
                     enable: true,
                     chkStyle: "checkbox",
-                    chkboxType: { "Y": "", "N": "" }
+                    chkboxType: {"Y": "s", "N": "ps"}
                 },
                 view:{
                     showIcon:false,
@@ -161,7 +161,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         <label>备注</label>\
         <textarea :disabled="!isModify" v-model="popRecord.record.comments"></textarea></span>\
         <button v-if="!isModify" @click="toModify">修改</button>\
-        <button v-if="isModify" @click="toSubmit">应用</button>\
+        <button v-if="!isModify" @click="toDelete">删除</button>\
+        <button v-else @click="toSubmit">应用</button>\
         </div>\
         </div>',
         props:['pop-record'],
@@ -211,6 +212,35 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 this.isModify = true;
                 this.selectGenders.disabled = false;
                 this.selectTypes.disabled = false;
+            },
+            toDelete:function () {
+                let __this = this;
+                layer.confirm('确定要删除 ' + this.popRecord.record.name + ' 么？',{
+                    title:'删除确认',
+                    btn:['删除','取消']
+                },function (index) {
+                    axios({
+                        method:'post',
+                        url:'/delete_face',
+                        data:{
+                            id: __this.popRecord.record.id
+                        }
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                layer.close(index);
+                                layer.msg('删除成功');
+                                layer.close(__this.popRecord.thisLayer);
+                                __this.popRecord.isShow = false;
+                                __this.$emit('delete-item',__this.popRecord.record.index);
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message,{title:'错误'});
+                        });
+                },function () {
+
+                });
             },
             toSubmit:function () {
                 this.isModify = false;
@@ -358,10 +388,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     endDate = timeRegular(endDate);
                 }catch (err){
                     this.queryReset();
-                    layer.msg(err,{
-                        time:2000,
-                        icon:2
-                    });
+                    layer.msg(err);
                     return;
                 }
 
@@ -369,31 +396,44 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     dic: {
                         startTime: startDate,
                         endTime: endDate
-                    },
-                    name:this.queryCondition.name,
-                    label:this.queryCondition.label,
-                    passportNumber:this.queryCondition.passportNumber,
-                    user_id:'',
-                    device_id:''
-                }
-                let searchArea = {
-                    'camera_list':[],
-                    'device_list':[],
-                    'region_list':[]
+                    }
                 };
+                if(this.queryCondition.name !== '') {
+                    condition['name'] = this.queryCondition.name;
+                }
+                if(this.queryCondition.label !== ''){
+                    condition['label'] = this.queryCondition.label;
+                }
+                if(this.queryCondition.passportNumber !== ''){
+                    condition['passportNumber'] = this.queryCondition.passportNumber;
+                }
+
+                let searchArea = {};
+                let cameraList = [];
+                let regionList = [];
+                let deviceList = [];
                 let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
                 let checkNodes = deviceTree.getCheckedNodes();
                 if(checkNodes.length > 0){
                     for(let i = 0;i < checkNodes.length;i++){
                         if(checkNodes[i].getParentNode() === null){
-                            searchArea.region_list.push(checkNodes[i].id);
+                            regionList.push(checkNodes[i].id);
                         }else if(checkNodes[i].children === undefined){
-                            searchArea.camera_list.push(checkNodes[i].id);
+                            cameraList.push(checkNodes[i].id);
                         }else{
-                            searchArea.device_list.push(checkNodes[i].id)
+                            deviceList.push(checkNodes[i].id)
                         }
                     }
-                    condition.dic.assign('search_area',searchArea);
+                    if(cameraList.length > 0) {
+                        searchArea['camera_list'] = cameraList;
+                    }
+                    if(deviceList.length > 0) {
+                        searchArea['device_list' ] = deviceList;
+                    }
+                    if(regionList.length > 0) {
+                        searchArea['region_list'] = regionList;
+                    }
+                    condition['search_area'] = searchArea;
                 }
                 axios({
                     method:"post",
@@ -420,7 +460,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                         }
                     })
                     .catch(function (err) {
-
+                        layer.alert(err,{title:'错误'});
                     });
             },
             queryReset:function () {
@@ -468,6 +508,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                             layer.alert('更新失败，请重试！');
                         }
                     });
+            },
+            deleteItem:function (index) {
+                this.records.splice(index,1);
             }
         },
         components:{
@@ -522,11 +565,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     return;
                 }
                 let reader = new FileReader();
-                reader.onload = (function (file) {
-                    return function (e) {
-                        document.getElementById("single-image").src = reader.result;
-                    };
-                })(img);
+                reader.onload = function (file) {
+                    document.getElementById("single-image").src = this.result;
+                };
                 reader.readAsDataURL(img);
             },
             progressStyle:function (num) {
@@ -552,54 +593,58 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     document.getElementById("multi-upload").value = '';
                     return;
                 }
+                let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
+                let checkNodes = deviceTree.getCheckedNodes();
+                let deviceList = [];
+                for (let i = 0; i < checkNodes.length; i++) {
+                    if (checkNodes[i].getParentNode() !== null && checkNodes[i].children !== undefined) {
+                        deviceList.push(checkNodes[i].id);
+                    }
+                }
+
+                if(deviceList.length === 0) {
+                    layer.msg('请选择要注册的设备');
+                    return;
+                }
+
                 let __this = this;
 
                 let faceIdList = [];
                 let imageType = /image.*/;
                 __this.errorMessage = '';
+                let processNumber = 0;
                 for(let i = 0;i < images.length;i++){
-                    if(images[i].type.match(imageType)){
+                    if(images[i].type.match(imageType)) {
                         let formData = new FormData();
-                        formData.append('fullImage',images[i]);
-                        formData.append('label',this.selectTypes.type);
-                        axios({
-                            method: 'post',
+                        formData.append('fullImage', images[i]);
+                        formData.append('label', this.selectTypes.type);
+                        $.ajax({
+                            type: 'post',
                             url: '/add_user_to_platform',
-                            responseType:'json',
                             data: formData,
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                                // 'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            async:false
-                        })
-                            .then(function (response) {
-                                if(response.data.name === 'OK'){
-                                    faceIdList.push(response.data.children.id);
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.name === 'OK') {
+                                    faceIdList.push(response.children.id);
                                 }
-                                if(response.data.name === 'ERROR'){
+                                if (response.name === 'ERROR') {
                                     __this.errorMessage += images[i].name + ' 注册出错\n'
                                 }
-                            })
-                            .catch(function (error) {
-
-                            });
-                    }else {
+                            },
+                            error: function (err) {
+                                layer.alert(err,{title:'错误'});
+                            }
+                        })
+                    } else {
                         __this.errorMessage += images[i].name + ' 不是图片文件\n'
                     }
                 }
-
                 if(faceIdList.length > 0){
-                    let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
-                    let checkNodes = deviceTree.getCheckedNodes();
-                    let deviceList = [];
-                    if(checkNodes.length > 0){
-                        for(let i = 0;i < checkNodes.length;i++){
-                            if(checkNodes[i].getParentNode() !== null && checkNodes[i].children !== undefined){
-                                deviceList.push(checkNodes[i].id);
-                            }
-                        }
-                    }
+                    __this.curProgress = 0;
+                    __this.endProgress = 0;
                     axios({
                         method:'post',
                         url:'/add_batch_user_to_device',
@@ -609,20 +654,25 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                                 'deviceid_list':deviceList,
                                 'cameraid_list':faceIdList
                             }
-                        }
+                        },
+                        responseType:'json'
                     })
                         .then(function (response) {
                             if(response.data.name==='OK'){
-                                layer.alert('上传完成,共 '+images.length +' 张图片,成功 '+success + ' 张',{
+                                layer.alert('上传完成,共 '+ images.length +' 张图片,成功 '+ faceIdList.length + ' 张',{
                                     title:'批量上传'
                                 });
                                 document.getElementById("multi-upload").value = '';
                             }else{
                                 layer.alert('上传失败,请检查!');
                             }
+                            __this.curProgress = 100;
+                            __this.endProgress = 100;
                         })
                         .catch(function (error) {
-
+                            layer.alert(error.message,{title:'错误'});
+                            __this.curProgress = 100;
+                            __this.endProgress = 100;
                         });
                 }
             },
@@ -637,55 +687,90 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     layer.msg('请选择人脸图片！');
                     return;
                 }
-                if(faceReg.label !== "白名单" || faceReg.label !== "黑名单"){
+                if(faceReg.label !== "白名单" && faceReg.label !== "黑名单"){
                     layer.msg('类别填写错误，请修正！');
                     return;
                 }
+
+                let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
+                let checkNodes = deviceTree.getCheckedNodes();
+                let deviceList = [];
+                for (let i = 0; i < checkNodes.length; i++) {
+                    if (checkNodes[i].getParentNode() !== null && checkNodes[i].children !== undefined) {
+                        deviceList.push(checkNodes[i].id);
+                    }
+                }
+
+                if(deviceList.length === 0) {
+                    layer.msg('请选择要注册的设备');
+                    return;
+                }
+
                 let formData = new FormData();
-                formData.append("fullImage",img);
-                formData.append("label",faceReg.label);
+                formData.append('label',faceReg.label);
+                formData.append('fullImage', img);
                 if(faceReg.name !== ''){
-                    formData.append("name",faceReg.name);
+                    formData.append('name', faceReg.name);
                 }
                 if(faceReg.gender　!== ''){
-                    formData.append("gender",faceReg.gender);
+                    formData.append('gender', faceReg.gender);
                 }
                 if(faceReg.passportNumber !== ''){
-                    formData.append("passportNumber",faceReg.passportNumber);
+                    formData.append('passportNumber', faceReg.passportNumber);
                 }
                 if(faceReg.place !== ''){
-                    formData.append("place",faceReg.place);
+                    formData.append('place',faceReg.place);
                 }
                 if(faceReg.comments !== ''){
-                    formData.append("comments",faceReg.comments);
+                    formData.append('comments', faceReg.comments);
                 }
-                axios({
-                    method: 'post',
-                    url: '/add_user_to_platform',
-                    responseType:'json',
-                    data: formData,
-                    headers: {
-                        'X-File-Name': 'single-image',
-                        'Content-Type': 'multipart/form-data'
-                        // 'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                    .then(function (response) {
-                        if(response.data.name == 'OK'){
-                            layer.msg('注册成功！');
-                            faceReg.name = "";
-                            faceReg.gender = "";
-                            faceReg.label = "";
-                            faceReg.passportNumber = "";
-                            faceReg.place = "";
-                            faceReg.comments = "";
-                            document.getElementById("single-image").src = "lib/img/ironman.jpg";
-                            document.getElementById("single-upload").value = '';
-                        }
-                    })
-                    .catch(function (error) {
 
-                    });
+                $.ajax({
+                    url:'/add_user_to_platform',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.name == 'OK') {
+                            axios({
+                                method: 'post',
+                                url: '/add_batch_user_to_device',
+                                data: {
+                                    'client_id': client_id,
+                                    'json_data': {
+                                        'deviceid_list': deviceList,
+                                        'cameraid_list': [response.children.id]
+                                    }
+                                },
+                                responseType: 'json',
+                            })
+                                .then(function (res) {
+                                    if (res.data.name === 'OK') {
+                                        layer.msg('注册成功！');
+                                        faceReg.name = "";
+                                        faceReg.gender = "";
+                                        faceReg.label = "";
+                                        faceReg.passportNumber = "";
+                                        faceReg.place = "";
+                                        faceReg.comments = "";
+                                        document.getElementById("single-image").src = "lib/img/ironman.jpg";
+                                        document.getElementById("single-upload").value = '';
+                                    } else {
+                                        layer.alert('上传失败,请检查!');
+                                    }
+                                })
+                                .catch(function (error) {
+                                    layer.alert(error.message,{title:'错误'});
+                                });
+                        }
+                    },
+                    error: function (err) {
+                        layer.alert(err,{title:'错误'});
+                    }
+                });
             }
         },
         components:{
@@ -707,7 +792,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
 
         })
         .catch(function (error) {
-
+            layer.alert(error.message,{title:'错误'})
         });
     exports('face-register', {});
 });

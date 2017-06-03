@@ -6,6 +6,22 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         form = layui.form(),
         laypage = layui.laypage;
 
+    axios({
+        method: 'get',
+        url: '/get_device_list',
+        responseType: 'json',
+        async: false
+    })
+        .then(function (response) {
+            if (response.data.name === 'OK') {
+                deviceList.deviceNodes = response.data.children;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+            }
+        })
+        .catch(function (error) {
+
+        });
+
     let deviceList = new Vue({
         el: "#deviceList",
         data: {
@@ -17,7 +33,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                 check: {
                     enable: true,
                     chkStyle: "checkbox",
-                    chkboxType: {"Y": "", "N": ""}
+                    chkboxType: {"Y": "s", "N": "ps"}
                 },
                 view: {
                     showIcon: false,
@@ -85,6 +101,17 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
             }
         }
     });
+
+    function getFontCss(treeId, treeNode) {
+        if (treeNode.state === '离线') {
+            return {color: 'red'};
+        } else {
+            return (treeNode.highlight) ? {color: "#2fbb3e", "font-weight": "bold"} : {
+                color: "#2fbb3e",
+                "font-weight": "normal"
+            };
+        }
+    }
 
     const timeMake = function (time) {
         let startYear = parseInt(time.year);
@@ -195,36 +222,96 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                     endDate = timeRegular(endDate);
                 } catch (err) {
                     this.queryReset();
-                    layer.msg(err, {
-                        time: 2000,
-                        icon: 2
-                    });
+                    layer.msg(err);
                     return;
                 }
 
+                let jsonData = {
+                    label:this.selectTypes.type,
+                    'dic':{
+                        startTime:startDate,
+                        endTime:endDate
+                    }
+                };
+                let searchArea = {};
+                let cameraList = [];
+                let regionList = [];
+                let deviceList = [];
+                let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
+                let checkNodes = deviceTree.getCheckedNodes();
+                if(checkNodes.length > 0){
+                    for(let i = 0;i < checkNodes.length;i++){
+                        if(checkNodes[i].getParentNode() === null){
+                            regionList.push(checkNodes[i].id);
+                        }else if(checkNodes[i].children === undefined){
+                            cameraList.push(checkNodes[i].id);
+                        }else{
+                            deviceList.push(checkNodes[i].id)
+                        }
+                    }
+                    if(cameraList.length > 0) {
+                        searchArea.assign('camera_list',cameraList);
+                    }
+                    if(deviceList.length > 0) {
+                        searchArea.assign('device_list',deviceList);
+                    }
+                    if(regionList.length > 0) {
+                        searchArea.assign('region_list',regionList);
+                    }
+                    jsonData.assign('search_area',searchArea);
+                }
+
                 if (this.selectResults.type === '已识别') {
+
+                    if(this.name !== ''){
+                        jsonData.assign('name',this.name);
+                    }
+                    if(this.passportNumber !== ''){
+                        jsonData.assign('passportNumber',this.passportNumber);
+                    }
                     axios({
                         method: "post",
                         url: "/search_hit",
                         data: {
-                            type: this.selectTypes.type,
-                            result: this.selectResults.type,
-                            name: this.name,
-                            startTime: startDate,
-                            endTime: endDate,
-                            passportNumber: this.passportNumber
+                           'json_data':jsonData
                         },
-                        responseType: 'json',
-                        async: false
+                        responseType: 'json'
                     })
                         .then(function (response) {
                             if (response.data.type === 'OK') {
                                 recordTable.records = response.data.children;
+                            } else {
+                                layer.msg('搜索失败,请检查');
                             }
                         })
                         .catch(function (err) {
 
                         });
+                } else {
+                    axios({
+                        method:'post',
+                        url:'/search_nohit',
+                        data:{
+                            'json_data':jsonData
+                        },
+                        responseType:'json'
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                let records = response.data.children;
+                                for(let i = 0;i < records.length;i++){
+                                    let user = {
+                                        name:'无',
+                                        label:'无',
+                                        passportNumber:'无',
+                                        fullImage:'',
+                                        comments:'无'
+                                    };
+                                    records[i].assign('user',user);
+                                }
+                                recordTable.records = records;
+                            }
+                        })
                 }
             },
             queryReset: function () {
@@ -408,11 +495,23 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                     title: '删除确认',
                     btn: ['删除', '取消']
                 }, function (layero) {
+                    let recordDeleteList = [];
                     if (index === -1) {
+                        for(let i = 0;i< recordTable.records.length;i++) {
+                            recordDeleteList.push(recordTable.records[i].id);
+                        }
                         recordTable.records.splice(0, recordTable.records.length);
                     } else {
-                        recordTable.records.splice(index, 1);
+                        recordDeleteList.push(recordTable.records[index].id);
                     }
+                    axios({
+                        method:'post',
+                        url:'/delete_record',
+                        data:{
+                            'recordId_list':recordDeleteList
+                        },
+                        async:false
+                    })
                     layer.close(layero);
                 }, function () {
 
@@ -425,32 +524,10 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
     });
 
 
-    function getFontCss(treeId, treeNode) {
-        return (!!treeNode.highlight) ? {color: "#2fbb3e", "font-weight": "bold"} : {
-            color: "#2fbb3e",
-            "font-weight": "normal"
-        };
-    }
 
-    $(document).ready(function () {
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-        queryCondition.queryReset();
-        axios({
-            method: 'get',
-            url: '/get_device_list',
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if (response.data.type === 'OK') {
-                    deviceList.deviceNodes = response.data.children;
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                }
-            })
-            .catch(function (error) {
 
-            });
-    });
+    queryCondition.queryReset();
+
 
     exports('statistics-query', {});
 });

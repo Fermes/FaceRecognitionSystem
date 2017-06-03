@@ -164,6 +164,10 @@ body {
   font-size: 1rem;
   padding: 5px 0 0 3px;
 }
+.frs-device .ztree li span {
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
 .frs-device .ztree li span.button.switch {
   background-image: url("../img/left_menu.png");
   *background-image: url("../img/left_menu.gif");
@@ -186,7 +190,6 @@ body {
   width: 93%;
   padding: 0 0 3px 1px;
   border-radius: 4px;
-  height: 1.4rem;
 }
 .frs-device .ztree li a:hover {
   border: 1px solid #1b5c24;
