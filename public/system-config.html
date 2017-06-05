@@ -48,27 +48,27 @@
         <label>相似度阈值</label>
     </div>
     <div class="sim-gra">
-        <input id="sim-value" type="range" v-model="similarity">
+        <input id="sim-value" type="range" v-model="record.similarity">
     </div>
     <div>
-        <label class="text-area">{{similarity + '%'}}</label>
+        <label class="text-area">{{record.similarity + '%'}}</label>
     </div>
 
     <div class="face-text">
         <label>人脸质量阈值</label>
     </div>
     <div class="face-gra">
-        <input id="qua-value" type="range" v-model="faceQuality">
+        <input id="qua-value" type="range" v-model="record.quality">
     </div>
     <div>
-        <label class="text-area">{{faceQuality + '%'}}</label>
+        <label class="text-area">{{record.quality + '%'}}</label>
     </div>
 
     <div class="rec-face">
         <label>识别人脸库容量</label>
     </div>
     <div>
-        <input class="text-underline1" v-model="recCapacity">
+        <input class="text-underline1" v-model="record.hit_limit">
     </div>
     <div class="number1">个</div>
 
@@ -76,7 +76,7 @@
         <label>未识别人脸库容量</label>
     </div>
     <div>
-        <input class="text-underline2" v-model="noRecCapacity">
+        <input class="text-underline2" v-model="record.nothit_limit">
     </div>
     <div class="number2">个</div>
     <div>
@@ -84,13 +84,14 @@
             <label>告警信息设置</label>
         </div>
         <div class="large">
-            大于(>)相似度阈值：播报人脸用户类别语音内容
+            大于(>)相似度阈值：
+            <div class="text3"> <input class="text-underline3" v-model="record.alarm_big_opt"> </div>
         </div>
         <div>
         <div class="small">
             小于(<)相似度阈值：
         </div>
-            <div class="text3"> <input class="text-underline3" v-model="warnInfo"> </div>
+            <div class="text3"> <input class="text-underline3" v-model="record.alarm_small_opt"> </div>
         </div>
     </div>
     <div>
@@ -98,28 +99,28 @@
             <label>告警输出</label>
         </div>
         <div>
-            <input type="checkbox" class="sound-box" id="check1" v-model="voice">
+            <input type="checkbox" class="sound-box" id="check1" v-model="record.voice_opt">
             <label class="volume-output" for="check1">语音输出</label>
         </div>
     </div>
     <div>
-        <input type="checkbox" class="switch" v-model="switchOutput">
+        <input type="checkbox" class="switch" v-model="record.switch_opt">
         <label class="label-switch">开关量输出</label>
     </div>
     <div>
         <label class="switch-time">开关量输出时间</label>
     <div>
     </div>
-        <input class="text-underline4" v-model="switchOutputTime">
+        <input class="text-underline4" v-model="record.switch_opt_time">
     </div>
     <div class="tag-time">
         <label>比中人脸时间间隔</label>
     </div>
     <div>
-        <input class="text-underline5" v-model="intervalSecond">
+        <input class="text-underline5" v-model="record.cpinterval">
     </div>
     <div class="second">秒</div>
-    <button class="button" type="button">应用</button>
+    <button class="button" type="button" @click="submitSetting">应用</button>
 </div>
 </body>
 <script>

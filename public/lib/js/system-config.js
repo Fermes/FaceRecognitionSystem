@@ -6,33 +6,87 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         form = layui.form(),
         laypage=layui.laypage;
 
+    let client_id = '0';
+    let ws = new WebSocket('ws://' + document.location.hostname + ':1001');
+    ws.onopen = function () {
+
+    };
+    ws.onclose = function () {
+        layer.msg('服务器连接断开,请刷新界面！');
+    };
+    ws.onerror = function () {
+        layer.msg('数据传输错误！');
+    };
+    ws.onmessage = function (receiveMsg) {
+
+    };
+    ws.ondata = function (record) {
+        if(record.name === 'CLIENTID'){
+            client_id = record.children.id;
+        } else if (record.name === 'HIT') {
+
+        }
+    };
+
+    axios({
+        method: 'get',
+        url: '/get_device_list',
+        responseType: 'json',
+        async: false
+    })
+        .then(function (response) {
+            if (response.data.name === 'OK') {
+                deviceList.deviceNodes = response.data.children;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+                systemSetting.deviceIndex = 0;
+            }
+
+        })
+        .catch(function (error) {
+            layer.alert(error.message,{title:'错误'})
+        });
+
+    const settingDisplay = function (event, treeId, treeNode) {
+
+        if(treeNode.getParentNode() === null){
+            systemSetting.deviceIndex = 0;
+            systemSetting.cityIndex = treeNode.getIndex();
+        }else if(treeNode.children === undefined) {
+            systemSetting.deviceIndex = treeNode.getParentNode().getIndex();
+            systemSetting.cityIndex= treeNode.getParentNode().getParentNode().getIndex();
+        } else {
+            systemSetting.cityIndex = treeNode.getParentNode().getIndex();
+            systemSetting.deviceIndex = treeNode.getIndex();
+        }
+    };
+
     let deviceList = new Vue({
-        el:"#deviceList",
-        data:{
-            value:"",
-            setting:{
-                edit:{
-                    enable:true
+        el: "#deviceList",
+        data: {
+            value: "",
+            setting: {
+                edit: {
+                    enable: true
                 },
-                check:{
+                check: {
                     enable: true,
                     chkStyle: "checkbox",
-                    chkboxType: { "Y": "", "N": "" }
+                    chkboxType: {"Y": "s", "N": "ps"}
                 },
-                view:{
-                    showIcon:false,
-                    showLine:false,
+                view: {
+                    showIcon: false,
+                    showLine: false,
                     fontCss: getFontCss
                 },
                 callback: {
-                    //onDrop:dragToPlay
+                    onClick: settingDisplay
                 }
             },
-            deviceNodes:[],
-            preNodeList:null,
-            allChecked:false
+            deviceNodes: [],
+            preNodeList: null,
+            allChecked: false
         },
-        watch:{
+        watch: {
             value: function (newValue) {
                 let zTree = $.fn.zTree.getZTreeObj("deviceTree");
                 zTree.expandAll(false);
@@ -40,7 +94,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             }
         },
         methods: {
-            searchNode:_.debounce(
+            searchNode: _.debounce(
                 function (newValue) {
                     if (newValue === "") {
                         return;
@@ -71,14 +125,14 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     }
                 }, 300
             ),
-            revertCheck:function () {
+            revertCheck: function () {
                 let zTree = $.fn.zTree.getZTreeObj("deviceTree");
                 let allNodes = zTree.transformToArray(zTree.getNodes());
-                for(let i = 0;i < allNodes.length;i++){
+                for (let i = 0; i < allNodes.length; i++) {
                     zTree.checkNode(allNodes[i]);
                 }
             },
-            allCheck:function () {
+            allCheck: function () {
                 let zTree = $.fn.zTree.getZTreeObj("deviceTree");
                 this.allChecked = !this.allChecked;
                 zTree.checkAllNodes(this.allChecked);
@@ -87,69 +141,126 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     });
 
     function getFontCss(treeId, treeNode) {
-        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        if(treeNode.state === '离线'){
+            return {color:'red'};
+        }else{
+            return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        }
     }
 
     let systemSetting = new Vue({
         el:"#frs-set",
         data: {
-            similarity:0,
-            faceQuality:0,
-            recCapacity:0,
-            noRecCapacity:0,
-            warnInfo:"",
-            voice:false,
-            switchOutput:false,
-            switchOutputTime:"",
-            intervalSecond:""
+            cityIndex:0,
+            deviceIndex:-1,
+            record:null
+        },
+        watch:{
+            cityIndex: function () {
+                this.record = JSON.parse(JSON.stringify(deviceList.deviceNodes[this.cityIndex].children[this.deviceIndex]));
+                this.record.children = undefined;
+                this.record.client_id = client_id;
+            },
+            deviceIndex: function () {
+                this.record = JSON.parse(JSON.stringify(deviceList.deviceNodes[this.cityIndex].children[this.deviceIndex]));
+                this.record.children = undefined;
+                this.record.client_id = client_id;
+            }
         },
         methods:{
             submitSetting:function () {
-                axios({
-                    method: 'post',
-                    url: '/system_setting',
-                    responseType: 'json',
-                    data:{
-                        similarity:this.similarity,
-                        faceQuality:this.faceQuality,
-                        recCapacity:this.recCapacity,
-                        noRecCapacity:this.noRecCapacity,
-                        warnInfo:this.warnInfo,
-                        voice:this.voice,
-                        switchOutput:this.switchOutput,
-                        switchOutputTime:this.switchOutputTime,
-                        intervalSecond:this.intervalSecond
-                    },
-                    async: false
-                }).then(function (res) {
-                    layer.msg(res.data,{
-                        icon:1,
-                        time:2000
+                let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
+                let checkNodes = deviceTree.getCheckedNodes();
+                let checkList = [];
+                for (let i = 0; i < checkNodes.length; i++) {
+                    if (checkNodes[i].getParentNode() !== null && checkNodes[i].children !== undefined) {
+                        let tmpDevice = {
+                            cityIndex:checkNodes[i].getParentNode().getIndex(),
+                            deviceIndex:checkNodes[i].getIndex(),
+                            record:null
+                        };
+                        let tmpNode = JSON.parse(JSON.stringify(deviceList.deviceNodes[tmpDevice.cityIndex].children[tmpDevice.deviceIndex]));
+                        tmpNode.children = undefined;
+                        tmpNode.client_id = client_id;
+                        tmpDevice.record = tmpNode;
+                        checkList.push(tmpDevice);
+                    }
+                }
+                let __this = this;
+                if(checkList.length === 0) {
+                    $.ajax({
+                        type:'post',
+                        url:'/update_device',
+                        async:false,
+                        data:this.record,
+                        success:function (response) {
+                            if(response.name === 'OK') {
+                                __this.record.children = deviceList.deviceNodes[__this.cityIndex].children[__this.deviceIndex].children;
+                                Vue.set(deviceList.deviceNodes[__this.cityIndex].children,__this.deviceIndex,__this.record);
+                                layer.msg(__this.record.name + ' 设置更改成功');
+                            }else {
+                                layer.alert(__this.record.name + '设置更改失败,请检查',{title:'错误'})
+                            }
+                        },
+                        error:function (err) {
+                            layer.alert(err,{title:'错误'});
+                        }
                     });
-                }).error(function (err) {
+                }else {
+                    let tmpLayer = layer.confirm('您选择了多个设备，是否将设置应用到所有选定设备？',{
+                        title:'更改设置',
+                        btn:['确定','取消']
+                    },function (index,layero) {
+                        checkList.push({
+                            cityIndex:__this.cityIndex,
+                            deviceIndex:__this.deviceIndex,
+                            record:JSON.parse(JSON.stringify(__this.record))
+                        });
+                        let multiDeviceSet = new Promise(function (resolve,reject) {
+                                for (let i = 0; i < checkList.length; i++) {
+                                    let tmpDevice = checkList[i];
+                                    tmpDevice.record.similarity = __this.record.similarity;
+                                    tmpDevice.record.quality = __this.record.quality;
+                                    tmpDevice.record.hit_limit = __this.record.hit_limit;
+                                    tmpDevice.record.nothit_limit = __this.record.nothit_limit;
+                                    tmpDevice.record.alarm_big_opt = __this.record.alarm_small_opt;
+                                    tmpDevice.record.alarm_small_opt = __this.record.alarm_small_opt;
+                                    tmpDevice.record.voice_opt = __this.record.voice_opt;
+                                    tmpDevice.record.switch_opt = __this.record.switch_opt;
+                                    tmpDevice.record.switch_opt_time = __this.record.switch_opt_time;
+                                    tmpDevice.record.cpinterval = __this.record.cpinterval;
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/update_device',
+                                        data: tmpDevice,
+                                        async: false,
+                                        success: function (response) {
+                                            if (response.name === 'OK') {
+                                                tmpDevice.record.children = deviceList.deviceNodes[tmpDevice.cityIndex].children[tmpDevice.deviceIndex].children;
+                                                Vue.set(deviceList.deviceNodes[tmpDevice.cityIndex].children, tmpDevice.deviceIndex, tmpDevice.record);
+                                            } else {
+                                                layer.alert(tmpDevice.record.name + ' 设置更改失败,请检查');
+                                            }
+                                        },
+                                        error: function (err) {
+                                            layer.alert(error, {title: '错误'});
+                                        }
+                                    })
+                                }
+                                layer.close(tmpLayer);
+                                resolve();
+                            }
+                        )
 
-                });
+                    },function () {
+
+                    });
+                }
+
             }
         }
     });
-    $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-        axios({
-            method: 'get',
-            url: '/get_device_list',
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if(response.data.type === 'OK'){
-                    deviceList.deviceNodes = response.data.children;
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                }
-            })
-            .catch(function (error) {
 
-            });
-    });
 
     exports('system-config', {});
 });

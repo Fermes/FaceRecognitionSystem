@@ -20,13 +20,14 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         layer.msg('数据传输错误！');
     };
     ws.onmessage = function (receiveMsg) {
-        let msg = receiveMsg.split(':');
-        if(msg[0] === 'id'){
-            client_id = msg[2];
-        }
+
     };
     ws.ondata = function (record) {
+        if(record.name === 'CLIENTID'){
+            client_id = record.children.id;
+        } else if (record.name === 'HIT') {
 
+        }
     };
 
     let deviceList=new Vue({
@@ -110,7 +111,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
     });
 
     function getFontCss(treeId, treeNode) {
-        return (!!treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        if(treeNode.state === '离线'){
+            return {color:'red'};
+        }else{
+            return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
+        }
     }
 
     const frsSelect = {
@@ -215,10 +220,33 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             toDelete:function () {
                 let __this = this;
-                layer.confirm('确定要删除 ' + this.popRecord.record.name + ' 么？',{
+                layer.confirm('确定删除 ' + this.popRecord.record.name + ' 么?这会删除相关的所有记录',{
                     title:'删除确认',
                     btn:['删除','取消']
-                },function (index) {
+                }
+                    /*function (index,layero) {
+                    axios({
+                        method:'post',
+                        url:'/delete_face',
+                        data:{
+                            id: __this.popRecord.record.id
+                        }
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                layer.close(index);
+                                layer.msg('正在备份，请稍后至导出列表查看');
+                                layer.close(__this.popRecord.thisLayer);
+                                __this.popRecord.isShow = false;
+                                __this.$emit('delete-item',__this.popRecord.record.index);
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.close(index);
+                            layer.alert(error.message,{title:'错误'});
+                        });
+                }, */
+                    , function (index, layero) {
                     axios({
                         method:'post',
                         url:'/delete_face',
@@ -238,9 +266,9 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                         .catch(function (error) {
                             layer.alert(error.message,{title:'错误'});
                         });
-                },function () {
+                }), function (index, layero) {
 
-                });
+                };
             },
             toSubmit:function () {
                 this.isModify = false;
@@ -539,8 +567,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         },
         watch:{
             endProgress:function () {
+                let __this = this;
                 if(this.curProgress < this.endProgress){
-                    this.progressTimer = setInterval('faceReg.curProgress++;',50);
+                    this.progressTimer = setInterval(function () {
+                        __this.curProgress++;
+                    },20);
                 }
             },
             curProgress:function () {
@@ -612,69 +643,71 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 let faceIdList = [];
                 let imageType = /image.*/;
                 __this.errorMessage = '';
-                let processNumber = 0;
-                for(let i = 0;i < images.length;i++){
-                    if(images[i].type.match(imageType)) {
-                        let formData = new FormData();
-                        formData.append('fullImage', images[i]);
-                        formData.append('label', this.selectTypes.type);
-                        $.ajax({
-                            type: 'post',
-                            url: '/add_user_to_platform',
-                            data: formData,
-                            async: false,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                                if (response.name === 'OK') {
-                                    faceIdList.push(response.children.id);
+                let imageUpload = new Promise(function(resolve,reject){
+                    for(let i = 0;i < images.length;i++){
+                        if(images[i].type.match(imageType)) {
+                            let formData = new FormData();
+                            formData.append('fullImage', images[i]);
+                            formData.append('label', __this.selectTypes.type);
+                            $.ajax({
+                                type: 'post',
+                                url: '/add_user_to_platform',
+                                data: formData,
+                                async: false,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (response) {
+                                    if (response.name === 'OK') {
+                                        faceIdList.push(response.children.id);
+                                    }
+                                    if (response.name === 'ERROR') {
+                                        __this.errorMessage += images[i].name + ' 注册出错\n'
+                                    }
+                                },
+                                error: function (err) {
+                                    layer.alert(err,{title:'错误'});
                                 }
-                                if (response.name === 'ERROR') {
-                                    __this.errorMessage += images[i].name + ' 注册出错\n'
-                                }
-                            },
-                            error: function (err) {
-                                layer.alert(err,{title:'错误'});
-                            }
-                        })
-                    } else {
-                        __this.errorMessage += images[i].name + ' 不是图片文件\n'
+                            })
+                        } else {
+                            __this.errorMessage += images[i].name + ' 不是图片文件\n'
+                        }
                     }
-                }
-                if(faceIdList.length > 0){
-                    __this.curProgress = 0;
-                    __this.endProgress = 0;
-                    axios({
-                        method:'post',
-                        url:'/add_batch_user_to_device',
-                        data:{
-                            'client_id':client_id,
-                            'json_data':{
-                                'deviceid_list':deviceList,
-                                'cameraid_list':faceIdList
-                            }
-                        },
-                        responseType:'json'
-                    })
-                        .then(function (response) {
-                            if(response.data.name==='OK'){
-                                layer.alert('上传完成,共 '+ images.length +' 张图片,成功 '+ faceIdList.length + ' 张',{
-                                    title:'批量上传'
+                    resolve();
+                })
+                    .then(function () {
+                        if(faceIdList.length > 0){
+                            __this.curProgress = 0;
+                            __this.endProgress = 0;
+                            axios({
+                                method:'post',
+                                url:'/add_batch_user_to_device',
+                                data:{
+                                    'client_id':client_id,
+                                    'json_data':{
+                                        'deviceid_list':deviceList,
+                                        'cameraid_list':faceIdList
+                                    }
+                                },
+                                responseType:'json'
+                            })
+                                .then(function (response) {
+                                    if(response.data.name==='OK'){
+                                        layer.alert('上传完成,共 '+ images.length +' 张图片,成功 '+ faceIdList.length + ' 张',{
+                                            title:'批量上传'
+                                        });
+                                        document.getElementById("multi-upload").value = '';
+                                    }else{
+                                        layer.alert('上传失败,请检查!');
+                                    }
+                                    __this.endProgress = 100;
+                                })
+                                .catch(function (error) {
+                                    layer.alert(error.message,{title:'错误'});
+                                    __this.endProgress = 100;
                                 });
-                                document.getElementById("multi-upload").value = '';
-                            }else{
-                                layer.alert('上传失败,请检查!');
-                            }
-                            __this.curProgress = 100;
-                            __this.endProgress = 100;
-                        })
-                        .catch(function (error) {
-                            layer.alert(error.message,{title:'错误'});
-                            __this.curProgress = 100;
-                            __this.endProgress = 100;
-                        });
-                }
+                        }
+                    });
             },
             singleSubmit:function (event) {
                 let img = document.getElementById("single-upload").files[0];

@@ -56,6 +56,16 @@ let deviceList = Mock.mock({
                     username: '@string(3,8)',
                     pwd: '@string(5,10)',
                     'state|1': ["空闲", "工作", "离线"],
+                    similarity:'@natural(50,80)',
+                    quality:50,
+                    hit_limit:100000,
+                    nothit_limit:50000,
+                    cpinterval:200,
+                    voice_opt:true,
+                    switch_opt:false,
+                    switch_opt_time:1000,
+                    alarm_big_opt:'播报人脸用户类别语音内容',
+                    alarm_small_opt:'',
                     'children|1-4': [
                         {
                             'id|+1': 1,
@@ -66,7 +76,7 @@ let deviceList = Mock.mock({
                             username: '@string(3,8)',
                             pwd: '@string(5,10)',
                             'stream|1': ['mpeg4', 'H264', 'h264', 'cam', 'VP8'],
-                            timeout: '@natural(50, 2000)',
+                            delay: '@natural(50, 2000)',
                             'state|1': ['空闲', '工作', '离线']
                         }
                     ]
@@ -200,10 +210,15 @@ app.post('/add_user_to_platform', function (req, res) {
 
     form.parse(req, function(err, fields, files) {
         console.log(fields.label);
-        console.log(files.fullImage);
+        console.log(files.fullImage.name);
     });
     res.json(back);
     res.end();
+});
+
+app.post('/add_batch_user_to_device',function (req,res) {
+   res.json(back);
+   res.end();
 });
 
 app.post('/search_face', function (req, res) {
@@ -213,6 +228,24 @@ app.post('/search_face', function (req, res) {
 
 app.post('/search_hit', function (req, res) {
     res.json(hitRecords);
+    res.end();
+});
+
+app.post('/delete_*',function (req,res) {
+    console.log(req.path);
+    res.json(back);
+    res.end();
+});
+
+app.post('/add_*',function (req,res) {
+    console.log(req.path);
+    res.json(back);
+    res.end();
+});
+
+app.post('/update_*',function (req,res) {
+    console.log(req.path);
+    res.json(back);
     res.end();
 });
 

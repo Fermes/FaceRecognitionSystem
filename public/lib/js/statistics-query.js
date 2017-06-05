@@ -17,9 +17,10 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                 deviceList.deviceNodes = response.data.children;
                 $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
             }
+
         })
         .catch(function (error) {
-
+            layer.alert(error.message,{title:'错误'})
         });
 
     let deviceList = new Vue({
@@ -205,6 +206,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         methods: {
             querySubmit: function () {
                 let startDate = '', endDate = '';
+                let __this = this;
                 try {
                     startDate = timeMake(this.startTime);
 
@@ -228,7 +230,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
 
                 let jsonData = {
                     label:this.selectTypes.type,
-                    'dic':{
+                    'dic': {
                         startTime:startDate,
                         endTime:endDate
                     }
@@ -240,34 +242,33 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                 let deviceTree = $.fn.zTree.getZTreeObj("deviceTree");
                 let checkNodes = deviceTree.getCheckedNodes();
                 if(checkNodes.length > 0){
-                    for(let i = 0;i < checkNodes.length;i++){
-                        if(checkNodes[i].getParentNode() === null){
+                    for (let i = 0;i < checkNodes.length;i++) {
+                        if (checkNodes[i].getParentNode() === null){
                             regionList.push(checkNodes[i].id);
-                        }else if(checkNodes[i].children === undefined){
+                        } else if (checkNodes[i].children === undefined){
                             cameraList.push(checkNodes[i].id);
-                        }else{
+                        } else {
                             deviceList.push(checkNodes[i].id)
                         }
                     }
                     if(cameraList.length > 0) {
-                        searchArea.assign('camera_list',cameraList);
+                        searchArea['camera_list'] = cameraList;
                     }
                     if(deviceList.length > 0) {
-                        searchArea.assign('device_list',deviceList);
+                        searchArea['device_list'] = deviceList;
                     }
                     if(regionList.length > 0) {
-                        searchArea.assign('region_list',regionList);
+                        searchArea['region_list'] = regionList;
                     }
-                    jsonData.assign('search_area',searchArea);
+                    jsonData['search_area'] = searchArea;
                 }
 
-                if (this.selectResults.type === '已识别') {
-
-                    if(this.name !== ''){
-                        jsonData.assign('name',this.name);
+                if (__this.selectResults.type === '已识别') {
+                    if(__this.name !== ''){
+                        jsonData['name'] = __this.name;
                     }
-                    if(this.passportNumber !== ''){
-                        jsonData.assign('passportNumber',this.passportNumber);
+                    if(__this.passportNumber !== ''){
+                        jsonData['passportNumber'] = __this.passportNumber;
                     }
                     axios({
                         method: "post",
@@ -278,7 +279,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                         responseType: 'json'
                     })
                         .then(function (response) {
-                            if (response.data.type === 'OK') {
+                            if (response.data.name === 'OK') {
                                 recordTable.records = response.data.children;
                             } else {
                                 layer.msg('搜索失败,请检查');
@@ -307,7 +308,7 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                                         fullImage:'',
                                         comments:'无'
                                     };
-                                    records[i].assign('user',user);
+                                    records[i]['user'] = user;
                                 }
                                 recordTable.records = records;
                             }
@@ -500,18 +501,28 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
                         for(let i = 0;i< recordTable.records.length;i++) {
                             recordDeleteList.push(recordTable.records[i].id);
                         }
-                        recordTable.records.splice(0, recordTable.records.length);
                     } else {
                         recordDeleteList.push(recordTable.records[index].id);
                     }
-                    axios({
-                        method:'post',
+                    $.ajax({
+                        type:'post',
                         url:'/delete_record',
-                        data:{
-                            'recordId_list':recordDeleteList
+                        data: {
+                            'recordId_list': recordDeleteList
                         },
-                        async:false
-                    })
+                        async:false,
+                        cache:false,
+                        success:function (response) {
+                            if(response.name === 'OK'){
+                                if(index === -1){
+                                    recordTable.records.splice(0, recordTable.records.length);
+                                }else {
+                                    recordTable.records.splice(index, 1);
+                                }
+                                layer.msg('删除成功');
+                            }
+                        }
+                    });
                     layer.close(layero);
                 }, function () {
 

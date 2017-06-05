@@ -7,6 +7,46 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         laypage=layui.laypage,
         element = layui.element();
 
+    let client_id = 0;
+    let ws = new WebSocket('ws://' + document.location.hostname + ':1001');
+
+    ws.onopen = function () {
+
+    };
+    ws.onclose = function () {
+        layer.msg('服务器连接断开,请刷新界面！');
+    };
+    ws.onerror = function () {
+        layer.msg('数据传输错误！');
+    };
+    ws.onmessage = function (receiveMsg) {
+
+    };
+    ws.ondata = function (record) {
+        if(record.name === 'CLIENTID'){
+            client_id = record.children.id;
+        }
+    };
+
+    axios({
+        method: 'get',
+        url: '/get_device_list',
+        responseType: 'json',
+        async: false
+    })
+        .then(function (response) {
+            if(response.data.name === 'OK'){
+                deviceList.deviceNodes = response.data.children;
+                deviceManage.deviceNodes = deviceList.deviceNodes;
+                $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
+            }else {
+
+            }
+        })
+        .catch(function (error) {
+
+        });
+
     let deviceList=new Vue({
         el:"#deviceList",
         data:{
@@ -72,7 +112,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
         }
     });
 
-
     function getFontCss(treeId, treeNode) {
         if(treeNode.state === '离线'){
             return {color:'red'};
@@ -80,8 +119,6 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             return (treeNode.highlight) ? {color:"#2fbb3e", "font-weight":"bold"} : {color:"#2fbb3e", "font-weight":"normal"};
         }
     }
-
-
 
     const siteItem = {
         template:'<span class="site-item" v-on:click="changeInterface">\
@@ -123,7 +160,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             <transition name="menu">\
             <div class="device-menu" v-show="showMenu.deviceMenu" @mouseover="toShowMenu(-1)" @mouseout="toCloseMenu(-1)"><button @click="deleteItem">删除</button><button @click="addCamera">添加摄像机</button></div></transition>\
         </div>\
-        <ul v-show="showChildren">\
+        <ul v-if="showChildren">\
             <li v-for="(camera,index) in deviceNode.children">\
                 <span>{{camera.name}}</span>\
                 <span>{{camera.id}}</span>\
@@ -133,7 +170,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 <span>{{camera.username}}</span>\
                 <span>{{camera.pwd}}</span>\
                 <span>{{camera.stream}}</span>\
-                <span>{{camera.timeout}}</span>\
+                <span>{{camera.delay}}</span>\
                 <span :style="stateStyle(index)">{{camera.state}}</span>\
                 <span><label @click="changeCamera(index)">修改</label><img src="lib/img/down.png" @mouseenter="toShowMenu(index) " @mouseleave="toCloseMenu(index)"></span>\
                 <transition name="menu">\
@@ -267,13 +304,84 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 return curMode === this.btnShowMode;
             },
             deleteConfirm:function (parentNode,num) {
-                layer.confirm("确定要删除 " + parentNode[num].name +' 么？',{
+                let __this = this;
+                layer.confirm("确定要删除 " + parentNode[num].name +' 么?这会删除相关的所有记录',{
                     title:'删除确认',
                     btn:['删除','取消']
                 },function (index) {
-                    parentNode.splice(num,1);
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                    layer.close(index);
+                    if(__this.deviceShowMode === 0) {
+                        axios({
+                            method:'post',
+                            url:'/delete_region',
+                            responseType:'json',
+                            data:{
+                                'client_id':client_id,
+                                id:parentNode[num].id
+                            }
+                        })
+                            .then(function (response) {
+                                if(response.data.name === 'OK'){
+                                    parentNode.splice(num,1);
+                                    layer.close(index);
+                                    layer.msg('删除成功');
+                                }else{
+                                    layer.msg('删除失败,请检查');
+                                }
+                            })
+                            .catch(function (error) {
+                                layer.alert(error.message,{
+                                    title:'错误'
+                                })
+                            })
+                    }else if(parentNode[num].children !== undefined){
+                        axios({
+                            method:'post',
+                            url:'/delete_device',
+                            responseType:'json',
+                            data:{
+                                'client_id':client_id,
+                                id:parentNode[num].id
+                            }
+                        })
+                            .then(function (response) {
+                                if(response.data.name === 'OK'){
+                                    parentNode.splice(num,1);
+                                    layer.close(index);
+                                    layer.msg('删除成功');
+                                }else{
+                                    layer.msg('删除失败,请检查');
+                                }
+                            })
+                            .catch(function (error) {
+                                layer.alert(error.message,{
+                                    title:'错误'
+                                })
+                            })
+                    }else {
+                        axios({
+                            method:'post',
+                            url:'/delete_camera',
+                            responseType:'json',
+                            data:{
+                                'client_id':client_id,
+                                id:parentNode[num].id
+                            }
+                        })
+                            .then(function (response) {
+                                if(response.data.name === 'OK'){
+                                    parentNode.splice(num,1);
+                                    layer.close(index);
+                                    layer.msg('删除成功');
+                                }else{
+                                    layer.msg('删除失败,请检查');
+                                }
+                            })
+                            .catch(function (error) {
+                                layer.alert(error.message,{
+                                    title:'错误'
+                                })
+                            })
+                    }
                 },function () {
 
                 });
@@ -286,7 +394,7 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 }
             },
             addItem:function () {
-                let _this = this;
+                let __this = this;
                 let date = new Date();
                 let now = date.getFullYear().toString() + '-' + (date.getMonth() + 1 < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1).toString()) + '-' + (date.getDate() < 10 ? '0' + date.getDate().toString() : date.getDate().toString());
 
@@ -294,18 +402,34 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     value: '',
                     title: '请输入地区名'
                 }, function(value, index, elem){
-                    let tmpNode = {
-                        id:'-1',
-                        name:value,
-                        createTime:now,
-                        offlineNumber:0,
-                        children:[]
-                    };
-                    if(_this.deviceShowMode === 0){
-                        _this.deviceNodes.push(tmpNode);
-                    }else if(_this.deviceShowMode === 1){
-                        _this.deviceNodes[_this.cityIndex].children.push(tmpNode);
-                    }
+                    axios({
+                        method:'post',
+                        url:'/add_region',
+                        data:{
+                            name:value
+                        }
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                let tmpNode = {
+                                    id:response.data.children.id,
+                                    name:value,
+                                    createTime:now,
+                                    offlineNumber:0,
+                                    children:[]
+                                };
+                                if(__this.deviceShowMode === 0){
+                                    __this.deviceNodes.push(tmpNode);
+                                }else if(__this.deviceShowMode === 1){
+                                    __this.deviceNodes[__this.cityIndex].children.push(tmpNode);
+                                }
+                            } else {
+                                layer.alert('添加区域失败，请检查',{title:'错误'});
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message, {title:'错误'});
+                        });
                     layer.close(index);
                 });
             },
@@ -436,14 +560,74 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
             },
             doDeviceProcess:function () {
                 let par = deviceManage.deviceNodes[deviceManage.cityIndex].children;
+                let __this = this;
+                let newDeviceInfo = {
+                    client_id:client_id,
+                    ip:this.newDevice.ip,
+                    name:this.newDevice.name,
+                    username:this.newDevice.username,
+                    pwd:this.newDevice.pwd,
+                    state:this.newDevice.state,
+                    region_id:deviceManage.deviceNodes[deviceManage.cityIndex].id,
+                    similarity:50,
+                    quality:50,
+                    hit_limit:100000,
+                    nothit_limit:50000,
+                    cpinterval:500,
+                    voice_opt:true,
+                    switch_opt:false,
+                    switch_opt_time:1000,
+                    alarm_big_opt:'',
+                    alarm_small_opt:''
+                };
                 if(this.mode === '添加设备'){
-                    par.push(this.newDevice);
+                    axios({
+                        method:'post',
+                        url:'/add_device',
+                        data:newDeviceInfo,
+                        responseType:'json'
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                newDeviceInfo.id = response.data.children.id;
+                                newDeviceInfo.children = [];
+                                par.push(deviceInfo);
+                            }else {
+                                layer.alert('新增设备出错,请检查',{title:'错误'});
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message,{title:'错误'});
+                        })
                 }else if(this.mode === '修改设备'){
-                    par[this.deviceIndex].name = this.newDevice.name;
-                    par[this.deviceIndex].ip = this.newDevice.ip;
-                    par[this.deviceIndex].username = this.newDevice.username;
-                    par[this.deviceIndex].pwd = this.newDevice.pwd;
-                    par[this.deviceIndex].state = this.newDevice.state;
+                    newDeviceInfo.id = par[__this.deviceIndex].id;
+                    newDeviceInfo.similarity = par[__this.deviceIndex].similarity;
+                    newDeviceInfo.quality = par[__this.deviceIndex].quality;
+                    newDeviceInfo.hit_limit = par[__this.deviceIndex].hit_limit;
+                    newDeviceInfo.nothit_limit = par[__this.deviceIndex].nothit_limit;
+                    newDeviceInfo.cpinterval = par[__this.deviceIndex].cpinterval;
+                    newDeviceInfo.switch_opt = par[__this.deviceIndex].switch_opt;
+                    newDeviceInfo.switch_opt_time = par[__this.deviceIndex].switch_opt_time;
+                    newDeviceInfo.voice_opt = par[__this.deviceIndex].voice_opt;
+                    newDeviceInfo.alarm_big_opt = par[__this.deviceIndex].alarm_big_opt;
+                    newDeviceInfo.alarm_small_opt = par[__this.deviceIndex].alarm_small_opt;
+                    axios({
+                        method:'post',
+                        url:'/update_device',
+                        data:newDeviceInfo,
+                        responseType:'json'
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                newDeviceInfo.children = par[__this.deviceIndex].children;
+                                Vue.set(par, __this.deviceIndex, newDeviceInfo);
+                            }else {
+                                layer.alert('修改设备出错,请检查',{title:'错误'});
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message,{title:'错误'});
+                        })
                 }
                 layer.close(this.thisLayer);
                 this.showThis = false;
@@ -476,9 +660,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                 username: '',
                 pwd: '',
                 stream: '',
-                timeout: '',
-                state: '空闲',
-                nocheck: true
+                delay: '',
+                state: '空闲'
             },
             showSelectStates:false,
             selectStates:['空闲','工作','离线'],
@@ -497,9 +680,8 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                   username: '',
                   pwd: '',
                   stream: '',
-                  timeout: '',
-                  state: '空闲',
-                  nocheck: true
+                  delay: '',
+                  state: '空闲'
               };
             },
             selectState:function (index) {
@@ -507,14 +689,63 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
               this.showSelectStates = false;
             },
             doCameraProcess:function () {
+                let __this = this;
                 let par = deviceManage.deviceNodes[deviceManage.cityIndex].children[this.deviceIndex].children;
+                let deviceId = deviceManage.deviceNodes[deviceManage.cityIndex].children[this.deviceIndex].id;
                 if(this.newCamera.name === '' || this.newCamera.username === '' || this.newCamera.pwd === ''){
                     return;
                 }
-                if(this.mode === '添加摄像机'){
-                    par.push(this.newCamera);
-                }else if(this.mode === '修改摄像机'){
-                    Vue.set(par,this.cameraIndex,this.newCamera);
+                let cameraInfo = {
+                    client_id:client_id,
+                    ip:__this.newCamera.ip,
+                    port:__this.newCamera.port,
+                    name:__this.newCamera.name,
+                    username:__this.newCamera.username,
+                    pwd:__this.newCamera.pwd,
+                    stream:__this.newCamera.stream,
+                    device_id: deviceId,
+                    brand:__this.newCamera.brand,
+                    delay:__this.newCamera.delay,
+                    state:__this.newCamera.state
+                };
+                if(__this.mode === '添加摄像机'){
+                    axios({
+                        method:'post',
+                        url:'/add_camera',
+                        responseType:'json',
+                        data:cameraInfo
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                cameraInfo.id = response.data.children.id;
+                                par.push(cameraInfo);
+                            }else {
+                                layer.alert('新增摄像机失败,请检查',{title:'错误'});
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message,{title:'错误'});
+                        });
+                }else if(__this.mode === '修改摄像机'){
+                    cameraInfo.id = __this.newCamera.id;
+                    axios({
+                        method:'post',
+                        url:'/update_camera',
+                        responseType:'json',
+                        data:cameraInfo
+                    })
+                        .then(function (response) {
+                            if(response.data.name === 'OK'){
+                                cameraInfo.id = par[__this.cameraIndex].id;
+                                Vue.set(par,__this.cameraIndex,cameraInfo);
+                            }else {
+                                layer.alert('修改摄像机失败,请检查',{title:'错误'});
+                            }
+                        })
+                        .catch(function (error) {
+                            layer.alert(error.message,{title:'错误'});
+                        });
+
                 }
                 layer.close(this.thisLayer);
                 this.showThis = false;
@@ -527,34 +758,11 @@ layui.define(['layer', 'form', 'element','laypage'], function (exports) {
                     username: '',
                     pwd: '',
                     stream: '',
-                    timeout: '',
-                    state: '空闲',
-                    nocheck: true
+                    delay: '',
+                    state: '空闲'
                 };
             }
         }
-    })
-
-    $(document).ready(function(){
-        $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-        axios({
-            method: 'get',
-            url: '/get_device_list',
-            responseType: 'json',
-            async: false
-        })
-            .then(function (response) {
-                if(response.data.type === 'OK'){
-                    deviceList.deviceNodes = response.data.children;
-                    deviceManage.deviceNodes = deviceList.deviceNodes;
-                    $.fn.zTree.init($("#deviceTree"), deviceList.setting, deviceList.deviceNodes);
-                }else {
-
-                }
-            })
-            .catch(function (error) {
-
-            });
     });
 
     exports('device-manage', {});

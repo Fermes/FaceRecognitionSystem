@@ -65,37 +65,3 @@ body {
 .layui-laypage a[data-page="1"] {
   border-left: 1px solid #259c3d;
 }
-.layui-layer-prompt,
-.layui-layer-dialog {
-  background-color: #0b1013;
-}
-.layui-layer-prompt .layui-layer-title,
-.layui-layer-dialog .layui-layer-title {
-  color: #2fbb3e;
-  background-color: #1b5c24;
-  border-bottom: none;
-}
-.layui-layer-prompt .layui-layer-content,
-.layui-layer-dialog .layui-layer-content {
-  color: #2fbb3e;
-}
-.layui-layer-prompt .layui-layer-content input,
-.layui-layer-dialog .layui-layer-content input {
-  outline: none;
-  background-color: #0b1013;
-  border: none;
-  border-bottom: 2px solid #2fbb3e;
-  color: #2fbb3e;
-}
-.layui-layer-prompt .layui-layer-btn .layui-layer-btn0,
-.layui-layer-dialog .layui-layer-btn .layui-layer-btn0 {
-  background-color: #1b5c24;
-  color: #2fbb3e;
-  border: none;
-}
-.layui-layer-prompt .layui-layer-btn .layui-layer-btn1,
-.layui-layer-dialog .layui-layer-btn .layui-layer-btn1 {
-  background-color: #1b5c24;
-  color: #00880b;
-  border: none;
-}

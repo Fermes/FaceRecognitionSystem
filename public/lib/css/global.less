@@ -150,37 +150,76 @@ body {
   }
 }
 
-.layui-layer-prompt,.layui-layer-dialog{
-  background-color: @back-color;
-  .layui-layer-title{
-    color: @font-green;
-    background-color: @border-dark;
-    border-bottom: none;
-  }
-  .layui-layer-content{
-    color: @font-green;
-    input{
-      outline: none;
-      background-color: @back-color;
-      border: none;
-      border-bottom: 2px solid @font-green;
+.frs-layer(){
+  .layui-layer-prompt,.layui-layer-dialog{
+    background-color: @back-color;
+    .layui-layer-title{
       color: @font-green;
+      background-color: @border-dark;
+      border-bottom: none;
     }
+    .layui-layer-content{
+      color: @font-green;
+      input{
+        outline: none;
+        background-color: @back-color;
+        border: none;
+        border-bottom: 2px solid @font-green;
+        color: @font-green;
+      }
+    }
+
   }
+}
+.frs-layer-normalbtn(){
   .layui-layer-btn{
-    .layui-layer-btn0{
-      background-color: @border-dark;
-      color: @font-green;
+    a{
       border: none;
+      background-color: @border-dark;
     }
-    .layui-layer-btn1{
+    .layui-layer-btn0{
+      color: @font-green;
       background-color: @border-dark;
-      color: @font-green - #333;
-      border: none;
+    }
+    .layui-layer-btn1 {
+      color: @font-green - #222;
     }
   }
 }
-
+.frs-layer-deletebtn(){
+  .layui-layer-btn{
+    a{
+      border: none;
+      background-color: @border-dark;
+    }
+    .layui-layer-btn0{
+      background-color: red - #888;
+      color: red;
+    }
+    .layui-layer-btn1 {
+      color: @font-green - #222;
+    }
+  }
+}
+.frs-layer-backupbtn(){
+  .layui-layer-btn{
+    a{
+      border: none;
+      background-color: @border-dark;
+    }
+    .layui-layer-btn0{
+      color: @font-green;
+      background-color: @border-dark;
+    }
+    .layui-layer-btn1{
+      background-color: red - #888;
+      color: red;
+    }
+    .layui-layer-btn2 {
+      color: @font-green - #222;
+    }
+  }
+}
 .tree-normal(){
   .ztree{
     span {
