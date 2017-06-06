@@ -179,26 +179,28 @@ layui.define(['layer', 'form', 'element', 'laypage'], function (exports) {
         if (treeNodes[0].isParent) {
             return;
         }
+        let creatRtsp = function (tmpNode) {
+            return 'rtsp://' + tmpNode.username + ':' + tmpNode.pwd + '@' + tmpNode.ip + ':' + tmpNode.port + '/' + tmpNode.stream;
+        };
         switch (e.target.id) {
             case 'camera0':
-                cameraTotal.camera_address0 = treeNodes[0].ip;
+                cameraTotal.camera_address0 = creatRtsp(treeNodes[0]);
                 break;
             case 'camera1':
-                cameraTotal.camera_address1 = treeNodes[0].ip;
+                cameraTotal.camera_address1 = creatRtsp(treeNodes[0]);
                 break;
             case 'camera2':
-                cameraTotal.camera_address2 = treeNodes[0].ip;
+                cameraTotal.camera_address2 = creatRtsp(treeNodes[0]);
                 break;
             case 'camera3':
-                cameraTotal.camera_address3 = treeNodes[0].ip;
+                cameraTotal.camera_address3 = creatRtsp(treeNodes[0]);
                 break;
             case 'camera4':
-                cameraTotal.camera_address4 = treeNodes[0].ip;
+                cameraTotal.camera_address4 = creatRtsp(treeNodes[0]);
                 break;
             default:
                 return;
         }
-
     }
 
 
