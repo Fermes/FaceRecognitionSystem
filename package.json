@@ -35,6 +35,6 @@
     "velocity-animate": "^1.5.0",
     "web-webpack-plugin": "^1.5.8",
     "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^3.1.11"
   }
 }
